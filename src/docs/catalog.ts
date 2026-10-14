@@ -28,6 +28,7 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
+import PlaylistAddCheckOutlinedIcon from "@mui/icons-material/PlaylistAddCheckOutlined";
 import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
 import SignalCellularAltOutlinedIcon from "@mui/icons-material/SignalCellularAltOutlined";
 import StairsOutlinedIcon from "@mui/icons-material/StairsOutlined";
@@ -50,6 +51,7 @@ import { EngineerDetailsDemo } from "../components/EngineerDetails.demo";
 import { EngineerLevelBadgeDemo } from "../components/EngineerLevelBadge.demo";
 import { EngineerLevelDetailsDemo } from "../components/EngineerLevelDetails.demo";
 import { PageHeaderDemo } from "../components/PageHeader.demo";
+import { SearchMultiSelectDemo } from "../components/SearchMultiSelect.demo";
 import { SearchSelectDemo } from "../components/SearchSelect.demo";
 import { SectionCardDemo } from "../components/SectionCard.demo";
 import { StatCardDemo } from "../components/StatCard.demo";
@@ -435,9 +437,9 @@ export const catalog: Group[] = [
       {
         title: "Forms",
         description:
-          "Which MUI input fits which job, and how a form is labelled, checked and laid out. Inputs are MUI's, as the theme styles them, except SearchSelect.",
+          "Which MUI input fits which job, and how a form is labelled, checked and laid out. Inputs are MUI's, as the theme styles them, except SearchSelect and SearchMultiSelect.",
         phone:
-          "Fields fill the width and side-by-side pairs stack. Input text stays at 16px so iOS doesn't zoom in on focus. A select's menu and SearchSelect's list keep MUI's 48px rows on phones.",
+          "Fields fill the width and side-by-side pairs stack. Input text stays at 16px so iOS doesn't zoom in on focus. A select's menu and the search selects' lists keep MUI's 48px rows on phones.",
         icon: DynamicFormOutlinedIcon,
         Demo: FormsGuideline,
       },
@@ -447,9 +449,19 @@ export const catalog: Group[] = [
           "Picks one option from a list long enough to search: people, clients, projects. Every typed word must match the label, `description` or `group`, in any order and ignoring accents; matches are bolded and Enter takes the top one. For a short list, use a select.",
         importFrom: "components",
         phone:
-          "Fills its container's width. The list opens under it at up to 40% of the screen's height, with 48px rows below sm so they're easy to tap.",
+          "Fills its container's width. The list always opens under it, never flipping above, at up to 40% of the screen's height, with 48px rows below sm so they're easy to tap.",
         icon: ManageSearchOutlinedIcon,
         Demo: SearchSelectDemo,
+      },
+      {
+        title: "SearchMultiSelect",
+        description:
+          "Picks several options from a list long enough to search, searching like SearchSelect. The list stays open while picking, each row has a checkbox, and the chosen options show as chips; `limitChips` counts the rest until the field is focused. For a handful of choices, use checkboxes.",
+        importFrom: "components",
+        phone:
+          "Fills its container's width, and chips wrap onto more lines as they're added. The list always opens under it, never flipping above, at up to 40% of the screen's height, with 48px rows below sm so they're easy to tap.",
+        icon: PlaylistAddCheckOutlinedIcon,
+        Demo: SearchMultiSelectDemo,
       },
     ],
   },

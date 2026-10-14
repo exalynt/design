@@ -18,6 +18,7 @@ export * from "./EngineerLevelDetails";
 export * from "./MaturityDetails";
 export * from "./MaturityRing";
 export * from "./PageHeader";
+export * from "./SearchMultiSelect";
 export * from "./SearchSelect";
 export * from "./SectionCard";
 export * from "./StabilityBanner";

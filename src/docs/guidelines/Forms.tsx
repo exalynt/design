@@ -169,7 +169,8 @@ export function FormsGuideline() {
           </li>
           <li>
             <strong>Several from a list</strong>: checkboxes when there are a handful;{" "}
-            <code>Autocomplete multiple</code> when there are more.
+            <a href="#SearchMultiSelect">SearchMultiSelect</a> when there are more, rather than{" "}
+            <code>Autocomplete multiple</code>.
           </li>
           <li>
             <strong>Yes or no, saved with the form</strong>: <code>Checkbox</code>.{" "}
