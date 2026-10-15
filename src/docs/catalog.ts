@@ -434,8 +434,6 @@ export const catalog: Group[] = [
         Demo: CapacityTagDemo,
       },
       {
-        title: "CapacityStatus",
-      {
         title: "CapacityName",
         description:
           "A capacity block at its smallest, where even CapacityTag is too much, such as a ConversationRow's foot: a 16px figure, filled to the block's size, and its `number`, in the text's own size and color. Its type isn't shown, only read out to assistive tech, as \"Core block BLK-0042\"; where the type matters on screen, use CapacityTag.",
@@ -445,6 +443,8 @@ export const catalog: Group[] = [
         icon: LabelOutlinedIcon,
         Demo: CapacityNameDemo,
       },
+      {
+        title: "CapacityStatus",
         description:
           "Where a block is in its life, for CapacityBlock's `badge`: Available, Scheduled, In progress, or Fulfilled, each with its own icon and color: grey, blue (info), violet, and green (success). In progress's violet is its own, the same under every theme, since no palette role is free: primary and info are often the same blue, and warning is left for CapacityBlock's `attention`. A small outlined Chip with the icon and word, or with `iconOnly` the icon alone, saying the word on hover and to assistive tech.",
         importFrom: "components",
