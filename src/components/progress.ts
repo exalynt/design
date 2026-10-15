@@ -1,63 +1,41 @@
 // Progress: what came of work on a Focus within a block of capacity, told
-// in the readme's three forms of value. Capability is doing something new,
-// Improvement doing something better, and Clarity deciding. A Capability
-// record also says how it changed: added, made more stable, or retired.
-// What value is, and why these three, are the readme's to explain
-// (PROGRESS_DOCS_URL), so the meanings here are its words, cut short.
+// in three kinds: Functionality, what the software can do; Improvement, how
+// well it works; and Clarity, what we now understand. Any record can be
+// about Features and Capabilities, and what it did to a Capability (added,
+// made more stable, or retired) is on that Capability, not its kind. The
+// readme explains what value is (PROGRESS_DOCS_URL).
 
-export const PROGRESS_KIND_IDS = [
-  "capability_added",
-  "capability_stabilized",
-  "capability_retired",
-  "improvement",
-  "clarity",
-] as const;
+export const PROGRESS_KIND_IDS = ["functionality", "improvement", "clarity"] as const;
 
 export type ProgressKindId = (typeof PROGRESS_KIND_IDS)[number];
 
 export type ProgressKindInfo = {
   id: ProgressKindId;
-  /** "More stable": the kind as a record is labelled. */
+  /** "Functionality": the kind as a record is labelled. */
   name: string;
-  /** The readme's form of value it is: Capability, Improvement, or Clarity. */
-  form: "Capability" | "Improvement" | "Clarity";
   /** What it means to the client, in a sentence. */
   meaning: string;
 };
 
 export const PROGRESS_KINDS: Record<ProgressKindId, ProgressKindInfo> = {
-  capability_added: {
-    id: "capability_added",
-    name: "New capability",
-    form: "Capability",
-    meaning: "The software can now do something useful it couldn't before.",
-  },
-  capability_stabilized: {
-    id: "capability_stabilized",
-    name: "More stable",
-    form: "Capability",
-    meaning: "Something it already does moved up a stability level, so it can be relied on more.",
-  },
-  capability_retired: {
-    id: "capability_retired",
-    name: "Retired",
-    form: "Capability",
-    meaning:
-      "Something was intentionally removed or made simpler, so there's less to use, run, and look after.",
+  functionality: {
+    id: "functionality",
+    name: "Functionality",
+    meaning: "What the software can do: new or intentionally changed behavior that delivers value.",
   },
   improvement: {
     id: "improvement",
     name: "Improvement",
-    form: "Improvement",
-    meaning: "Something it already did is now easier, faster, safer, or more reliable.",
+    meaning:
+      "How well the software works: existing behavior made faster, easier, more reliable, secure, maintainable, or correct.",
   },
   clarity: {
     id: "clarity",
     name: "Clarity",
-    form: "Clarity",
-    meaning: "A need is better understood, a question answered, or a direction chosen.",
+    meaning:
+      "What we now understand: uncertainty resolved, decisions made, or direction defined so better work can happen.",
   },
 };
 
-/** What the readme means by value, and the three forms progress is told in. */
+/** What the readme means by value. */
 export const PROGRESS_DOCS_URL = "https://readme.exalynt.com/clients/what-we-mean-by-value";

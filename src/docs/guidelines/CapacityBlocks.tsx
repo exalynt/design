@@ -325,6 +325,26 @@ export function CapacityBlocksGuideline() {
 </CapacityBlock>`}
       />
 
+      <Guidance title="What came of it">
+        <p>
+          Once a block has started, <code>CapacityProgress</code> is the last line of its{" "}
+          <code>footer</code>, under who and when: each kind of progress that came of it as its icon
+          and how many, said in words on hover, or &ldquo;No progress yet&rdquo;.
+        </p>
+        <ul>
+          <li>
+            <strong>In progress and Fulfilled only.</strong> A block waiting for its week has
+            nothing to report, so leave the line out rather than saying &ldquo;No progress
+            yet&rdquo; before it could have any.
+          </li>
+          <li>
+            <strong>It opens the records, not a summary of them.</strong> Pass <code>onClick</code>{" "}
+            to go to the block&rsquo;s progress, as <code>ProgressCard</code>s with the Focus each
+            went to at its foot.
+          </li>
+        </ul>
+      </Guidance>
+
       <Guidance title="The popover">
         <p>
           A block&rsquo;s name opens <code>CapacityDetails</code> on hover, keyboard focus, or tap:

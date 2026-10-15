@@ -1,6 +1,5 @@
 import type { ComponentType } from "react";
 import type { SvgIconProps } from "@mui/material/SvgIcon";
-import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import BoltOutlinedIcon from "@mui/icons-material/BoltOutlined";
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
@@ -25,6 +24,7 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import DonutLargeOutlinedIcon from "@mui/icons-material/DonutLargeOutlined";
 import DynamicFormOutlinedIcon from "@mui/icons-material/DynamicFormOutlined";
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
+import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
 import InsightsOutlinedIcon from "@mui/icons-material/InsightsOutlined";
@@ -36,6 +36,7 @@ import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOu
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
 import PlaylistAddCheckOutlinedIcon from "@mui/icons-material/PlaylistAddCheckOutlined";
 import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
+import ShowChartRoundedIcon from "@mui/icons-material/ShowChartRounded";
 import SignalCellularAltOutlinedIcon from "@mui/icons-material/SignalCellularAltOutlined";
 import StairsOutlinedIcon from "@mui/icons-material/StairsOutlined";
 import TextFieldsOutlinedIcon from "@mui/icons-material/TextFieldsOutlined";
@@ -49,6 +50,7 @@ import { CapabilityCardDemo } from "../components/CapabilityCard.demo";
 import { CapacityBlockDemo } from "../components/CapacityBlock.demo";
 import { CapacityDetailsDemo } from "../components/CapacityDetails.demo";
 import { CapacityEngineerDemo } from "../components/CapacityEngineer.demo";
+import { CapacityProgressDemo } from "../components/CapacityProgress.demo";
 import { CapacityFigureDemo } from "../components/CapacityFigure.demo";
 import { CapacityLineDemo } from "../components/CapacityLine.demo";
 import { CapacityMiniCardDemo } from "../components/CapacityMiniCard.demo";
@@ -56,6 +58,7 @@ import { CapacityPlacementDemo } from "../components/CapacityPlacement.demo";
 import { CapacityStatusDemo } from "../components/CapacityStatus.demo";
 import { CapacityTagDemo } from "../components/CapacityTag.demo";
 import { ProgressCapabilityDemo } from "../components/ProgressCapability.demo";
+import { ProgressFeatureDemo } from "../components/ProgressFeature.demo";
 import { ProgressCardDemo } from "../components/ProgressCard.demo";
 import { ProgressKindDemo } from "../components/ProgressKind.demo";
 import { ProgressMediaDemo } from "../components/ProgressMedia.demo";
@@ -430,6 +433,16 @@ export const catalog: Group[] = [
         Demo: CapacityEngineerDemo,
       },
       {
+        title: "CapacityProgress",
+        description:
+          "What progress came of a block, at a glance, as the last line of its footer once it's started, beside the rising chart that stands for progress: each kind it has, Functionality, Improvement, then Clarity, as the kind's icon in its color and how many, said in words on hover and to assistive tech, or \"No progress yet\". `onClick` opens the block's progress, such as the ProgressCards on its page. Leave it off a block waiting for its week.",
+        importFrom: "components",
+        phone:
+          "A CapacityLine, so it fills the card's width at the same height as the lines above it. All three kinds fit on one line at 375px; a tap opens the block's progress, and the words are a long press away.",
+        icon: FactCheckOutlinedIcon,
+        Demo: CapacityProgressDemo,
+      },
+      {
         title: "CapacityLine",
         description:
           "One line on a block's card: an 18px icon centred in a column as wide as the figure, so every line's icon sits on the figure's axis in every state, then text cut short with an ellipsis. Read-only by default; `onClick` makes it a button, `menu` adds the chevron, `action` is the primary prompt, and `disabled` and `muted` hold a place. Build a block's footer from it.",
@@ -467,22 +480,32 @@ export const catalog: Group[] = [
       {
         title: "ProgressCard",
         description:
-          "One record of progress, what came of work on a Focus within a block of capacity, for a Focus's listing and a block's. One column: its kind and day, what happened as its headline, then only the sections it has (Capabilities, results, and what shows it), and at its foot who reported it and `source`, where it came from. Edged in its kind's color so a listing scans by kind. A Capability made more stable with no words of its own leads with the level it reached. A first pass, to experiment with.",
+          "One record of progress, what came of work on a Focus within a block of capacity, for a Focus's listing and a block's. One column: its kind and day, what happened as its headline, then only the sections it has (the Features and Capabilities it's about, whatever its kind, results, and what shows it), and at its foot who reported it and `source`, where it came from. Edged in its kind's color so a listing scans by kind. It starts closed, as `defaultExpanded` changes: its kind, day, and headline cut to two lines (or the names of the Capabilities it's about, where it has no words of its own), over how many Features, Capabilities, results, pictures, and videos it has, as icons and counts. The chevron, or a click on the closed card, opens it. A first pass, to experiment with.",
         importFrom: "components",
         phone:
-          "One column at every width, so nothing moves on a phone. Results tiles fit as many to a row as there's room for, one on a phone; media thumbnails wrap; the foot wraps `source` under who reported it.",
-        icon: ArticleOutlinedIcon,
+          "One column at every width, so nothing moves on a phone. Results tiles fit as many to a row as there's room for, one on a phone; media thumbnails wrap; the foot wraps `source` under who reported it. Closed, its counts wrap onto a second line where they need to, and the whole closed card is the tap target to open it.",
+        icon: ShowChartRoundedIcon,
         Demo: ProgressCardDemo,
       },
       {
         title: "ProgressKind",
         description:
-          "What kind of progress a record is: New capability, More stable, Retired, Improvement, or Clarity, as a small tinted Chip with its icon and name, or with `iconOnly` the icon alone. Colored by what it did: primary for a Capability added or made more stable, secondary for one retired, success for Improvement, and warning for Clarity, with an icon of its own each. Hover, focus, or tap says what it means to the client.",
+          "What kind of progress a record is: Functionality, what the software can do; Improvement, how well it works; or Clarity, what we now understand. A small tinted Chip with its icon and name, or with `iconOnly` the icon alone: Functionality's puzzle piece in primary, Improvement in success, and Clarity in warning. Any kind can be about Features and Capabilities, and what a record did to a Capability (added, made more stable, or retired) isn't a kind: it's on that Capability, as ProgressCapability shows. Hover, focus, or tap says what the kind means to the client.",
         importFrom: "components",
         phone:
-          "A 24px Chip that never wraps; New capability is the widest, at about 130px. A tap opens its popover.",
+          "A 24px Chip that never wraps; Functionality is the widest. A tap opens its popover.",
         icon: CategoryOutlinedIcon,
         Demo: ProgressKindDemo,
+      },
+      {
+        title: "ProgressFeature",
+        description:
+          "One Feature a record of progress is about, of any kind, as a small outlined card that sits beside others and wraps, like a ProgressCapability: the Feature's icon, as on a FeatureCard, and its name, cut short with the whole name on hover.",
+        importFrom: "components",
+        phone:
+          "At most the width of its container; a long name is cut short. The full name is a long press away.",
+        icon: WidgetsOutlinedIcon,
+        Demo: ProgressFeatureDemo,
       },
       {
         title: "ProgressCapability",
@@ -497,7 +520,7 @@ export const catalog: Group[] = [
       {
         title: "ProgressMetric",
         description:
-          "Something measured before the work and after it, as a tile: what was measured, the result after, large, and what it was before, muted. Both are free text, so neither is colored as better or worse.",
+          "Something measured, as a tile: what was measured, then Before, muted, over After, large, each labelled. `direction` puts an arrow in success beside After, the way it moved for the better: `down` for fewer failures or less time, `up` for more of something wanted. The values are free text, so the direction is the reporter's to give, and without it no way is marked as better. `before` is optional; without it the result stands alone, unlabelled.",
         importFrom: "components",
         phone:
           "It fills its grid cell; in a grid of `minmax(180px, 1fr)` columns, a phone shows one a row, and long results wrap.",

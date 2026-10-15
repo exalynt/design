@@ -24,7 +24,7 @@ export function ProgressKindDemo() {
       <CodeBlock
         code={`import { ProgressKind } from "@exalynt/design/components";
 
-<ProgressKind kind="capability_stabilized" />
+<ProgressKind kind="functionality" />
 <ProgressKind kind="clarity" iconOnly />`}
       />
     </>

@@ -28,11 +28,11 @@ export function ProgressCardDemo() {
   const delivered = SAMPLE_PROGRESS.filter((record) => record.block === "BLK-0042");
   return (
     <>
-      <Example title="On a Focus: its progress by week, each with the block it came from (hover a badge)">
+      <Example title="On a Focus: its progress by week, closed so the listing reads at a glance, the newest open (click one to open it)">
         <Stack spacing={2} sx={{ maxWidth: 760 }}>
           <Week title="Week of Oct 5" days="Oct 5 – 11" who="Lena, Avery" />
-          {thisWeek.map((record) => (
-            <ProgressCard key={record.id} {...onFocus(record)} />
+          {thisWeek.map((record, index) => (
+            <ProgressCard key={record.id} {...onFocus(record)} defaultExpanded={index === 0} />
           ))}
           <Week title="Week of Sep 28" days="Sep 28 – Oct 4" who="Lena" />
           {lastWeek.map((record) => (
@@ -47,6 +47,7 @@ export function ProgressCardDemo() {
   at={record.created_at}
   by={{ name: record.by.name, avatarUrl: record.by.avatar_url }}
   source={<CapacityTag block={block.type} number={block.number} details />}
+  features={record.features.map((id) => ({ name: catalog.feature(id).title }))}
   capabilities={record.capabilities.map((touch) => ({
     name: catalog.capability(touch.capability_id).name,
     change: touch.change,
@@ -55,16 +56,17 @@ export function ProgressCardDemo() {
   }))}
   metrics={record.metrics}
   media={record.media}
+  defaultExpanded={isNewest}
 />`}
       />
 
-      <Example title="On a capacity block: what it delivered, each with the Focus it went to">
+      <Example title="On a capacity block: what it delivered, open, each with the Focus it went to">
         <Stack spacing={2} sx={{ maxWidth: 760 }}>
           <Typography variant="subtitle2" component="h3">
             What BLK-0042 delivered
           </Typography>
           {delivered.map((record) => (
-            <ProgressCard key={record.id} {...onBlock(record)} />
+            <ProgressCard key={record.id} {...onBlock(record)} defaultExpanded />
           ))}
         </Stack>
       </Example>

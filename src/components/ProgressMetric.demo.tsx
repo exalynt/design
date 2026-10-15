@@ -6,7 +6,7 @@ import { ProgressMetric } from "./ProgressMetric";
 export function ProgressMetricDemo() {
   return (
     <>
-      <Example title="Before and after, in a grid that fits as many as there's room for">
+      <Example title="Before and after, down or up for the better, and a result with nothing before it">
         <Box
           sx={{
             display: "grid",
@@ -19,17 +19,25 @@ export function ProgressMetricDemo() {
             name="Signatures that fail to send"
             before="About 1 in 10"
             after="None in a week"
+            direction="down"
+          />
+          <ProgressMetric
+            name="Deliveries signed first time"
+            before="About 7 in 10"
+            after="All but 2 in a week"
+            direction="up"
+          />
+          <ProgressMetric
+            name="Missed deliveries left with a photo"
+            after="14 in the first week"
+            direction="up"
           />
           <ProgressMetric name="Time to sign" before="12 seconds" after="4 seconds" />
-          <ProgressMetric
-            name="Slips typed in by the office"
-            before="About 60 a day"
-            after="None"
-          />
         </Box>
       </Example>
       <CodeBlock
-        code={`<ProgressMetric name="Time to sign" before="12 seconds" after="4 seconds" />`}
+        code={`<ProgressMetric name="Time to sign" before="12 seconds" after="4 seconds" direction="down" />
+<ProgressMetric name="Missed deliveries left with a photo" after="14 in the first week" direction="up" />`}
       />
     </>
   );

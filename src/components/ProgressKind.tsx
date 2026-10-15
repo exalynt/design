@@ -19,12 +19,12 @@ export type ProgressKindProps = {
  */
 export function ProgressKind({ kind, iconOnly = false, link = true }: ProgressKindProps) {
   const { Icon, color } = PROGRESS_LOOK[kind];
-  const { name, form, meaning } = PROGRESS_KINDS[kind];
+  const { name, meaning } = PROGRESS_KINDS[kind];
   return (
     <DetailsPopover
       title={
         <DetailsCard card>
-          <DetailsEyebrow>{form === name ? "Progress" : `${form} progress`}</DetailsEyebrow>
+          <DetailsEyebrow>Progress</DetailsEyebrow>
           <Box sx={{ mt: 0.5, fontSize: "1.12em", fontWeight: 700 }}>{name}</Box>
           <Box sx={{ mt: 0.5 }}>{meaning}</Box>
           {link ? <DetailsLink href={PROGRESS_DOCS_URL}>What we mean by value</DetailsLink> : null}
