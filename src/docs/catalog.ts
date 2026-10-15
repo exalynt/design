@@ -22,6 +22,11 @@ import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutline
 import ContrastOutlinedIcon from "@mui/icons-material/ContrastOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
+import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined";
+import AlternateEmailOutlinedIcon from "@mui/icons-material/AlternateEmailOutlined";
+import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
+import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
 import DonutLargeOutlinedIcon from "@mui/icons-material/DonutLargeOutlined";
 import DynamicFormOutlinedIcon from "@mui/icons-material/DynamicFormOutlined";
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
@@ -84,6 +89,11 @@ import { StabilityMarkDemo } from "../components/StabilityMark.demo";
 import { ThemeToggleDemo } from "../components/ThemeToggle.demo";
 import { ToastProviderDemo } from "../components/ToastProvider.demo";
 import { UserAttributionDemo } from "../components/UserAttribution.demo";
+import { ConversationMessageDemo } from "../components/ConversationMessage.demo";
+import { ConversationPopoutDemo } from "../components/ConversationPopout.demo";
+import { MentionFieldDemo } from "../components/MentionField.demo";
+import { MessageComposerDemo } from "../components/MessageComposer.demo";
+import { TypingIndicatorDemo } from "../components/TypingIndicator.demo";
 import { CursorPagerDemo } from "../components/table/CursorPager.demo";
 import { DataTableDemo } from "../components/table/DataTable.demo";
 import { ListTableDemo } from "../components/table/ListTable.demo";
@@ -594,12 +604,67 @@ export const catalog: Group[] = [
     ],
   },
   {
+    title: "Conversations",
+    entries: [
+      {
+        title: "ConversationMessage",
+        description:
+          "One message in a conversation: the author's picture, or initials without one, beside a card headed with their name and when it was sent (DateTime), and what they wrote with its line breaks kept. Mentions are kept in the text by id, as `<@id>` (MentionField writes them), and read as \"@\" and that person's current name in `people`, so a rename never leaves an old one behind. They're picked out in the primary color, or in the warning color where it's the reader (`you`), whose mention also puts Mentions you in the header. `attachments` are the files sent with it, under the text: its images and videos as ProgressMedia shows progress's, thumbnails that open full size, and its documents as tiles with their type and size that open in a new tab; a message can be files alone. A message longer than ten lines starts cut to eight, fading out, with Show more and then Show less, unless it's `unread`, when it starts open. `original` marks the message that started it, and `lines` cuts it short without Show more, counting its files rather than showing them, for a glance, such as a conversation's row in a list. `avatar=\"header\"` puts the picture small before their name, in the card's top corner, rather than beside it, leaving the card the room. `details` opens EngineerDetails on hovering, focusing or tapping an engineer author's name or picture, as UserAttribution's does; the author is then an `EngineerProfile`. Put messages in a `ConversationThread`, oldest first. `organization` (an `OrganizationProfile`: its name and `logoUrl`, or its initials without one) names who they wrote on behalf of, beside their name, for conversations with people from more than one, such as Exalynt and a client. Each kind of message has its own color, so none is mistaken for another. `mine` marks the reader's own: filled in the primary color, as a sent text is, and the only ones on the right, with the avatar after the card and the header mirrored: their name by their avatar, then their organization, and the time on the far left. `ours` marks a teammate's, from the organization the reader's in context of: on the left with everyone else's, which are plain, but tagged after their name with Teammate's icon, filled in the secondary color (hover it for whose team), their picture ringed in the secondary color, and tinted in it too, so a teammate never rests on color or the organization alone. `assignedTeam` tags someone on one of the reader's assigned teams, as a client's engineers at Exalynt are, with Your team's icon, filled in the primary color, which says on hover \"On your Exalynt Engineering Team\" from their organization's name. The tags are always just their icons, named to assistive tech and in a tooltip on hover. `condensed` shows the organization as just its logo, which still names it on hover, as it is anyway on a card under 400px wide, such as a popout's. Where a thread has the reader's own, every card keeps the same distance from the other side, 15% of the thread or 48px at least, so all are the same width and the reader's sit off-centre, as texts do. `unread` marks one the reader hadn't read with a mark rather than a color, so it shows over a teammate's tint or a plain card alike: a thick primary edge on its side and New beside its time, and the thread draws a line counting the new ones above the first.",
+        importFrom: "components",
+        phone:
+          "The header stays on one line: the name is cut short before the time is, the organization is just its logo, as on any card under 400px wide, such as a popout's, and under 340px the author's name goes too, with the dots between, leaving their picture (still read out to assistive tech), Original message hides under 400px, and Mentions you is just its icon. The text wraps, breaking long links and words rather than widening the page. Thumbnails wrap onto more rows, and open edge to edge; each document takes a row of its own.",
+        icon: SmsOutlinedIcon,
+        Demo: ConversationMessageDemo,
+      },
+      {
+        title: "ConversationPopout",
+        description:
+          "A conversation in a window over the page, to read and reply to without leaving it: its ConversationMessages, and a MessageComposer sending with `onSend`, where @ mentions one of `people`; the draft lasts while it's minimized, and empties once sent unless `onSend` returns `false`. It opens 560px wide, or the screen less 32px where that's narrower, so a message's header has room for the name, tags and time. Drag the title bar to move it and the bottom-right corner to size it; the bar minimizes, maximizes (as does double-clicking it), opens `href` in a new tab, and closes it, as does Esc. `notice` takes the reply box's place for one that takes no replies, and `actions` puts something such as a StabilityMark in the bar. `canAttach` lets a reply carry files, which `onSend` gets with the text, and `typing` says who else is writing just above the reply box (TypingIndicator). For a long conversation, pass its latest few with `earlier`, the count of those before them, and `onShowEarlier` to bring in more from beside that count, with `loadingEarlier` while they're read; what's being read holds still as they come in above it. ConversationThread takes the same three on its own. For several at once, render one per open conversation and raise the one in `onFocus` with `zIndex`. It opens at the first `unread` message, under the line counting the new ones, or else at the latest: keep which were unread as it opened, so marking it read on opening doesn't clear them while they're read. `onMarkUnread` puts Mark as unread in the title bar, which then closes it, as an inbox goes back to the list.",
+        importFrom: "components",
+        phone:
+          "It fills the screen, without minimize, maximize, moving or sizing; Close, Mark as unread and the link are 40px to tap. With several open, the one in front covers the others. The keyboard hint under the reply box hides.",
+        icon: ForumOutlinedIcon,
+        Demo: ConversationPopoutDemo,
+      },
+      {
+        title: "MessageComposer",
+        description:
+          "Where a reply is written, as ConversationPopout's is: a MentionField, so @ mentions one of `people` and : and a shortcode finds an emoji, the files attached, and under them the emoji picker, the paperclip, a hint and the Reply button, which waits until there's something to send, words or files. Enter sends and Shift+Enter starts a new line. With `onAttachmentsChange`, images, videos and documents can be attached with the paperclip, dropped anywhere on the composer, or pasted, such as a screenshot (a paste with text in it, as from Word, pastes the text), shown with a preview, their size and a button to take each off; any other file is named in a line saying it wasn't attached. The caller keeps the draft in `value` and the files in `attachments`, so they outlast the composer, uploads them, and empties both once `onSend` has sent it; `sending` makes the button wait meanwhile.",
+        importFrom: "components",
+        phone:
+          "The field fills the width, each attached file takes a row of its own, and the keyboard hint hides, leaving the emoji and attach buttons on the left and Reply on the right, all at their full size. The emoji picker is 336px wide, or the screen less 32px when that's narrower, and opens above its button. Phones can't drag files, so the paperclip is how they attach.",
+        icon: RateReviewOutlinedIcon,
+        Demo: MessageComposerDemo,
+      },
+      {
+        title: "TypingIndicator",
+        description:
+          "Who's writing in a conversation right now: three dots rising in turn and \"Priya Shah is typing…\", each name with its picture, or initials, beside it (UserAttribution), naming up to three and counting the rest, as in \"Priya Shah, Sam Okafor and 2 others are typing…\". Put it just above the MessageComposer, as ConversationPopout's `typing` does. It keeps its line when no one is typing, so the composer doesn't jump, and tells screen readers as it changes. It only shows the `people` it's given: the app sends that the reader is typing and drops anyone it hasn't heard from in a few seconds.",
+        importFrom: "components",
+        phone:
+          'One line that never wraps: the names are cut short before "are typing…" would push past the edge. The dots stay still for anyone who\'s asked for less motion.',
+        icon: MoreHorizOutlinedIcon,
+        Demo: TypingIndicatorDemo,
+      },
+      {
+        title: "MentionField",
+        description:
+          "A multiline field for a message where people can be @mentioned, as MessageComposer's is. Typing @ lists `people` with their pictures, narrowed by each word typed after it as SearchSelect searches; the arrows move through the list, and Enter, Tab or a click puts \"@Full Name \" in the text. The field shows names, but `value` keeps each mention as the person's id, `<@id>`, as ConversationMessage reads it, so mentions survive a rename; a mention edited inside turns back into plain text. `people` are `MentionProfile`s, a `UserProfile` with an `id`. Esc closes just the list, not a dialog or popout around it. An @ run into a word, as in an email address, doesn't open it. A colon and two letters of a shortcode, as in Slack (`:tada`), lists matching emoji the same way and puts the emoji in; a colon after a word or number, as in 10:30, doesn't. Its `ref` has `insert(text)`, which puts text at the caret, as MessageComposer's emoji picker does. Controlled by `value` and `onChange`; `onKeyDown` gets the keys the list doesn't take, such as Enter to send.",
+        importFrom: "components",
+        phone:
+          "It fills its container's width. The list is 280px wide, or the screen less 32px when that's narrower, opens under the field or above it where there's no room, such as a reply box at the foot of the screen, and keeps MUI's 48px rows below sm.",
+        icon: AlternateEmailOutlinedIcon,
+        Demo: MentionFieldDemo,
+      },
+    ],
+  },
+  {
     title: "Inputs",
     entries: [
       {
         title: "Forms",
         description:
-          "Which MUI input fits which job, and how a form is labelled, checked and laid out. Inputs are MUI's, as the theme styles them, except SearchSelect and SearchMultiSelect.",
+          "Which MUI input fits which job, and how a form is labelled, checked and laid out. Inputs are MUI's, as the theme styles them, except SearchSelect, SearchMultiSelect and MentionField.",
         phone:
           "Fields fill the width and side-by-side pairs stack. Input text stays at 16px so iOS doesn't zoom in on focus. A select's menu and the search selects' lists keep MUI's 48px rows on phones.",
         icon: DynamicFormOutlinedIcon,

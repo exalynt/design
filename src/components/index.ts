@@ -21,6 +21,8 @@ export * from "./ProgressMetric";
 export * from "./CapacityStatus";
 export * from "./CapacityTag";
 export * from "./ConfirmDialog";
+export * from "./ConversationMessage";
+export * from "./ConversationPopout";
 export * from "./DateTime";
 export * from "./EmptyState";
 export * from "./EngineerDetails";
@@ -29,6 +31,8 @@ export * from "./EngineerLevelBadge";
 export * from "./EngineerLevelDetails";
 export * from "./MaturityDetails";
 export * from "./MaturityRing";
+export * from "./MentionField";
+export * from "./MessageComposer";
 export * from "./PageHeader";
 export * from "./SearchMultiSelect";
 export * from "./SearchSelect";
@@ -39,6 +43,7 @@ export * from "./StabilityMark";
 export * from "./StatCard";
 export * from "./ThemeToggle";
 export * from "./ToastProvider";
+export * from "./TypingIndicator";
 export * from "./UserAttribution";
 export * from "./table";
 
@@ -62,6 +67,9 @@ export {
   type EngineerLevel,
   type EngineerLevelId,
 } from "./engineerLevel";
+// Mentions: someone who can be @mentioned, by an id that survives a rename.
+// MentionField writes them into a message as `<@id>` and ConversationMessage reads them.
+export { type MentionProfile } from "./mentions";
 // Toasts: raised with useToast() under a ToastProvider.
 export { useToast, type Toaster } from "./toast";
 // Money: the API's cents, as text for the reader and back.

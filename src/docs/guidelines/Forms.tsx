@@ -151,6 +151,11 @@ export function FormsGuideline() {
             answer runs past a line.
           </li>
           <li>
+            <strong>A message where people can be @mentioned</strong>:{" "}
+            <a href="#MentionField">MentionField</a>, rather than a <code>multiline</code>{" "}
+            <code>TextField</code>.
+          </li>
+          <li>
             <strong>A number or amount</strong>: <code>TextField</code> with{" "}
             <code>inputMode: &quot;decimal&quot;</code> and the unit as an{" "}
             <code>InputAdornment</code>. Not <code>type=&quot;number&quot;</code>, which changes the
