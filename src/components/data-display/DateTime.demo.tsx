@@ -29,6 +29,9 @@ const columns: Column<Activity>[] = [
   },
 ];
 
+/* Moments before now, so they always read as recent. */
+const ago = (minutes: number) => new Date(Date.now() - minutes * 60_000).toISOString();
+
 export function DateTimeDemo() {
   return (
     <>
@@ -42,6 +45,27 @@ export function DateTimeDemo() {
         code={`Invoice INV-0104 was sent <DateTime value={invoice.sentAt} /> and is due{" "}
 <DateTime value={invoice.dueAt} dateOnly />.`}
       />
+
+      <Example title="How long ago, with relative, as a list of conversations has it: hover one for its full time">
+        <Typography variant="body2" component="div" sx={{ display: "grid", gap: 0.5 }}>
+          <span>
+            <DateTime value={ago(0)} relative />
+          </span>
+          <span>
+            <DateTime value={ago(5)} relative />
+          </span>
+          <span>
+            <DateTime value={ago(180)} relative />
+          </span>
+          <span>
+            <DateTime value={ago(60 * 30)} relative />
+          </span>
+          <span>
+            <DateTime value="2026-10-02T13:40:00Z" relative />
+          </span>
+        </Typography>
+      </Example>
+      <CodeBlock code={`<DateTime value={conversation.last_activity_at} relative />`} />
 
       <Example title="In a table">
         <ListTable

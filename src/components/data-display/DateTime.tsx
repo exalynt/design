@@ -14,6 +14,12 @@ export type DateTimeProps = {
    */
   dateOnly?: boolean;
   /**
+   * Show how long ago it was, where recency is what's scanned for, as in a
+   * list of conversations: "Just now", "5 minutes ago", "3 hours ago" today,
+   * "Yesterday", then the day. The popover still gives the full time.
+   */
+  relative?: boolean;
+  /**
    * Let it take keyboard focus, so its popover opens from the keyboard.
    * Pass `false` inside a button or link, which already takes focus.
    */
@@ -29,6 +35,28 @@ const shortDateTime = new Intl.DateTimeFormat(undefined, {
   dateStyle: "medium",
   timeStyle: "short",
 });
+
+const MINUTE = 60_000;
+const HOUR = 60 * MINUTE;
+
+/* "Just now", "5 minutes ago", "3 hours ago" today, "Yesterday", then the day. */
+function timeAgo(then: Date, now = new Date()) {
+  const elapsed = now.getTime() - then.getTime();
+  if (elapsed < MINUTE) return "Just now";
+  if (elapsed < HOUR) {
+    const minutes = Math.floor(elapsed / MINUTE);
+    return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
+  }
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  if (then >= startOfToday) {
+    const hours = Math.floor(elapsed / HOUR);
+    return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+  }
+  const startOfYesterday = new Date(startOfToday);
+  startOfYesterday.setDate(startOfYesterday.getDate() - 1);
+  if (then >= startOfYesterday) return "Yesterday";
+  return shortDate.format(then);
+}
 
 /* The popover's time and day, in the reader's zone (no `timeZone`) or in UTC. */
 function zoneFormats(timeZone?: string) {
@@ -108,9 +136,15 @@ function Zone({
  * A point in time from the server, in the reader's time zone and locale as
  * their browser has them. Hover, focus, or tap opens a popover setting it
  * side by side in their zone and in UTC, with the value as the server sent
- * it, so two people in different zones can agree on the moment.
+ * it, so two people in different zones can agree on the moment. `relative`
+ * says how long ago it was instead, the popover the same.
  */
-export function DateTime({ value, dateOnly = false, focusable = true }: DateTimeProps) {
+export function DateTime({
+  value,
+  dateOnly = false,
+  relative = false,
+  focusable = true,
+}: DateTimeProps) {
   const date = new Date(value);
   if (!RFC_3339.test(value) || Number.isNaN(date.getTime())) return <>{value}</>;
   const divider = { mt: 1.25, pt: 1.25, borderTop: 1, borderColor: "divider" };
@@ -157,7 +191,7 @@ export function DateTime({ value, dateOnly = false, focusable = true }: DateTime
           "&:focus-visible": { outline: 2, outlineColor: "primary.main", outlineOffset: 2 },
         }}
       >
-        {(dateOnly ? shortDate : shortDateTime).format(date)}
+        {relative ? timeAgo(date) : (dateOnly ? shortDate : shortDateTime).format(date)}
       </Box>
     </DetailsPopover>
   );

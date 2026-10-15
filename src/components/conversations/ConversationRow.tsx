@@ -3,7 +3,6 @@ import AvatarGroup from "@mui/material/AvatarGroup";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -12,13 +11,12 @@ import { ConversationRelatedPopover } from "./ConversationRelatedPopover";
 import { ConversationTile } from "./ConversationTile";
 import type { MentionProfile } from "./mentions";
 import { RELATED, groupRelated, relatedName, type ConversationRelated } from "./related";
+import { DateTime } from "../data-display/DateTime";
 import { UserAvatar } from "../engineers/UserAvatar";
 import { CapacityName } from "../capacity/CapacityName";
 
 export type { ConversationRelated } from "./related";
 
-const MINUTE = 60_000;
-const HOUR = 60 * MINUTE;
 const day = new Intl.DateTimeFormat(undefined, { dateStyle: "medium" });
 /* Out of sight but still read out. */
 const visuallyHidden = {
@@ -39,7 +37,7 @@ export type ConversationRowProps = {
   href: string;
   /** Opens it in place, such as in a ConversationPopout, rather than going to `href`. */
   onOpen?: () => void;
-  /** When it last moved: an RFC 3339 timestamp in UTC, shown as how long ago. */
+  /** When it last moved: an RFC 3339 timestamp in UTC, shown as how long ago, with DateTime's popover for the full time. */
   at: string;
   /** Everyone in it, in the order they joined, at the foot. */
   people: MentionProfile[];
@@ -214,19 +212,23 @@ export function ConversationRow({
               {unread} new
             </Box>
           ) : null}
-          <Typography
-            variant="caption"
-            component="time"
-            dateTime={at}
+          {/* Above the link that covers the row, so its popover opens, and the row's preview waits meanwhile. */}
+          <Box
+            onPointerEnter={() => setOverControls(true)}
+            onPointerLeave={() => setOverControls(false)}
+            onFocus={() => setOverControls(true)}
+            onBlur={() => setOverControls(false)}
             sx={{
+              position: "relative",
+              zIndex: 1,
               flexShrink: 0,
+              typography: "caption",
               color: isUnread ? "text.primary" : "text.secondary",
               fontWeight: isUnread ? 600 : undefined,
-              whiteSpace: "nowrap",
             }}
           >
-            {timeAgo(at)}
-          </Typography>
+            <DateTime value={at} relative />
+          </Box>
           {actions ? (
             /* Above the link that covers the row. */
             <Box
@@ -509,24 +511,4 @@ function RelatedEntry({ kind, items }: ReturnType<typeof groupRelated>[number]) 
       )}
     </Box>
   );
-}
-
-/* "Just now", "5 minutes ago", "3 hours ago" today, "Yesterday", then the day. */
-function timeAgo(timestamp: string, now = new Date()) {
-  const then = new Date(timestamp);
-  const elapsed = now.getTime() - then.getTime();
-  if (elapsed < MINUTE) return "Just now";
-  if (elapsed < HOUR) {
-    const minutes = Math.floor(elapsed / MINUTE);
-    return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
-  }
-  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  if (then >= startOfToday) {
-    const hours = Math.floor(elapsed / HOUR);
-    return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
-  }
-  const startOfYesterday = new Date(startOfToday);
-  startOfYesterday.setDate(startOfYesterday.getDate() - 1);
-  if (then >= startOfYesterday) return "Yesterday";
-  return day.format(then);
 }
