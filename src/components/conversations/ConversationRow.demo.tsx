@@ -17,7 +17,9 @@ import {
   CLIENT,
   EXALYNT,
   PEOPLE,
+  PLANS_RELATED,
   SAMPLE_MESSAGES,
+  SAMPLE_RELATED,
   YOU,
   sideOf,
   type SampleMessage,
@@ -25,7 +27,7 @@ import {
 import { Example } from "../../docs/Example";
 import { ConversationMessage } from "./ConversationMessage";
 import { ConversationPopout } from "./ConversationPopout";
-import { ConversationRow } from "./ConversationRow";
+import { ConversationRow, type ConversationRelated } from "./ConversationRow";
 
 const [, PRIYA, , SAM] = PEOPLE;
 const PLANS = "Switching annual plans to monthly";
@@ -48,6 +50,14 @@ const SPAM_MESSAGES: SampleMessage[] = [
     body: "<@usr_dana>, the test invoices I sent this afternoon all reached the inbox, from Gmail and Outlook as well as our own mail server, so I think we can call the records done.\n\nTwo things before we close it. Could the reminder emails go out from the same domain, so they get the same records? And should DMARC move from monitoring to quarantine once we've had a week of clean reports, or would you rather wait for the end of the month?",
   },
 ];
+
+/* What each is about. */
+const SPAM_RELATED: ConversationRelated[] = [
+  { kind: "capability", name: "Email invoices" },
+  { kind: "capacity", block: "core", number: "BLK-0042" },
+];
+const REPORTS_RELATED: ConversationRelated[] = [{ kind: "feature", name: "Weekly reports" }];
+const SIGN_IN = "Signing in with the company's Google accounts";
 
 /* Closed, the reader having said the last word. */
 const REPORT_MESSAGES: SampleMessage[] = [
@@ -80,21 +90,6 @@ const REPORT_MESSAGES: SampleMessage[] = [
     body: "Thanks, it came through and reads well. Closing this one.",
   },
 ];
-
-/* A row's latest message, which the row makes compact and cuts to two lines. */
-function latestOf(message: SampleMessage) {
-  return (
-    <ConversationMessage
-      author={message.author}
-      {...sideOf(message)}
-      at={message.at}
-      people={PEOPLE}
-      you={YOU}
-    >
-      {message.body}
-    </ConversationMessage>
-  );
-}
 
 /* Messages as a preview shows them: four lines at most, the first marked as the original where nothing came before. */
 function previewOf(messages: SampleMessage[], earlier: number) {
@@ -166,7 +161,7 @@ export function ConversationRowDemo() {
 
   return (
     <>
-      <Example title="A list: hover a row for its latest messages, and click the first or last to open it over the page. The first opens at its new messages, and Mark as unread in its title bar brings it back unread. It mentions you, the second is unread, its latest message cut to two lines, and the last is read and closed, so it opens without a reply box">
+      <Example title="A list: hover a row for its latest messages, and click the first or last to open it over the page. The first opens at its new messages, and Mark as unread in its title bar brings it back unread. It mentions you, the second is unread, with a long latest message cut short in its preview, and the last is read and closed, so it opens without a reply box">
         <Card variant="outlined" sx={{ maxWidth: 640 }}>
           <Stack divider={<Divider />}>
             <ConversationRow
@@ -178,9 +173,9 @@ export function ConversationRowDemo() {
                 setPlansOpen(true);
               }}
               at={latest.at}
-              latest={latestOf(latest)}
               people={PEOPLE}
               count={SAMPLE_MESSAGES.length}
+              related={PLANS_RELATED}
               unread={plansUnread}
               mentionsYou={plansUnread > 0}
               actions={<RowMenu subject={PLANS} />}
@@ -190,9 +185,9 @@ export function ConversationRowDemo() {
               subject="Invoice emails going to spam"
               href="#ConversationRow"
               at="2026-10-14T16:05:00Z"
-              latest={latestOf(SPAM_MESSAGES[1])}
               people={PEOPLE}
               count={6}
+              related={SPAM_RELATED}
               unread={2}
               actions={<RowMenu subject="Invoice emails going to spam" />}
               preview={{
@@ -207,9 +202,9 @@ export function ConversationRowDemo() {
               href="#ConversationRow"
               onOpen={() => setReportsOpen(true)}
               at="2026-10-02T14:10:00Z"
-              latest={latestOf(REPORT_MESSAGES[3])}
               people={[YOU, PRIYA]}
               count={REPORT_MESSAGES.length}
+              related={REPORTS_RELATED}
               closed={{ by: YOU.name, at: "2026-10-02T14:10:00Z" }}
               preview={{ messages: previewOf(REPORT_MESSAGES.slice(-2), 2), earlier: 2 }}
             />
@@ -226,13 +221,15 @@ export function ConversationRowDemo() {
         href={\`/conversations/\${conversation.id}\`}
         onOpen={() => openPopout(conversation)}
         at={conversation.last_activity_at}
-        latest={
-          <ConversationMessage {...props(latest)}>
-            {latest.body}
-          </ConversationMessage>
-        }
         people={participants}
         count={conversation.message_count}
+        related={[
+          { kind: "product", name: product.name },
+          ...features.map((feature) => ({ kind: "feature", name: feature.name })),
+          ...capabilities.map((capability) => ({ kind: "capability", name: capability.name })),
+          ...focuses.map((focus) => ({ kind: "focus", name: focus.title })),
+          ...blocks.map((block) => ({ kind: "capacity", block: block.type, number: block.number })),
+        ]}
         unread={unread.count}
         mentionsYou={unread.mentioned}
         closed={conversation.closed && { by: conversation.closed.by.name, at: conversation.closed.at }}
@@ -259,49 +256,23 @@ export function ConversationRowDemo() {
 </ConversationPopout>`}
       />
 
-      <Example title="Without the latest message, where the subject is enough">
+      <Example title="About more than one of each: two products, three Features, three Capabilities, two Focuses and two blocks of capacity. They're counted, and what doesn't fit on the line is +N more: hover it, or tap it on a phone, for all of it. Narrow the page or the phone preview to see fewer fit">
         <Card variant="outlined" sx={{ maxWidth: 640 }}>
-          <Stack divider={<Divider />}>
-            <ConversationRow
-              subject={PLANS}
-              href="#ConversationRow"
-              at={latest.at}
-              people={PEOPLE}
-              count={SAMPLE_MESSAGES.length}
-              unread={1}
-              mentionsYou
-            />
-            <ConversationRow
-              subject="Invoice emails going to spam"
-              href="#ConversationRow"
-              at="2026-10-14T16:05:00Z"
-              people={PEOPLE}
-              count={6}
-            />
-            <ConversationRow
-              subject={REPORTS}
-              href="#ConversationRow"
-              at="2026-10-02T14:10:00Z"
-              people={[YOU, PRIYA]}
-              count={REPORT_MESSAGES.length}
-              closed={{ by: YOU.name, at: "2026-10-02T14:10:00Z" }}
-            />
-          </Stack>
+          <ConversationRow
+            subject={SIGN_IN}
+            href="#ConversationRow"
+            at="2026-10-14T15:20:00Z"
+            people={PEOPLE}
+            count={9}
+            related={SAMPLE_RELATED}
+          />
         </Card>
       </Example>
-      <CodeBlock
-        code={`<ConversationRow
-  subject={conversation.subject}
-  href={\`/conversations/\${conversation.id}\`}
-  at={conversation.last_activity_at}
-  people={participants}
-  count={conversation.message_count}
-/>`}
-      />
 
       {plansOpen ? (
         <ConversationPopout
           title={PLANS}
+          related={PLANS_RELATED}
           onClose={() => setPlansOpen(false)}
           onMarkUnread={() => setPlansUnread(1)}
         >
@@ -325,6 +296,7 @@ export function ConversationRowDemo() {
       {reportsOpen ? (
         <ConversationPopout
           title={REPORTS}
+          related={REPORTS_RELATED}
           defaultPosition={{ x: 48, y: 96 }}
           onClose={() => setReportsOpen(false)}
           notice={

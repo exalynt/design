@@ -200,8 +200,6 @@ export type ConversationMessageProps = {
   original?: boolean;
   /** It names whoever's reading, so the header says so. Whether the text mentions `you` by default. */
   mentionsYou?: boolean;
-  /** Slimmed down for a glance at it in a list, such as a ConversationRow's latest message: tighter, the author's picture in the header, the organization as its logo, the author's name kept on a narrow card, and no time, since what it's in says when. */
-  compact?: boolean;
   /** At most this many lines of it, for a glance at it, such as a row's preview, with no Show more, its line breaks read as spaces. Its attachments are then just counted. Without it, a long message starts cut short with Show more, unless it's `unread`. */
   lines?: number;
   /** The reader hadn't read it when the conversation opened: a thick primary edge on its side and New in its header, over whichever color it has, under a line counting the new ones. */
@@ -226,16 +224,14 @@ export type ConversationMessageProps = {
  * primary color, and the reader in the warning color, as the header's
  * Mentions you is. Unread, it has a thick primary edge on its side and New
  * beside its time, a mark rather than a color, so it shows over a
- * teammate's tint as well as on a plain card. `compact` slims it down for a
- * glance in a list, such as a ConversationRow's.
+ * teammate's tint as well as on a plain card.
  */
 export function ConversationMessage({
   author,
   organization,
   ours: ourSide = false,
   mine = false,
-  compact = false,
-  avatar = compact ? "header" : "beside",
+  avatar = "beside",
   assignedTeam = false,
   details = false,
   condensed = false,
@@ -337,8 +333,8 @@ export function ConversationMessage({
             flexDirection: mine ? "row-reverse" : "row",
             alignItems: "center",
             gap: 1,
-            px: compact ? 1.5 : 2,
-            py: compact ? 0.5 : 0.75,
+            px: 2,
+            py: 0.75,
             borderBottom: 1,
             borderColor: "divider",
             bgcolor: tone
@@ -354,7 +350,7 @@ export function ConversationMessage({
               engineer={engineer}
             />
           ) : null}
-          <AuthorName name={author.name} engineer={engineer} kept={compact} />
+          <AuthorName name={author.name} engineer={engineer} />
           {teammate ? (
             <HeaderTag
               icon={<GroupsOutlinedIcon />}
@@ -373,8 +369,8 @@ export function ConversationMessage({
           ) : null}
           {organization ? (
             <>
-              <Separator kept={compact} />
-              <Organization organization={organization} condensed={condensed || compact} />
+              <Separator />
+              <Organization organization={organization} condensed={condensed} />
             </>
           ) : null}
           {original ? (
@@ -427,13 +423,11 @@ export function ConversationMessage({
               New
             </Box>
           ) : null}
-          {compact ? null : (
-            <Typography variant="caption" sx={{ color: "text.secondary" }}>
-              <DateTime value={at} />
-            </Typography>
-          )}
+          <Typography variant="caption" sx={{ color: "text.secondary" }}>
+            <DateTime value={at} />
+          </Typography>
         </Box>
-        <Stack spacing={1.5} sx={{ px: compact ? 1.5 : 2, py: compact ? 1 : 1.5 }}>
+        <Stack spacing={1.5} sx={{ px: 2, py: 1.5 }}>
           {hasText ? (
             <Typography
               ref={textRef}
@@ -605,10 +599,10 @@ function Organization({
 /*
  * Between two things in a header: a dot, drawn so it's the same size in
  * any font, and set as its own item so the gap either side is the same.
- * It goes on a tight card, where the name it would follow has gone, unless
- * that's `kept`, and with `hideOn` wherever what it introduces does.
+ * It goes on a tight card, where the name it would follow has gone, and
+ * with `hideOn` wherever what it introduces does.
  */
-function Separator({ hideOn, kept = false }: { hideOn?: string; kept?: boolean }) {
+function Separator({ hideOn }: { hideOn?: string }) {
   return (
     <Box
       aria-hidden
@@ -619,7 +613,7 @@ function Separator({ hideOn, kept = false }: { hideOn?: string; kept?: boolean }
         borderRadius: "50%",
         bgcolor: "text.secondary",
         opacity: 0.6,
-        ...(!kept && { [TIGHT]: { display: "none" } }),
+        [TIGHT]: { display: "none" },
         ...(hideOn && { [hideOn]: { display: "none" } }),
       }}
     />
@@ -628,26 +622,17 @@ function Separator({ hideOn, kept = false }: { hideOn?: string; kept?: boolean }
 
 /*
  * The author's name, cut short where there's no room, and gone from sight
- * on a tight card unless it's `kept`. With `engineer`, it opens
- * EngineerDetails, and takes focus so it opens from the keyboard too.
+ * on a tight card. With `engineer`, it opens EngineerDetails, and takes
+ * focus so it opens from the keyboard too.
  */
-function AuthorName({
-  name,
-  engineer,
-  kept,
-}: {
-  name: string;
-  engineer: EngineerProfile | null;
-  kept: boolean;
-}) {
+function AuthorName({ name, engineer }: { name: string; engineer: EngineerProfile | null }) {
   const text = (
     <Typography
       variant="subtitle2"
       noWrap
       tabIndex={engineer ? 0 : undefined}
       sx={[
-        { minWidth: 0 },
-        !kept && { [TIGHT]: visuallyHidden },
+        { minWidth: 0, [TIGHT]: visuallyHidden },
         Boolean(engineer) && {
           cursor: "help",
           borderRadius: 0.5,

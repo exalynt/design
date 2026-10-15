@@ -1,6 +1,7 @@
 import {
   Children,
   useEffect,
+  useId,
   useLayoutEffect,
   useRef,
   useState,
@@ -19,13 +20,16 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import CloseIcon from "@mui/icons-material/CloseRounded";
 import CropSquareRoundedIcon from "@mui/icons-material/CropSquareRounded";
 import FilterNoneRoundedIcon from "@mui/icons-material/FilterNoneRounded";
+import HubOutlinedIcon from "@mui/icons-material/HubOutlined";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import MarkChatUnreadOutlinedIcon from "@mui/icons-material/MarkChatUnreadOutlined";
 import RemoveRoundedIcon from "@mui/icons-material/RemoveRounded";
 import { ConversationThread } from "./ConversationMessage";
+import { ConversationRelatedDetails } from "./ConversationRelatedDetails";
 import { ConversationTile } from "./ConversationTile";
 import { MessageComposer } from "./MessageComposer";
 import type { MentionProfile } from "./mentions";
+import type { ConversationRelated } from "./related";
 import { TypingIndicator } from "./TypingIndicator";
 import type { UserProfile } from "../engineers/UserAttribution";
 
@@ -38,6 +42,8 @@ const MIN_HEIGHT = 360;
 const MARGIN = 16;
 /* The title bar's height, which is all a minimized popout shows. */
 const BAR_HEIGHT = 44;
+/* The Related sidebar, or most of a narrower popout, so a strip of the messages still shows beside it. */
+const SIDEBAR_WIDTH = 300;
 
 /* Normal is where it was put, at the size it was given. */
 type Mode = "normal" | "minimized" | "maximized";
@@ -72,6 +78,8 @@ export type ConversationPopoutProps = {
   href?: string;
   /** Mark it unread to come back to, from the title bar, which then closes it, as an inbox goes back to the list. */
   onMarkUnread?: () => void;
+  /** What it's related to: a Related tab at the top right opens them in a sidebar (ConversationRelatedDetails) that slides in over the messages. */
+  related?: ConversationRelated[];
   /** Ahead of the title bar's controls, such as a StabilityMark. */
   actions?: ReactNode;
   /** Where its top-left corner first opens, in px from the screen's. Bottom right by default. */
@@ -93,7 +101,8 @@ export type ConversationPopoutProps = {
  * the latest as more arrive. A long one can open at its latest few, with
  * `earlier` and `onShowEarlier` to bring in more above. Keep which were unread as it opened, so marking
  * it read on opening doesn't clear them while they're read; `onMarkUnread`
- * puts a Mark as unread button in the title bar. Its draft,
+ * puts a Mark as unread button in the title bar, and `related` a Related tab
+ * that slides what it's related to in from the right, as a sidebar. Its draft,
  * and any files attached with `canAttach`, last while it's minimized.
  *
  * It keeps its own place, size and mode, but not which are open: render one
@@ -116,6 +125,7 @@ export function ConversationPopout({
   notice,
   href,
   onMarkUnread,
+  related = [],
   actions,
   defaultPosition,
   zIndex,
@@ -135,6 +145,8 @@ export function ConversationPopout({
       },
   );
   const [mode, setMode] = useState<Mode>("normal");
+  const [showRelated, setShowRelated] = useState(false);
+  const relatedId = useId();
   const [draft, setDraft] = useState("");
   const [attachments, setAttachments] = useState<File[]>([]);
   const paperRef = useRef<HTMLDivElement>(null);
@@ -251,7 +263,10 @@ export function ConversationPopout({
         onPointerDownCapture={onFocus}
         onFocusCapture={onFocus}
         onKeyDown={(event) => {
-          if (event.key === "Escape") onClose();
+          if (event.key !== "Escape") return;
+          /* The sidebar first, then the popout. */
+          if (showRelated) setShowRelated(false);
+          else onClose();
         }}
         sx={[
           {
@@ -306,6 +321,19 @@ export function ConversationPopout({
             {title}
           </Typography>
           {actions}
+          {related.length ? (
+            <RelatedTab
+              selected={open && showRelated}
+              controls={relatedId}
+              onClick={() => {
+                /* Minimized, it opens back up to show them. */
+                if (!open) {
+                  setMode("normal");
+                  setShowRelated(true);
+                } else setShowRelated(!showRelated);
+              }}
+            />
+          ) : null}
           {/* The window's own controls, set close together, as a desktop window's are. */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
             {onMarkUnread ? (
@@ -351,7 +379,16 @@ export function ConversationPopout({
         </Box>
 
         {open ? (
-          <>
+          <Box
+            sx={{
+              position: "relative",
+              flex: 1,
+              minHeight: 0,
+              display: "flex",
+              flexDirection: "column",
+              overflow: "hidden",
+            }}
+          >
             <Box ref={scrollRef} sx={{ flex: 1, minHeight: 0, overflowY: "auto", p: 2 }}>
               {loading ? (
                 <Box sx={{ display: "grid", placeItems: "center", py: 6 }}>
@@ -396,7 +433,16 @@ export function ConversationPopout({
                 )}
               </Box>
             ) : null}
-          </>
+
+            {related.length ? (
+              <RelatedSidebar
+                id={relatedId}
+                open={showRelated}
+                related={related}
+                onClose={() => setShowRelated(false)}
+              />
+            ) : null}
+          </Box>
         ) : null}
 
         {movable && open ? (
@@ -441,6 +487,119 @@ export function ConversationPopout({
         ) : null}
       </Paper>
     </Portal>
+  );
+}
+
+/*
+ * The title bar's Related tab, at its top right ahead of the window's
+ * controls: its icon and name, filled in the primary color while its
+ * sidebar is open, as a selected tab is.
+ */
+function RelatedTab({
+  selected,
+  controls,
+  onClick,
+}: {
+  selected: boolean;
+  controls: string;
+  onClick: () => void;
+}) {
+  return (
+    <Box
+      component="button"
+      type="button"
+      aria-expanded={selected}
+      aria-controls={controls}
+      onClick={onClick}
+      sx={(theme) => ({
+        display: "inline-flex",
+        alignItems: "center",
+        flexShrink: 0,
+        gap: 0.5,
+        height: { xs: 40, sm: 28 },
+        px: 1,
+        border: 0,
+        borderRadius: 1.5,
+        font: "inherit",
+        typography: "caption",
+        fontWeight: 600,
+        cursor: "pointer",
+        color: selected ? "primary.main" : "text.secondary",
+        bgcolor: selected
+          ? `rgba(${theme.vars.palette.primary.mainChannel} / 0.12)`
+          : "transparent",
+        transition: theme.transitions.create(["background-color", "color"], {
+          duration: theme.transitions.duration.shortest,
+        }),
+        "& svg": { fontSize: 16 },
+        "&:hover": selected
+          ? { bgcolor: `rgba(${theme.vars.palette.primary.mainChannel} / 0.18)` }
+          : { color: "text.primary", bgcolor: "action.selected" },
+        "&:focus-visible": { outline: 2, outlineColor: "primary.main", outlineOffset: -2 },
+      })}
+    >
+      <HubOutlinedIcon />
+      Related
+    </Box>
+  );
+}
+
+/*
+ * What the conversation is related to, in a sidebar that slides in from the
+ * right over the messages and reply box, as tall as they are: 300px, or most
+ * of a narrower popout, scrolling on its own. Shut, it's out of sight and
+ * out of the tab order. It appears without sliding for anyone who's asked
+ * for less motion.
+ */
+function RelatedSidebar({
+  id,
+  open,
+  related,
+  onClose,
+}: {
+  id: string;
+  open: boolean;
+  related: ConversationRelated[];
+  onClose: () => void;
+}) {
+  return (
+    <Box
+      component="aside"
+      id={id}
+      aria-label="Related"
+      sx={(theme) => ({
+        position: "absolute",
+        top: 0,
+        right: 0,
+        bottom: 0,
+        width: SIDEBAR_WIDTH,
+        maxWidth: "85%",
+        display: "flex",
+        flexDirection: "column",
+        borderLeft: 1,
+        borderColor: "divider",
+        bgcolor: "background.paper",
+        boxShadow: open ? theme.shadows[8] : "none",
+        transform: open ? "none" : "translateX(100%)",
+        visibility: open ? "visible" : "hidden",
+        transition: theme.transitions.create(["transform", "visibility", "box-shadow"], {
+          duration: open
+            ? theme.transitions.duration.enteringScreen
+            : theme.transitions.duration.leavingScreen,
+          easing: theme.transitions.easing.easeOut,
+        }),
+        "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+      })}
+    >
+      <Box sx={{ position: "absolute", top: 8, right: 8 }}>
+        <BarButton label="Close related" onClick={onClose}>
+          <CloseIcon />
+        </BarButton>
+      </Box>
+      <Box sx={{ flex: 1, minHeight: 0, overflowY: "auto", p: 2, pr: 6 }}>
+        <ConversationRelatedDetails related={related} card={false} />
+      </Box>
+    </Box>
   );
 }
 

@@ -11,6 +11,7 @@ import {
   EXALYNT,
   LONG_MESSAGES,
   PEOPLE,
+  PLANS_RELATED,
   SAMPLE_MESSAGES,
   YOU,
   sentAttachments,
@@ -107,7 +108,7 @@ export function ConversationPopoutDemo() {
 
   return (
     <>
-      <Example title="Open one or both: drag a title bar to move it, its corner to size it, and click one to bring it forward. Type @ in the reply to mention someone, and send one to see Priya typing back">
+      <Example title="Open one or both: drag a title bar to move it, its corner to size it, and click one to bring it forward. Type @ in the reply to mention someone, and send one to see Priya typing back. Related, at the top right of the first, slides in what it's related to">
         <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: "wrap" }}>
           <Button variant="outlined" onClick={() => show(OPEN)}>
             Open a conversation
@@ -131,6 +132,7 @@ export function ConversationPopoutDemo() {
         <ConversationPopout
           title={OPEN}
           href="#ConversationPopout"
+          related={PLANS_RELATED}
           people={PEOPLE.filter((person) => person !== YOU)}
           canAttach
           zIndex={zIndex(OPEN)}
@@ -212,6 +214,7 @@ export function ConversationPopoutDemo() {
   <ConversationPopout
     key={conversation.id}
     title={conversation.subject}
+    related={related}
     href={\`/conversations/\${conversation.id}\`}
     loading={thread.status === "loading"}
     people={participants.filter((person) => person.id !== me.id)}

@@ -2,6 +2,7 @@
 
 import type {
   ConversationAttachment,
+  ConversationRelated,
   MentionProfile,
   OrganizationProfile,
   UserProfile,
@@ -61,6 +62,30 @@ const MARCUS_USER: MentionProfile = { id: "usr_marcus", ...MARCUS };
 /* Who's reading the demos' conversations, at Exalynt, and everyone who can be mentioned in them. */
 export const YOU = MARCUS_USER;
 export const PEOPLE = [DANA, PRIYA_USER, MARCUS_USER, SAM];
+
+/* What SAMPLE_MESSAGES' conversation, on switching annual plans to monthly, is related to. */
+export const PLANS_RELATED: ConversationRelated[] = [
+  { kind: "product", name: "Customer Portal" },
+  { kind: "feature", name: "Billing" },
+  { kind: "capability", name: "Switch plans at renewal" },
+  { kind: "focus", name: "Monthly plans" },
+];
+
+/* A conversation that reaches across both apps: about more than one of every kind. */
+export const SAMPLE_RELATED: ConversationRelated[] = [
+  { kind: "product", name: "Customer Portal" },
+  { kind: "product", name: "Delivery app" },
+  { kind: "feature", name: "Sign-in" },
+  { kind: "feature", name: "Team management" },
+  { kind: "feature", name: "Audit log" },
+  { kind: "capability", name: "Sign in with Google" },
+  { kind: "capability", name: "Invite a teammate by domain" },
+  { kind: "capability", name: "See who signed in and when" },
+  { kind: "focus", name: "Single sign-on" },
+  { kind: "focus", name: "Driver onboarding" },
+  { kind: "capacity", block: "core", number: "BLK-0042" },
+  { kind: "capacity", block: "flex", number: "BLK-0057" },
+];
 
 /* Oldest first. */
 export const SAMPLE_MESSAGES: SampleMessage[] = [

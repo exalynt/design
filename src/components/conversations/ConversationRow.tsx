@@ -1,4 +1,4 @@
-import { cloneElement, useState, type ReactElement, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
@@ -7,11 +7,15 @@ import Typography from "@mui/material/Typography";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import type { ConversationMessageProps } from "./ConversationMessage";
 import { ConversationPreview, type ConversationPreviewProps } from "./ConversationPreview";
+import { ConversationRelatedPopover } from "./ConversationRelatedPopover";
 import { ConversationTile } from "./ConversationTile";
 import type { MentionProfile } from "./mentions";
+import { RELATED, groupRelated, relatedName, type ConversationRelated } from "./related";
 import { UserAvatar } from "../engineers/UserAvatar";
+import { CapacityName } from "../capacity/CapacityName";
+
+export type { ConversationRelated } from "./related";
 
 const MINUTE = 60_000;
 const HOUR = 60 * MINUTE;
@@ -25,6 +29,8 @@ const visuallyHidden = {
   clip: "rect(0 0 0 0)",
   whiteSpace: "nowrap",
 } as const;
+/* Between what it's related to, at the foot. */
+const RELATED_GAP = 1.25;
 
 export type ConversationRowProps = {
   /** What it's about, which the row links by. */
@@ -35,8 +41,6 @@ export type ConversationRowProps = {
   onOpen?: () => void;
   /** When it last moved: an RFC 3339 timestamp in UTC, shown as how long ago. */
   at: string;
-  /** Its latest message, if it's wanted: a ConversationMessage, which the row makes `compact` and cuts to two `lines`. Leave its `unread` off, since the row counts what's new. */
-  latest?: ReactElement<ConversationMessageProps>;
   /** Everyone in it, in the order they joined, at the foot. */
   people: MentionProfile[];
   /** How many messages it has. */
@@ -47,8 +51,8 @@ export type ConversationRowProps = {
   mentionsYou?: boolean;
   /** Who closed it, and when (RFC 3339): no one can send messages in it until it's reopened. It still opens, with `onOpen` or `preview`, such as in a ConversationPopout with a `notice` for its reply box. */
   closed?: { by: string; at: string };
-  /** Under its latest message: what else it touches, such as links to what it's about. */
-  related?: ReactNode;
+  /** What it's related to, at the right of its foot, on one line: its products, Features, Capabilities, Focuses and blocks of capacity. One of a kind is named, more are counted, and what doesn't fit is "+N more", which opens all of it (ConversationRelatedPopover). */
+  related?: ConversationRelated[];
   /** At the end of its top line: the app's menu for it. */
   actions?: ReactNode;
   /** A glance at its latest messages on hover or focus (ConversationPreview). */
@@ -57,11 +61,10 @@ export type ConversationRowProps = {
 
 /*
  * One conversation in a list, built to be scanned: its subject in full, and
- * how long ago it last moved, its latest message under that, if it's
- * given, as a compact ConversationMessage cut to two lines, so it reads as
- * it will once opened, and at the foot
- * who's in it and, by a message icon, how much has been said. The whole row is one link, the
- * message included.
+ * how long ago it last moved, and at the foot who's in it and, by a message
+ * icon, how much has been said, with what it's related to (`related`) at
+ * the right, on one line. Its messages are a hover away, in `preview`. The
+ * whole row is one link.
  *
  * Unread, it stands out from the read ones around it at a glance: a bar
  * down its left edge, a faint tint behind it, a bold subject, and a pill
@@ -72,24 +75,23 @@ export type ConversationRowProps = {
  * but it opens as any other does.
  *
  * With `preview`, hovering or focusing it opens ConversationPreview, except
- * over `actions`, which the preview would cover.
+ * over `actions` or "+N more", which the preview would cover.
  */
 export function ConversationRow({
   subject,
   href,
   onOpen,
   at,
-  latest,
   people,
   count,
   unread = 0,
   mentionsYou = false,
   closed,
-  related,
+  related = [],
   actions,
   preview,
 }: ConversationRowProps) {
-  const [overActions, setOverActions] = useState(false);
+  const [overControls, setOverControls] = useState(false);
   const isUnread = unread > 0;
   /* The warning color for a mention, as ConversationMessage marks one. */
   const accent = mentionsYou ? "warning" : "primary";
@@ -228,8 +230,8 @@ export function ConversationRow({
           {actions ? (
             /* Above the link that covers the row. */
             <Box
-              onPointerEnter={() => setOverActions(true)}
-              onPointerLeave={() => setOverActions(false)}
+              onPointerEnter={() => setOverControls(true)}
+              onPointerLeave={() => setOverControls(false)}
               sx={{ position: "relative", zIndex: 1, alignSelf: "flex-start", mt: -0.5, mr: -0.75 }}
             >
               {actions}
@@ -237,18 +239,25 @@ export function ConversationRow({
           ) : null}
         </Box>
 
-        {latest ? (
-          /* Clicked through to the link that covers the row, so the message opens it too. */
-          <Box component="ul" sx={{ listStyle: "none", m: 0, mt: 1, p: 0, pointerEvents: "none" }}>
-            {cloneElement(latest, { compact: true, lines: 2 })}
-          </Box>
-        ) : null}
-        {related}
-
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, mt: 1.25 }}>
+        {/*
+         * Who's in it and how much has been said at the bottom left, at their
+         * size; what it's related to takes the rest of the line. On a phone,
+         * that takes a line of its own.
+         */}
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: { xs: "wrap", sm: "nowrap" },
+            alignItems: "center",
+            columnGap: 1.25,
+            rowGap: 1,
+            mt: 1.25,
+          }}
+        >
           <AvatarGroup
             max={4}
             sx={{
+              flexShrink: 0,
               "& .MuiAvatar-root": {
                 width: 22,
                 height: 22,
@@ -266,6 +275,8 @@ export function ConversationRow({
             sx={{
               display: "inline-flex",
               alignItems: "center",
+              flexShrink: 0,
+              minHeight: 22,
               gap: 0.5,
               typography: "caption",
               color: "text.secondary",
@@ -282,6 +293,8 @@ export function ConversationRow({
               sx={{
                 display: "inline-flex",
                 alignItems: "center",
+                flexShrink: 0,
+                minHeight: 22,
                 gap: 0.25,
                 typography: "caption",
                 fontWeight: 600,
@@ -292,17 +305,209 @@ export function ConversationRow({
               Mentioned you
             </Box>
           ) : null}
+          {related.length ? <Related items={related} onOverMore={setOverControls} /> : null}
         </Box>
       </Box>
     </Box>
   );
 
   return preview ? (
-    <ConversationPreview {...preview} title={subject} suppressed={overActions}>
+    <ConversationPreview {...preview} title={subject} suppressed={overControls}>
       {row}
     </ConversationPreview>
   ) : (
     row
+  );
+}
+
+/*
+ * What a conversation is related to, at the right of its row's foot, never more
+ * than a line: one entry per kind, its icon and its name where there's
+ * one, cut short where it's long, or how many where there are more, their
+ * names read out to assistive tech. As many kinds as fit, in order, then
+ * "+N more" counting what's left, a ConversationRelatedPopover that opens
+ * all of it, by kind. Hovering or clicking any of the rest is hovering or
+ * clicking the row, so its preview opens there as anywhere else; only
+ * "+N more" keeps it shut. On a phone it takes a line of its own, from the
+ * left.
+ */
+function Related({
+  items,
+  onOverMore,
+}: {
+  items: ConversationRelated[];
+  /** The pointer or focus is on "+N more", whose popover the row's preview would cover. */
+  onOverMore: (over: boolean) => void;
+}) {
+  const groups = groupRelated(items);
+  const listRef = useRef<HTMLUListElement>(null);
+  const measureRef = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(groups.length);
+
+  /* How many kinds fit beside "+N more", from a hidden copy of them all: before it's first drawn, and again as the row's width changes. */
+  useLayoutEffect(() => {
+    const list = listRef.current;
+    const measure = measureRef.current;
+    if (!list || !measure) return;
+    const fit = () => {
+      const [more, ...widths] = Array.from(
+        measure.children,
+        (child) => child.getBoundingClientRect().width,
+      );
+      const gap = parseFloat(getComputedStyle(list).columnGap) || 0;
+      const room = list.clientWidth;
+      /* The first n kinds, each with the gap after it. */
+      const width = (n: number) => widths.slice(0, n).reduce((sum, w) => sum + w + gap, 0);
+      if (width(widths.length) - gap <= room) {
+        setShown(widths.length);
+        return;
+      }
+      let n = widths.length - 1;
+      while (n > 0 && width(n) + more > room) n--;
+      setShown(n);
+    };
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(list);
+    return () => observer.disconnect();
+  }, [items]);
+
+  const rest = groups.slice(shown).reduce((sum, group) => sum + group.items.length, 0);
+  /* Gone, such as the row widening while it's hovered, it can't keep the preview shut. */
+  useEffect(() => {
+    if (!rest) onOverMore(false);
+  }, [rest, onOverMore]);
+
+  return (
+    <Box
+      sx={{
+        position: "relative",
+        flex: { xs: "1 1 100%", sm: "1 1 0" },
+        minWidth: 0,
+        /* Through to the link that covers the row, as the message is, but for "+N more". */
+        pointerEvents: "none",
+      }}
+    >
+      <Box
+        component="ul"
+        ref={listRef}
+        aria-label="Related"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: { xs: "flex-start", sm: "flex-end" },
+          columnGap: RELATED_GAP,
+          m: 0,
+          p: 0,
+          listStyle: "none",
+        }}
+      >
+        {groups.slice(0, shown).map((group) => (
+          <Box
+            component="li"
+            key={group.kind}
+            sx={{ display: "flex", alignItems: "center", minWidth: 0, maxWidth: 200 }}
+          >
+            <RelatedEntry {...group} />
+          </Box>
+        ))}
+        {rest ? (
+          /* Above the link that covers the row, so its popover opens rather than the row. */
+          <Box
+            component="li"
+            onPointerEnter={() => onOverMore(true)}
+            onPointerLeave={() => onOverMore(false)}
+            onFocus={() => onOverMore(true)}
+            onBlur={() => onOverMore(false)}
+            sx={{
+              position: "relative",
+              zIndex: 1,
+              display: "flex",
+              flex: "none",
+              pointerEvents: "auto",
+            }}
+          >
+            <ConversationRelatedPopover
+              related={items}
+              label={shown ? `+${rest} more` : undefined}
+            />
+          </Box>
+        ) : null}
+      </Box>
+      {/* Every kind, and "+N more" at its widest, laid out but never seen, to measure what fits. */}
+      <Box
+        ref={measureRef}
+        aria-hidden
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "max-content",
+          display: "flex",
+          columnGap: RELATED_GAP,
+          visibility: "hidden",
+          pointerEvents: "none",
+        }}
+      >
+        <ConversationRelatedPopover related={items} label={`+${items.length} more`} />
+        {groups.map((group) => (
+          <Box key={group.kind} sx={{ display: "flex", alignItems: "center", maxWidth: 200 }}>
+            <RelatedEntry {...group} />
+          </Box>
+        ))}
+      </Box>
+    </Box>
+  );
+}
+
+/* One kind at the foot: a block as its CapacityName, anything else as its icon and its name, or how many. */
+function RelatedEntry({ kind, items }: ReturnType<typeof groupRelated>[number]) {
+  const { one, many, Icon, color } = RELATED[kind];
+  const [first] = items;
+  if (first.kind === "capacity" && items.length === 1) {
+    return (
+      <Box
+        component="span"
+        sx={{ display: "inline-flex", minWidth: 0, typography: "caption", color: "text.secondary" }}
+      >
+        <CapacityName block={first.block} number={relatedName(first)} />
+      </Box>
+    );
+  }
+  return (
+    <Box
+      component="span"
+      sx={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 0.5,
+        minWidth: 0,
+        typography: "caption",
+        color: "text.secondary",
+      }}
+    >
+      <Icon aria-hidden sx={{ fontSize: 16, flex: "none", color }} />
+      {items.length === 1 ? (
+        <>
+          <Box component="span" sx={visuallyHidden}>
+            {one}:{" "}
+          </Box>
+          <Box
+            component="span"
+            sx={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+          >
+            {relatedName(first)}
+          </Box>
+        </>
+      ) : (
+        <Box component="span" sx={{ whiteSpace: "nowrap" }}>
+          {items.length} {many}
+          <Box component="span" sx={visuallyHidden}>
+            : {items.map(relatedName).join(", ")}
+          </Box>
+        </Box>
+      )}
+    </Box>
   );
 }
 

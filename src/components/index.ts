@@ -48,6 +48,8 @@ export * from "./engineers/UserAttribution";
 export * from "./conversations/ConversationMessage";
 export * from "./conversations/ConversationPopout";
 export * from "./conversations/ConversationPreview";
+export * from "./conversations/ConversationRelatedDetails";
+export * from "./conversations/ConversationRelatedPopover";
 export * from "./conversations/ConversationRow";
 export * from "./conversations/MentionField";
 export * from "./conversations/MessageComposer";
