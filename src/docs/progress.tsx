@@ -60,6 +60,12 @@ export const SAMPLE_PROGRESS: SampleProgress[] = [
         name: "The photo step after a missed signature",
       },
     ],
+    links: [
+      {
+        name: "Leave a photo when nobody signs",
+        url: "https://github.com/acme/driver-app/pull/412",
+      },
+    ],
   },
   {
     id: "p3",
@@ -97,6 +103,14 @@ export const SAMPLE_PROGRESS: SampleProgress[] = [
       },
       { kind: "image", url: media("routes-before.svg"), name: "The old signature box" },
     ],
+    links: [
+      {
+        name: "Queue signatures while offline",
+        url: "https://github.com/acme/driver-app/pull/398",
+      },
+      { name: "Bigger signature box", url: "https://github.com/acme/driver-app/pull/401" },
+      { name: "Signatures lost without signal", url: "https://linear.app/acme/issue/DRV-212" },
+    ],
   },
   {
     id: "p2",
@@ -130,6 +144,12 @@ export const SAMPLE_PROGRESS: SampleProgress[] = [
     by: LENA,
     features: [{ name: "Signing for deliveries" }, { name: "Route planning" }],
     capabilities: [{ name: "Sign for a delivery", level: "prototype" }],
+    links: [
+      {
+        name: "Ride-along notes: signing on the road",
+        url: "https://docs.google.com/document/d/ride-along-notes",
+      },
+    ],
   },
 ];
 

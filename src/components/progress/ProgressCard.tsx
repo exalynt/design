@@ -20,6 +20,7 @@ import { ProgressKind } from "./ProgressKind";
 import { PROGRESS_LOOK } from "./progressLook";
 import { ProgressCapability, type ProgressCapabilityProps } from "./ProgressCapability";
 import { ProgressFeature, type ProgressFeatureProps } from "./ProgressFeature";
+import { ProgressLink, type ProgressLinkProps } from "./ProgressLink";
 import { ProgressMedia, type ProgressMediaItem } from "./ProgressMedia";
 import { ProgressMetric, type ProgressMetricProps } from "./ProgressMetric";
 import type { ProgressKindId } from "./progress";
@@ -51,7 +52,9 @@ export type ProgressCardProps = {
   metrics?: ProgressMetricProps[];
   /** Pictures and recordings that show it. */
   media?: ProgressMediaItem[];
-  /** Open at first. Closed, it's its kind and day, how much of each section it has, and `source`. */
+  /** Related things elsewhere, such as its pull request, a ticket, or a design; closed, it shows them too. */
+  links?: Omit<ProgressLinkProps, "compact">[];
+  /** Open at first. Closed, it's its kind and day, how much of each section it has, its links, and `source`. */
   defaultExpanded?: boolean;
 };
 
@@ -148,6 +151,33 @@ function capabilityContents(
   return [...changed, ...count(capabilities.filter((capability) => !capability.change))];
 }
 
+/* A closed record's links, inline, so one can be followed without opening it. */
+function Links({ links }: { links: Omit<ProgressLinkProps, "compact">[] }) {
+  if (!links.length) return null;
+  return (
+    <Box
+      component="ul"
+      aria-label="Links"
+      sx={{
+        display: "flex",
+        flexWrap: "wrap",
+        columnGap: 2,
+        rowGap: 0.5,
+        minWidth: 0,
+        m: 0,
+        p: 0,
+        listStyle: "none",
+      }}
+    >
+      {links.map((link) => (
+        <Box component="li" key={link.url} sx={{ display: "flex", minWidth: 0, maxWidth: 280 }}>
+          <ProgressLink {...link} compact />
+        </Box>
+      ))}
+    </Box>
+  );
+}
+
 /* What a closed record holds, as icons and counts: enough to know whether to open it. */
 function Contents({ items }: { items: Content[] }) {
   if (!items.length) return null;
@@ -187,14 +217,16 @@ function Contents({ items }: { items: Content[] }) {
  * One record of progress: what came of work on a Focus within a block of
  * capacity. One column, so it reads the same on a phone: its kind and day,
  * what happened as its headline, then only the sections it has (the
- * Features and Capabilities it's about, what was measured, and what shows
- * it), and at its foot who reported it and where it came from. Edged in its
+ * Features and Capabilities it's about, what was measured, what shows it,
+ * and links to related things), and at its foot who reported it and where
+ * it came from. Edged in its
  * kind's color so a listing scans by kind. A record of a Capability made
  * more stable with no words of its own goes straight to its Capabilities.
  * It closes to its kind and day over how much of each section it has (for
  * Functionality, how many Capabilities it made New, how many reached each
- * level, and how many it Retired) and where it came from, so a listing reads at a glance, with its words on
- * hover. A click anywhere
+ * level, and how many it Retired), its links, to follow without opening
+ * it, and where it came from, so a listing reads at a glance, with its
+ * words on hover. A click anywhere
  * on it opens or closes it, except on something of its own to click, such
  * as its kind or a picture; the chevron does the same from the keyboard.
  */
@@ -208,6 +240,7 @@ export function ProgressCard({
   capabilities = [],
   metrics = [],
   media = [],
+  links = [],
   defaultExpanded = false,
 }: ProgressCardProps) {
   const { color } = PROGRESS_LOOK[kind];
@@ -298,18 +331,21 @@ export function ProgressCard({
          * Collapse measures all of it.
          */}
         <Collapse in={!expanded}>
-          {contents.length || source ? (
+          {contents.length || links.length || source ? (
             <Box
               sx={{
                 display: "flex",
                 flexWrap: "wrap",
-                alignItems: "center",
+                alignItems: links.length ? "flex-end" : "center",
                 columnGap: 2,
                 rowGap: 1,
                 pt: 1.25,
               }}
             >
-              <Contents items={contents} />
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.75, minWidth: 0 }}>
+                <Contents items={contents} />
+                <Links links={links} />
+              </Box>
               {source ? <Box sx={{ ml: "auto", minWidth: 0, fontSize: 14 }}>{source}</Box> : null}
             </Box>
           ) : null}
@@ -362,6 +398,16 @@ export function ProgressCard({
             {media.length ? (
               <Section label="See it">
                 <ProgressMedia items={media} />
+              </Section>
+            ) : null}
+
+            {links.length ? (
+              <Section label="Links">
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+                  {links.map((link) => (
+                    <ProgressLink key={link.url} {...link} />
+                  ))}
+                </Box>
               </Section>
             ) : null}
 

@@ -35,6 +35,7 @@ export * from "./progress/ProgressCapability";
 export * from "./progress/ProgressCard";
 export * from "./progress/ProgressFeature";
 export * from "./progress/ProgressKind";
+export * from "./progress/ProgressLink";
 export * from "./progress/ProgressMedia";
 export * from "./progress/ProgressMetric";
 

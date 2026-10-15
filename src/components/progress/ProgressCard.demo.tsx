@@ -56,6 +56,7 @@ export function ProgressCardDemo() {
   }))}
   metrics={record.metrics}
   media={record.media}
+  links={record.links.map((link) => ({ name: link.title, url: link.url }))}
   defaultExpanded={isNewest}
 />`}
       />

@@ -4,6 +4,7 @@ import BoltOutlinedIcon from "@mui/icons-material/BoltOutlined";
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
 import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
+import LinkRoundedIcon from "@mui/icons-material/LinkRounded";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import GridOnOutlinedIcon from "@mui/icons-material/GridOnOutlined";
 import TableRowsOutlinedIcon from "@mui/icons-material/TableRowsOutlined";
@@ -69,6 +70,7 @@ import { ProgressCapabilityDemo } from "../components/progress/ProgressCapabilit
 import { ProgressFeatureDemo } from "../components/progress/ProgressFeature.demo";
 import { ProgressCardDemo } from "../components/progress/ProgressCard.demo";
 import { ProgressKindDemo } from "../components/progress/ProgressKind.demo";
+import { ProgressLinkDemo } from "../components/progress/ProgressLink.demo";
 import { ProgressMediaDemo } from "../components/progress/ProgressMedia.demo";
 import { ProgressMetricDemo } from "../components/progress/ProgressMetric.demo";
 import { ConfirmDialogDemo } from "../components/actions/ConfirmDialog.demo";
@@ -496,10 +498,10 @@ export const catalog: Group[] = [
       {
         title: "ProgressCard",
         description:
-          "One record of progress, what came of work on a Focus within a block of capacity, for a Focus's listing and a block's. One column: its kind and day, what happened as its headline, then only the sections it has (the Features and Capabilities it's about, whatever its kind, results, and what shows it), and at its foot who reported it and `source`, where it came from. Edged in its kind's color so a listing scans by kind. It starts closed, as `defaultExpanded` changes: its kind and day over how many Features, Capabilities, results, pictures, and videos it has, as icons and counts (for Functionality, its Capabilities counted by what it did to them, each saying Capability: 1 New Capability, 1 Capability reached Alpha, in Alpha's color as on its outline, and 1 Capability retired), with `source` at the bottom right, and its words in a tooltip on hover rather than on the card. A click anywhere on it opens or closes it, except on something of its own to click, such as its kind or a picture; the chevron, muted until the card is hovered, does the same from the keyboard. A first pass, to experiment with.",
+          "One record of progress, what came of work on a Focus within a block of capacity, for a Focus's listing and a block's. One column: its kind and day, what happened as its headline, then only the sections it has (the Features and Capabilities it's about, whatever its kind, results, what shows it, and `links` to related things, such as its pull request or a ticket), and at its foot who reported it and `source`, where it came from. Edged in its kind's color so a listing scans by kind. It starts closed, as `defaultExpanded` changes: its kind and day over how many Features, Capabilities, results, pictures, and videos it has, as icons and counts (for Functionality, its Capabilities counted by what it did to them, each saying Capability: 1 New Capability, 1 Capability reached Alpha, in Alpha's color as on its outline, and 1 Capability retired), its links under them, inline, to follow without opening it, with `source` at the bottom right, and its words in a tooltip on hover rather than on the card. A click anywhere on it opens or closes it, except on something of its own to click, such as its kind or a picture; the chevron, muted until the card is hovered, does the same from the keyboard. A first pass, to experiment with.",
         importFrom: "components",
         phone:
-          "One column at every width, so nothing moves on a phone. Results tiles fit as many to a row as there's room for, one on a phone; media thumbnails wrap; the foot wraps `source` under who reported it. Closed, its counts wrap, and `source` wraps under them, where they need to; its words are a long press away; and the whole card is the tap target to open or close it.",
+          "One column at every width, so nothing moves on a phone. Results tiles fit as many to a row as there's room for, one on a phone; media thumbnails wrap; the foot wraps `source` under who reported it. Closed, its counts and links wrap, a long link name cut short, and `source` wraps under them, where they need to; its words are a long press away; and the whole card is the tap target to open or close it.",
         icon: ShowChartRoundedIcon,
         Demo: ProgressCardDemo,
       },
@@ -552,6 +554,16 @@ export const catalog: Group[] = [
           "Thumbnails wrap, two or three to a row. Open, it fills the screen edge to edge, with the previous and next buttons over its sides.",
         icon: PhotoLibraryOutlinedIcon,
         Demo: ProgressMediaDemo,
+      },
+      {
+        title: "ProgressLink",
+        description:
+          "Something related to a record of progress, elsewhere, such as its pull request, a ticket, a design, or a write-up, opening in a new tab. A small outlined card that sits beside others and wraps, like a ProgressFeature: a link icon in primary, its `name`, cut short with the whole name on hover, and the site it goes to, fainter, so the reader knows where it leads before following it. `compact` is the icon and name alone as a text link, as a closed ProgressCard lists them. Name it for what it is, not its URL.",
+        importFrom: "components",
+        phone:
+          "At most the width of its container; the site is cut short first, then the name. The full name is a long press away on the card; compact, a long name is cut short.",
+        icon: LinkRoundedIcon,
+        Demo: ProgressLinkDemo,
       },
     ],
   },
