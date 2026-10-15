@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import BoltOutlinedIcon from "@mui/icons-material/BoltOutlined";
-import DragIndicatorRoundedIcon from "@mui/icons-material/DragIndicatorRounded";
 import type { ReactNode } from "react";
 import type { StabilityLevelId } from "../stability/stability";
 import { StabilityMark } from "../stability/StabilityMark";
+import { Grip } from "../Grip";
 
 /* A Capability's stability: its short mark, or "Draft" for one nobody has started on. */
 export function CapabilityStability({
@@ -21,24 +21,6 @@ export function CapabilityStability({
   ) : (
     <Box component="span" sx={{ fontSize: 12.5, color: "text.secondary" }}>
       Draft
-    </Box>
-  );
-}
-
-/* The mark on what can be dragged, faint until the row or card is hovered. */
-export function Grip() {
-  return (
-    <Box
-      className="grip"
-      aria-hidden
-      sx={{
-        display: "flex",
-        flex: "none",
-        color: "text.disabled",
-        transition: "color 120ms",
-      }}
-    >
-      <DragIndicatorRoundedIcon sx={{ fontSize: 18 }} />
     </Box>
   );
 }
