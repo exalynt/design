@@ -55,6 +55,8 @@ import ViewAgendaOutlinedIcon from "@mui/icons-material/ViewAgendaOutlined";
 import WebAssetOutlinedIcon from "@mui/icons-material/WebAssetOutlined";
 import TimelapseRoundedIcon from "@mui/icons-material/TimelapseRounded";
 import HubOutlinedIcon from "@mui/icons-material/HubOutlined";
+import CenterFocusStrongOutlinedIcon from "@mui/icons-material/CenterFocusStrongOutlined";
+import FormatListNumberedOutlinedIcon from "@mui/icons-material/FormatListNumberedOutlined";
 import { CalloutPanelDemo } from "../components/layout/CalloutPanel.demo";
 import { CapabilityCardDemo } from "../components/catalog/CapabilityCard.demo";
 import { CapacityBlockDemo } from "../components/capacity/CapacityBlock.demo";
@@ -74,6 +76,8 @@ import { ProgressCardDemo } from "../components/progress/ProgressCard.demo";
 import { ProgressKindDemo } from "../components/progress/ProgressKind.demo";
 import { ProgressLinkDemo } from "../components/progress/ProgressLink.demo";
 import { RelatedPanelDemo } from "../components/related/RelatedPanel.demo";
+import { FocusCardDemo } from "../components/focus/FocusCard.demo";
+import { FocusPriorityListDemo } from "../components/focus/FocusPriorityList.demo";
 import { ProgressMediaDemo } from "../components/progress/ProgressMedia.demo";
 import { ProgressMetricDemo } from "../components/progress/ProgressMetric.demo";
 import { ConfirmDialogDemo } from "../components/actions/ConfirmDialog.demo";
@@ -741,6 +745,31 @@ export const catalog: Group[] = [
           "It fills its container's width, and every row stays one line: a long name is cut short, with the whole name a long press away. Where nothing hovers, every row's remove button shows, so a tap removes without hunting for it. It sits apart from the row's link, with room around it, so a tap that misses it doesn't open a new tab.",
         icon: HubOutlinedIcon,
         Demo: RelatedPanelDemo,
+      },
+    ],
+  },
+  {
+    title: "Focuses",
+    entries: [
+      {
+        title: "FocusCard",
+        description:
+          "One Focus on a board: what it is, in the client's words, and a little of how it's going, without percentages or estimates, since a Focus isn't a ticket to close. Under its title, `note`, cut short at `noteLines` (three by default): where things stand in the engineers' words while it's in focus, or why it was addressed or set aside. `onIt` is who's on it in this week's capacity, their pictures and first names, as \"Avery, Jordan this week\". At the foot, quietly, how many Features, Capabilities and conversations it's about, each by the icon it has elsewhere and left out at none, and when anything last happened (`at`, a `relative` DateTime, whose popover gives the full time); less quietly, in the primary color, how many of its conversations have something unread, with an @ in the warning color where one mentions the reader (`mentionsYou`), as ConversationMessage marks a mention. The whole card links to `href`; `onOpen` opens it in place instead, while a new tab still goes to `href`. Dragging is the app's: `grip` shows where it can be picked up, and `actions` holds the app's menu, which should offer the same moves for the keyboard and touch screens. Rank Up next in a FocusPriorityList.",
+        importFrom: "components",
+        phone:
+          "It fills its column's width, and the title and note wrap. The grip hides, since a phone can't drag it, leaving `actions` to make the moves. The foot wraps onto a second line where it needs to, with the time staying at the right.",
+        icon: CenterFocusStrongOutlinedIcon,
+        Demo: FocusCardDemo,
+      },
+      {
+        title: "FocusPriorityList",
+        description:
+          "Up next as the client ranks it: each of its children, such as FocusCards, most important first, numbered beside it on a rail that's strongest at the top, between Highest priority and, with more than one, Lowest priority, so the order reads as priority without explanation. The first is filled in, as the one worked on next. Each number lines up with a FocusCard's title. `surface` is what it sits on, `default` for the page or `paper` in a card, so each number cuts the rail cleanly. Reordering is the app's, by dragging or each card's menu.",
+        importFrom: "components",
+        phone:
+          "The numbers keep their 24px gutter and the items take the rest of the width. Nothing else changes.",
+        icon: FormatListNumberedOutlinedIcon,
+        Demo: FocusPriorityListDemo,
       },
     ],
   },

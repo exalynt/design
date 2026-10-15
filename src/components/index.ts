@@ -57,6 +57,9 @@ export * from "./conversations/TypingIndicator";
 
 export * from "./related/RelatedPanel";
 
+export * from "./focus/FocusCard";
+export * from "./focus/FocusPriorityList";
+
 export * from "./inputs/SearchMultiSelect";
 export * from "./inputs/SearchSelect";
 
