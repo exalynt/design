@@ -12,13 +12,21 @@ import { CapacityPlacement } from "./CapacityPlacement";
 import { CapacityProgress } from "./CapacityProgress";
 import { CapacityStatus } from "./CapacityStatus";
 import { ProgressCard } from "./ProgressCard";
+import { useToast } from "./toast";
 
 const placement = <CapacityPlacement product="Delivery app" focus="Signing for deliveries" />;
 
 /* The block whose progress the page's sample records mostly came of. */
-function Blk0042({ onProgressClick }: { onProgressClick?: () => void }) {
+function Blk0042({
+  onClick,
+  onProgressClick,
+}: {
+  onClick?: () => void;
+  onProgressClick?: () => void;
+}) {
   return (
     <CapacityBlock
+      onClick={onClick}
       block="core"
       number="BLK-0042"
       scheduled
@@ -38,13 +46,19 @@ function Blk0042({ onProgressClick }: { onProgressClick?: () => void }) {
 }
 
 export function CapacityProgressDemo() {
+  const toast = useToast();
   const delivered = SAMPLE_PROGRESS.filter((record) => record.block === "BLK-0042");
+  /* What an app would do; here, say so. */
+  const openProgress = (number: string) => toast.info(`Opens ${number}'s progress.`);
   return (
     <>
-      <Example title="On blocks that have started: what came of each, at a glance (hover a line)">
+      <Example title="On blocks that have started: what came of each, at a glance (hover a line; click it, or the block, to see each does its own thing)">
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 4 }} sx={{ display: "flex" }}>
-            <Blk0042 onProgressClick={() => {}} />
+            <Blk0042
+              onClick={() => toast.info("Opens BLK-0042.")}
+              onProgressClick={() => openProgress("BLK-0042")}
+            />
           </Grid>
           <Grid size={{ xs: 12, sm: 4 }} sx={{ display: "flex" }}>
             <CapacityBlock
@@ -56,7 +70,10 @@ export function CapacityProgressDemo() {
                 <>
                   <CapacityEngineer engineer={PRIYA} />
                   <When week="Week of Sep 28" />
-                  <CapacityProgress counts={progressCounts("BLK-0038")} onClick={() => {}} />
+                  <CapacityProgress
+                    counts={progressCounts("BLK-0038")}
+                    onClick={() => openProgress("BLK-0038")}
+                  />
                 </>
               }
             >
@@ -92,7 +109,10 @@ export function CapacityProgressDemo() {
       <CapacityEngineer engineer={capacity.engineer} />
       <When capacity={capacity} />
       {capacity.status === "in_progress" || capacity.status === "fulfilled" ? (
-        <CapacityProgress counts={capacity.progress_counts} onClick={() => openProgress(capacity.id)} />
+        <CapacityProgress
+          counts={capacity.progress_counts}
+          onClick={() => navigate(\`/blocks/\${capacity.id}#progress\`)}
+        />
       ) : null}
     </>
   }

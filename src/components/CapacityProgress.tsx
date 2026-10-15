@@ -7,8 +7,12 @@ import { PROGRESS_LOOK } from "./progressLook";
 export type CapacityProgressProps = {
   /** How many records of each kind of progress came of the block. A kind left out has none. */
   counts: Partial<Record<ProgressKindId, number>>;
-  /** Opens the block's progress, such as the listing on its page. Without it, it's read-only. */
-  onClick?: () => void;
+  /**
+   * What the app does when it's clicked, such as going to the listing on the
+   * block's page, handed the line to anchor a popover to. Without it, it's
+   * read-only. A click here never reaches the block's own `onClick`.
+   */
+  onClick?: (anchor: HTMLElement) => void;
 };
 
 const srOnly = {

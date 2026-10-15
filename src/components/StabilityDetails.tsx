@@ -16,6 +16,12 @@ export type StabilityDetailsProps = {
    * "Invoice export is in Alpha." before what to expect.
    */
   feature?: string;
+  /**
+   * Say "Invoice export is in Alpha." where `feature` is given. `false`
+   * where the level isn't where it stands now, such as the levels on a
+   * record of a Capability that reached Alpha.
+   */
+  statement?: boolean;
   /** End with a link to the level on readme.exalynt.com, in a new tab. */
   link?: boolean;
   /**
@@ -71,16 +77,19 @@ function LevelBoxes({ level }: { level: StabilityLevelId }) {
 /*
  * How stable something is, for the client looking at it: the level's full
  * name and how stable it is in a word, where it sits among the four levels,
- * what to expect from it (naming the feature, if given), and what stability
+ * what to expect from it (naming the feature, if given, unless `statement`
+ * is off), and what stability
  * is. It's the content of StabilityMark's popover, and draws its own card there.
  */
 export function StabilityDetails({
   level,
   feature,
+  statement = true,
   link = true,
   card = true,
 }: StabilityDetailsProps) {
   const { fullName, stability, summary } = STABILITY[level];
+  const says = Boolean(feature) && statement;
   return (
     <DetailsCard card={card}>
       <DetailsEyebrow>Stability</DetailsEyebrow>
@@ -108,7 +117,7 @@ export function StabilityDetails({
         <LevelBoxes level={level} />
       </Box>
       {/* What it's on, then the level's definition on a line of its own. */}
-      {feature ? (
+      {says ? (
         <Box sx={{ mt: 1.5 }}>
           <Box component="strong" sx={{ fontWeight: 600 }}>
             {feature}
@@ -116,7 +125,7 @@ export function StabilityDetails({
           is in {fullName}.
         </Box>
       ) : null}
-      <Box sx={{ mt: feature ? 0.75 : 1.5 }}>{summary}</Box>
+      <Box sx={{ mt: says ? 0.75 : 1.5 }}>{summary}</Box>
       <Box
         sx={{
           mt: 1.5,

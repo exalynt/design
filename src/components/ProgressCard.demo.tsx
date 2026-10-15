@@ -28,7 +28,7 @@ export function ProgressCardDemo() {
   const delivered = SAMPLE_PROGRESS.filter((record) => record.block === "BLK-0042");
   return (
     <>
-      <Example title="On a Focus: its progress by week, closed so the listing reads at a glance, the newest open (click one to open it)">
+      <Example title="On a Focus: its progress by week, closed so the listing reads at a glance, the newest open (click one to open or close it)">
         <Stack spacing={2} sx={{ maxWidth: 760 }}>
           <Week title="Week of Oct 5" days="Oct 5 – 11" who="Lena, Avery" />
           {thisWeek.map((record, index) => (

@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import BoltOutlinedIcon from "@mui/icons-material/BoltOutlined";
-import { levelColor, type StabilityLevelId } from "./stability";
+import { levelColor, STABILITY, type StabilityLevelId } from "./stability";
 import { StabilityMark } from "./StabilityMark";
 
 export type ProgressCapabilityProps = {
@@ -27,10 +27,13 @@ const CHANGES = { added: "New", stabilized: "More stable", retired: "Retired" };
  * that sits beside others: its icon, its name, and its level as a short
  * stability mark, or for one made more stable its old level, faded, to its
  * new. What the progress did to it is in its outline, with the change named
- * in the outline's top edge: New in primary, More stable in the color of
- * the level it reached, and Retired dashed and muted, its name struck
+ * in the outline's top edge: New in primary, Reached and the level it
+ * reached in that level's color, such as Reached Alpha (More stable, where
+ * no `level` is given), and Retired dashed and muted, its name struck
  * through. One it was only about has the plain outline. The name is cut
- * short before the marks are, and says itself in full on hover.
+ * short before the marks are, and says itself in full on hover. A reached
+ * Capability's marks don't say it's in either level, since the record is
+ * of it moving.
  */
 export function ProgressCapability({ name, change, level, from }: ProgressCapabilityProps) {
   const retired = change === "retired";
@@ -76,7 +79,7 @@ export function ProgressCapability({ name, change, level, from }: ProgressCapabi
             whiteSpace: "nowrap",
           }}
         >
-          {CHANGES[change]}
+          {change === "stabilized" && level ? `Reached ${STABILITY[level].name}` : CHANGES[change]}
         </Box>
       ) : null}
       <BoltOutlinedIcon
@@ -104,10 +107,10 @@ export function ProgressCapability({ name, change, level, from }: ProgressCapabi
           sx={{ display: "inline-flex", alignItems: "center", gap: 0.5, flex: "none" }}
         >
           <Box component="span" sx={{ display: "inline-flex", opacity: 0.55 }}>
-            <StabilityMark level={from} feature={name} size="short" />
+            <StabilityMark level={from} feature={name} size="short" statement={false} />
           </Box>
           <ArrowForwardRoundedIcon sx={{ fontSize: 13, color: "text.secondary" }} />
-          <StabilityMark level={level} feature={name} size="short" />
+          <StabilityMark level={level} feature={name} size="short" statement={false} />
         </Box>
       ) : level && !retired ? (
         <StabilityMark level={level} feature={name} size="short" />

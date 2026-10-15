@@ -2,15 +2,19 @@
 // capacity, a record of each kind and of each change to a Capability, some
 // about Features too.
 
-import type { CapacityProgressProps, ProgressCardProps } from "../components";
+import type { CapacityProgressProps, EngineerProfile, ProgressCardProps } from "../components";
 import { CapacityTag } from "../components/CapacityTag";
 import { FocusRef } from "./FocusRef";
 
 /* Served from public/, which the package leaves out. */
 const media = (file: string) => `${import.meta.env.BASE_URL}progress/${file}`;
 
-const LENA = { name: "Lena Brooks" };
-const AVERY = { name: "Avery Chen" };
+const LENA: EngineerProfile = {
+  name: "Lena Brooks",
+  level: "senior",
+  bio: "Works across mobile and backend, mostly on what drivers use out on the road.",
+};
+const AVERY: EngineerProfile = { name: "Avery Chen", level: "mid" };
 
 /* The block a record came from, as a Focus's listing shows it. */
 const block = (number: string) => <CapacityTag block="core" number={number} details />;
@@ -44,7 +48,8 @@ export const SAMPLE_PROGRESS: SampleProgress[] = [
     metrics: [
       {
         name: "Missed deliveries left with a photo",
-        after: "14 in the first week",
+        after: 14,
+        unit: "per week",
         direction: "up",
       },
     ],
@@ -68,11 +73,20 @@ export const SAMPLE_PROGRESS: SampleProgress[] = [
     metrics: [
       {
         name: "Signatures that fail to send",
-        before: "About 1 in 10",
-        after: "None in a week",
+        before: 9.6,
+        after: 0,
+        unit: "%",
         direction: "down",
       },
-      { name: "Time to sign", before: "12 seconds", after: "4 seconds", direction: "down" },
+      {
+        name: "Time to sign a delivery",
+        description: "From opening the delivery in the app to the signature being sent.",
+        before: 12,
+        after: 4,
+        unit: "s",
+        direction: "down",
+        showDifference: true,
+      },
     ],
     media: [
       {
@@ -89,15 +103,19 @@ export const SAMPLE_PROGRESS: SampleProgress[] = [
     block: "BLK-0042",
     focus: "Signing for deliveries",
     kind: "functionality",
-    text: "The paper delivery slip is gone: every delivery is signed in the app, so drivers carry nothing and the office stops typing slips in.",
+    text: "The paper delivery slip is gone: every delivery is signed in the app, so drivers carry nothing, the office stops typing slips in, and customers get their receipt by email.",
     at: "2026-10-06T14:00:00Z",
     by: LENA,
-    capabilities: [{ name: "Print a delivery slip", change: "retired" }],
+    capabilities: [
+      { name: "Print a delivery slip", change: "retired" },
+      { name: "Email the customer a receipt", change: "added", level: "prototype" },
+    ],
     metrics: [
       {
         name: "Slips typed in by the office",
-        before: "About 60 a day",
-        after: "None",
+        before: 1240,
+        after: 0,
+        unit: "per month",
         direction: "down",
       },
     ],

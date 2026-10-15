@@ -15,6 +15,13 @@ export type StabilityMarkProps = {
    */
   feature?: string;
   /**
+   * Say "Invoice export is in Alpha." in the popover, where `feature` is
+   * given. `false` where the mark isn't where it stands now, such as the
+   * levels on a record of a Capability that reached Alpha; `feature` still
+   * names a short mark for assistive tech.
+   */
+  statement?: boolean;
+  /**
    * `short` is the Track alone, for tabs, buttons, and other tight spots.
    * `long` (the default) adds the name. `extra-long` also adds how stable it
    * is, e.g. "Beta · Refining", beside a page or Feature title.
@@ -40,13 +47,16 @@ export type StabilityMarkProps = {
 export function StabilityMark({
   level,
   feature,
+  statement = true,
   size = "long",
   link = true,
   focusable = true,
 }: StabilityMarkProps) {
   const { name, stability } = STABILITY[level];
   return (
-    <DetailsPopover title={<StabilityDetails level={level} feature={feature} link={link} />}>
+    <DetailsPopover
+      title={<StabilityDetails level={level} feature={feature} statement={statement} link={link} />}
+    >
       <Box
         component="span"
         role={size === "short" ? "img" : undefined}

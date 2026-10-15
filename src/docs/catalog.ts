@@ -278,7 +278,7 @@ export const catalog: Group[] = [
       {
         title: "StabilityMark",
         description:
-          "A stability level's mark: the Track and the level's name in the level's color, with a popover telling the client how stable it is. No mark means GA, so pass `ga` only in Exalynt's own tools, where clients follow the Features we're working on. Pass `feature` so it opens with \"Invoice export is in Alpha.\" `size` is `short`, `long`, or `extra-long`; pass `focusable={false}` inside a button or link.",
+          "A stability level's mark: the Track and the level's name in the level's color, with a popover telling the client how stable it is. No mark means GA, so pass `ga` only in Exalynt's own tools, where clients follow the Features we're working on. Pass `feature` so it opens with \"Invoice export is in Alpha.\", and `statement={false}` to leave that line out where the level isn't where it stands now, such as a Capability's old and new levels on a record of it reaching one; `feature` still names a short mark for assistive tech. `size` is `short`, `long`, or `extra-long`; pass `focusable={false}` inside a button or link.",
         importFrom: "components",
         phone:
           "It's sized in em, so it scales with the text beside it and never wraps. A tap opens the popover, which is 300px wide at most and keeps 12px from the screen's edges. Where a row is tight on a phone, drop to the short mark rather than let the name wrap.",
@@ -298,7 +298,7 @@ export const catalog: Group[] = [
       {
         title: "StabilityDetails",
         description:
-          "How stable something is, as StabilityMark's popover shows it: the level's full name and how stable it is in a word, the four levels as boxes with this one lit, what to expect, and what stability is. On its own, for help text or a legend; `card={false}` drops the card to sit in one of your own.",
+          "How stable something is, as StabilityMark's popover shows it: the level's full name and how stable it is in a word, the four levels as boxes with this one lit, what to expect, with \"Invoice export is in Alpha.\" before it where `feature` is given and `statement` isn't off, and what stability is. On its own, for help text or a legend; `card={false}` drops the card to sit in one of your own.",
         importFrom: "components",
         phone:
           "The card is 300px wide, or the screen less 24px when that's narrower. With `card={false}` it fills its container.",
@@ -437,7 +437,7 @@ export const catalog: Group[] = [
       {
         title: "CapacityProgress",
         description:
-          "What progress came of a block, at a glance, as the last line of its footer once it's started, beside the rising chart that stands for progress: each kind it has, Functionality, Improvement, then Clarity, as the kind's icon in its color and how many, said in words on hover and to assistive tech, or \"No progress yet\". `onClick` opens the block's progress, such as the ProgressCards on its page. Leave it off a block waiting for its week.",
+          "What progress came of a block, at a glance, as the last line of its footer once it's started, beside the rising chart that stands for progress: each kind it has, Functionality, Improvement, then Clarity, as the kind's icon in its color and how many, said in words on hover and to assistive tech, or \"No progress yet\". `onClick` is the app's action, such as going to the ProgressCards on the block's page, handed the line to anchor a popover to; a click on it never reaches the block's own `onClick`. Leave it off a block waiting for its week.",
         importFrom: "components",
         phone:
           "A CapacityLine, so it fills the card's width at the same height as the lines above it. All three kinds fit on one line at 375px; a tap opens the block's progress, and the words are a long press away.",
@@ -482,10 +482,10 @@ export const catalog: Group[] = [
       {
         title: "ProgressCard",
         description:
-          "One record of progress, what came of work on a Focus within a block of capacity, for a Focus's listing and a block's. One column: its kind and day, what happened as its headline, then only the sections it has (the Features and Capabilities it's about, whatever its kind, results, and what shows it), and at its foot who reported it and `source`, where it came from. Edged in its kind's color so a listing scans by kind. It starts closed, as `defaultExpanded` changes: its kind, day, and headline cut to two lines (or the names of the Capabilities it's about, where it has no words of its own), over how many Features, Capabilities, results, pictures, and videos it has, as icons and counts. The chevron, or a click on the closed card, opens it. A first pass, to experiment with.",
+          "One record of progress, what came of work on a Focus within a block of capacity, for a Focus's listing and a block's. One column: its kind and day, what happened as its headline, then only the sections it has (the Features and Capabilities it's about, whatever its kind, results, and what shows it), and at its foot who reported it and `source`, where it came from. Edged in its kind's color so a listing scans by kind. It starts closed, as `defaultExpanded` changes: its kind and day over how many Features, Capabilities, results, pictures, and videos it has, as icons and counts (for Functionality, its Capabilities counted by what it did to them, each saying Capability: 1 New Capability, 1 Capability reached Alpha, in Alpha's color as on its outline, and 1 Capability retired), with `source` at the bottom right, and its words in a tooltip on hover rather than on the card. A click anywhere on it opens or closes it, except on something of its own to click, such as its kind or a picture; the chevron, muted until the card is hovered, does the same from the keyboard. A first pass, to experiment with.",
         importFrom: "components",
         phone:
-          "One column at every width, so nothing moves on a phone. Results tiles fit as many to a row as there's room for, one on a phone; media thumbnails wrap; the foot wraps `source` under who reported it. Closed, its counts wrap onto a second line where they need to, and the whole closed card is the tap target to open it.",
+          "One column at every width, so nothing moves on a phone. Results tiles fit as many to a row as there's room for, one on a phone; media thumbnails wrap; the foot wraps `source` under who reported it. Closed, its counts wrap, and `source` wraps under them, where they need to; its words are a long press away; and the whole card is the tap target to open or close it.",
         icon: ShowChartRoundedIcon,
         Demo: ProgressCardDemo,
       },
@@ -512,7 +512,7 @@ export const catalog: Group[] = [
       {
         title: "ProgressCapability",
         description:
-          "One Capability a record of progress touched, as a small outlined card that sits beside others and wraps: its icon, its name, cut short with the whole name on hover, and its level as a short stability mark, or for one made more stable its old level, faded, to its new. What the progress did to it is in its outline, named in the outline's top edge: New in primary, More stable in the color of the level it reached, Retired dashed and muted with its name struck through. One it was only about has the plain outline.",
+          "One Capability a record of progress touched, as a small outlined card that sits beside others and wraps: its icon, its name, cut short with the whole name on hover, and its level as a short stability mark, or for one made more stable its old level, faded, to its new. What the progress did to it is in its outline, named in the outline's top edge: New in primary, Reached and the level it reached in that level's color, such as Reached Alpha, Retired dashed and muted with its name struck through. One it was only about has the plain outline.",
         importFrom: "components",
         phone:
           "At most the width of its container; a long name is cut short first, and the marks always show. A tap on a mark opens its popover; the full name is a long press away. Leave room above a row of them for the change in their outlines.",
@@ -522,10 +522,10 @@ export const catalog: Group[] = [
       {
         title: "ProgressMetric",
         description:
-          "Something measured, as a tile: what was measured, then Before, muted, over After, large, each labelled. `direction` puts an arrow in success beside After, the way it moved for the better: `down` for fewer failures or less time, `up` for more of something wanted. The values are free text, so the direction is the reporter's to give, and without it no way is marked as better. `before` is optional; without it the result stands alone, unlabelled.",
+          'Something measured, as a tile: what was measured, then Before and After side by side, each labelled, with an arrow from one to the other. `before` and `after` are numbers in the reader\'s own format, and `unit`, optional, follows each, smaller and fainter: "s", "%", "per day". Each stays on one line, cut short with an ellipsis and said in full in a tooltip where it\'s too long. `description`, optional, adds an info icon beside the name that says what the measure is on hover, focus, or tap. Whichever says most is the highlight. With `showDifference`, Before and After are the same size, and how much it moved, signed and with the unit, is centred on the line below in a larger pill. Without it, or without a `before`, After is the larger. `direction`, optional, puts the trend it took for the better beside the highlight and makes it green: `down` for fewer failures or less time, `up` for more of something wanted. Whether more is better depends on the measure, so it\'s the reporter\'s to give; without it the highlight stays neutral.',
         importFrom: "components",
         phone:
-          "It fills its grid cell; in a grid of `minmax(180px, 1fr)` columns, a phone shows one a row, and long results wrap.",
+          "It fills its grid cell; in a grid of `minmax(180px, 1fr)` columns, a phone shows one a row. Before and After share the line at every width, each cut short rather than wrapping, its full value a long press away; the difference keeps a line of its own. The info icon is a tap target of its own.",
         icon: InsightsOutlinedIcon,
         Demo: ProgressMetricDemo,
       },
