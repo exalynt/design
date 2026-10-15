@@ -13,6 +13,12 @@ export type EngineerLevelBadgeProps = {
    * Pass `false` inside a button or link, which already takes focus.
    */
   focusable?: boolean;
+  /**
+   * Open EngineerLevelDetails on hover, focus, or tap. Pass `false` inside
+   * something whose own popover already says the level, such as
+   * UserAttribution with `details`, so the two don't open together.
+   */
+  details?: boolean;
 };
 
 /*
@@ -26,28 +32,33 @@ export function EngineerLevelBadge({
   level,
   link = true,
   focusable = true,
+  details = true,
 }: EngineerLevelBadgeProps) {
+  const chip = (
+    <Chip
+      size="small"
+      icon={<EngineerLevelSquares level={level} />}
+      label={ENGINEER_LEVELS[level].name}
+      tabIndex={details && focusable ? 0 : undefined}
+      variant="outlined"
+      sx={{
+        borderColor: "divider",
+        color: "text.secondary",
+        height: 20,
+        fontSize: 11,
+        fontWeight: 500,
+        cursor: details ? "help" : "inherit",
+        verticalAlign: "middle",
+        "& .MuiChip-label": { px: "6px" },
+        "& .MuiChip-icon": { color: "inherit", fontSize: 11, ml: "6px", mr: "-1px" },
+        "&:focus-visible": { outline: 2, outlineColor: "primary.main", outlineOffset: 2 },
+      }}
+    />
+  );
+  if (!details) return chip;
   return (
     <DetailsPopover title={<EngineerLevelDetails level={level} link={link} />}>
-      <Chip
-        size="small"
-        icon={<EngineerLevelSquares level={level} />}
-        label={ENGINEER_LEVELS[level].name}
-        tabIndex={focusable ? 0 : undefined}
-        variant="outlined"
-        sx={{
-          borderColor: "divider",
-          color: "text.secondary",
-          height: 20,
-          fontSize: 11,
-          fontWeight: 500,
-          cursor: "help",
-          verticalAlign: "middle",
-          "& .MuiChip-label": { px: "6px" },
-          "& .MuiChip-icon": { color: "inherit", fontSize: 11, ml: "6px", mr: "-1px" },
-          "&:focus-visible": { outline: 2, outlineColor: "primary.main", outlineOffset: 2 },
-        }}
-      />
+      {chip}
     </DetailsPopover>
   );
 }

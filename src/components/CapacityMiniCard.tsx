@@ -5,8 +5,8 @@ import Typography from "@mui/material/Typography";
 import type { CapacityBlockId, CapacityStatusId } from "./capacity";
 import { CapacityStatus } from "./CapacityStatus";
 import { CapacityTag } from "./CapacityTag";
-import { EngineerAvatar } from "./EngineerAvatar";
 import type { EngineerProfile } from "./EngineerDetails";
+import { UserAttribution } from "./UserAttribution";
 
 export type CapacityMiniCardProps = {
   block: CapacityBlockId;
@@ -80,12 +80,7 @@ export function CapacityMiniCard({
           }}
         >
           {engineer ? (
-            <>
-              <EngineerAvatar name={engineer.name} src={engineer.avatarUrl} size={18} />
-              <Box component="span" sx={{ color: "text.primary", whiteSpace: "nowrap" }}>
-                {engineer.name}
-              </Box>
-            </>
+            <UserAttribution user={engineer} size={18} />
           ) : engineer === null ? (
             <Box component="span">No engineer yet</Box>
           ) : null}

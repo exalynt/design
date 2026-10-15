@@ -11,7 +11,7 @@ import WidgetsOutlinedIcon from "@mui/icons-material/WidgetsOutlined";
 import type { SvgIconComponent } from "@mui/icons-material";
 import { useId, useState, type ReactNode } from "react";
 import { DateTime } from "./DateTime";
-import { EngineerAvatar } from "./EngineerAvatar";
+import { UserAvatar } from "./UserAvatar";
 import { ProgressKind } from "./ProgressKind";
 import { PROGRESS_LOOK } from "./progressLook";
 import { ProgressCapability, type ProgressCapabilityProps } from "./ProgressCapability";
@@ -268,7 +268,7 @@ export function ProgressCard({
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.75, minWidth: 0 }}>
-              <EngineerAvatar name={by.name} src={by.avatarUrl} size={20} />
+              <UserAvatar name={by.name} src={by.avatarUrl} size={20} />
               <Box component="span" sx={{ fontWeight: 600 }}>
                 {by.name}
               </Box>

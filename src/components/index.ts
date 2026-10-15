@@ -39,6 +39,7 @@ export * from "./StabilityMark";
 export * from "./StatCard";
 export * from "./ThemeToggle";
 export * from "./ToastProvider";
+export * from "./UserAttribution";
 export * from "./table";
 
 // Stability levels and maturity: what each level means, and how maturity is

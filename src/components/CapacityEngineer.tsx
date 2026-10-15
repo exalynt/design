@@ -5,7 +5,7 @@ import Tooltip from "@mui/material/Tooltip";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import SwapHorizRoundedIcon from "@mui/icons-material/SwapHorizRounded";
 import { CapacityLine } from "./CapacityLine";
-import { EngineerAvatar } from "./EngineerAvatar";
+import { UserAvatar } from "./UserAvatar";
 import { EngineerDetails, type EngineerProfile } from "./EngineerDetails";
 
 export type CapacityEngineerProps = {
@@ -33,7 +33,7 @@ export function CapacityEngineer({ engineer, onAssignClick }: CapacityEngineerPr
   if (engineer) {
     const line = (
       <CapacityLine
-        icon={<EngineerAvatar name={engineer.name} src={engineer.avatarUrl} size={22} />}
+        icon={<UserAvatar name={engineer.name} src={engineer.avatarUrl} size={22} />}
         details={<EngineerDetails engineer={engineer} />}
       >
         {engineer.name}

@@ -21,6 +21,7 @@ import CampaignOutlinedIcon from "@mui/icons-material/CampaignOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import ContrastOutlinedIcon from "@mui/icons-material/ContrastOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import DonutLargeOutlinedIcon from "@mui/icons-material/DonutLargeOutlined";
 import DynamicFormOutlinedIcon from "@mui/icons-material/DynamicFormOutlined";
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
@@ -82,6 +83,7 @@ import { StabilityDetailsDemo } from "../components/StabilityDetails.demo";
 import { StabilityMarkDemo } from "../components/StabilityMark.demo";
 import { ThemeToggleDemo } from "../components/ThemeToggle.demo";
 import { ToastProviderDemo } from "../components/ToastProvider.demo";
+import { UserAttributionDemo } from "../components/UserAttribution.demo";
 import { CursorPagerDemo } from "../components/table/CursorPager.demo";
 import { DataTableDemo } from "../components/table/DataTable.demo";
 import { ListTableDemo } from "../components/table/ListTable.demo";
@@ -552,7 +554,7 @@ export const catalog: Group[] = [
       {
         title: "EngineerLevelBadge",
         description:
-          "An engineer's level as a small, quiet outlined Chip: four squares filled in reading order to the level, and its name, in the theme's secondary text color so the engineer's name beside it leads. Every level looks alike, so none reads as a better or cheaper deal, and a popover (EngineerLevelDetails) saying what the level means. Beside the engineer's name, never in place of it. Pass `focusable={false}` inside a button or link.",
+          "An engineer's level as a small, quiet outlined Chip: four squares filled in reading order to the level, and its name, in the theme's secondary text color so the engineer's name beside it leads. Every level looks alike, so none reads as a better or cheaper deal, and a popover (EngineerLevelDetails) saying what the level means. Beside the engineer's name, never in place of it. Pass `focusable={false}` inside a button or link, and `details={false}` inside something whose own popover already says the level.",
         importFrom: "components",
         phone:
           "A 20px Chip with 11px text that never wraps, so it reads the same at 375px; Principal's is the widest, at about 80px. A tap opens the popover, which is 300px wide at most and keeps 12px from the screen's edges. Where a row is tight, let the name wrap above the badge rather than cut the badge.",
@@ -568,6 +570,16 @@ export const catalog: Group[] = [
           "The card is 300px wide, or the screen less 24px when that's narrower. The four levels fit side by side down to a 320px screen. With `card={false}` it fills its container.",
         icon: ChatBubbleOutlineOutlinedIcon,
         Demo: EngineerLevelDetailsDemo,
+      },
+      {
+        title: "UserAttribution",
+        description:
+          "Who something is by, for, or assigned to, such as who reported progress or a block's engineer on its mini card: their picture, or initials without one, and their name, in the primary text color at weight 600 and the size of the text around it. `photoOnly` is just the picture, naming them on hover and to assistive tech, where names would crowd. Takes a `UserProfile`, or an `EngineerProfile` for an engineer, who can also have `showLevel`, their level badge under the name, and `details`, EngineerDetails over all of it; with both, the badge's own popover is left out, since EngineerDetails has it. Use it wherever a card or line names a person, rather than an avatar and name of your own. `size` is the picture's: 20px by default, 40px with the level.",
+        importFrom: "components",
+        phone:
+          "It never grows wider than its container: a long name is cut short, and `details` says it in full. A tap opens the details popover, or with `photoOnly` and no details, the name. Give a row of `photoOnly` pictures at least 32px each so they're easy to tell apart and tap.",
+        icon: PersonOutlineOutlinedIcon,
+        Demo: UserAttributionDemo,
       },
       {
         title: "EngineerDetails",

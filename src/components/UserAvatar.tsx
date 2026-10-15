@@ -1,10 +1,10 @@
 import Avatar from "@mui/material/Avatar";
 
 /*
- * An engineer's profile picture, or their initials where they have none or it
+ * Someone's profile picture, or their initials where they have none or it
  * doesn't load. Decorative: their name is always beside it.
  */
-export function EngineerAvatar({ name, src, size }: { name: string; src?: string; size: number }) {
+export function UserAvatar({ name, src, size }: { name: string; src?: string; size: number }) {
   return (
     <Avatar
       src={src}

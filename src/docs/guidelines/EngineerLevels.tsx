@@ -50,8 +50,8 @@ export function EngineerLevelsGuideline() {
         </p>
         <ul>
           <li>
-            <strong>Beside the engineer&rsquo;s name,</strong> in a list of engineers and at the top
-            of their page, never in place of it. One badge per engineer.
+            <strong>Beside or under the engineer&rsquo;s name,</strong> in a list of engineers and
+            at the top of their page, never in place of it. One badge per engineer.
           </li>
           <li>
             <strong>The name leads.</strong> Set the name in the primary text color, at least the
@@ -66,6 +66,10 @@ export function EngineerLevelsGuideline() {
           <li>
             <strong>Name the level in copy as the badge does,</strong> from{" "}
             <code>ENGINEER_LEVELS[level].name</code>: &ldquo;a Senior engineer&rdquo;.
+          </li>
+          <li>
+            <strong>With their picture,</strong> use <code>UserAttribution</code> with{" "}
+            <code>showLevel</code>, which sets the badge under their name for you.
           </li>
         </ul>
       </Guidance>

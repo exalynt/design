@@ -1,15 +1,13 @@
 import Box from "@mui/material/Box";
 import { DetailsCard, DetailsEyebrow, DetailsLink } from "./DetailsPopover";
-import { EngineerAvatar } from "./EngineerAvatar";
+import type { UserProfile } from "./UserAttribution";
+import { UserAvatar } from "./UserAvatar";
 import type { EngineerLevelId } from "./engineerLevel";
 import { EngineerLevelBadge } from "./EngineerLevelBadge";
 
-/** An engineer as the app has them, for EngineerDetails and CapacityEngineer. */
-export type EngineerProfile = {
-  name: string;
+/** An engineer as the app has them, for EngineerDetails, CapacityEngineer, and UserAttribution. */
+export type EngineerProfile = UserProfile & {
   level: EngineerLevelId;
-  /** Their profile picture's URL. Without one, or if it doesn't load, their initials. */
-  avatarUrl?: string;
   /** A sentence or two about them. Cut short after four lines. */
   bio?: string;
   /** Their profile page in the app, opened in the same tab. Without it, no link. */
@@ -34,7 +32,7 @@ export function EngineerDetails({ engineer, card = true }: EngineerDetailsProps)
     <DetailsCard card={card}>
       <DetailsEyebrow>Engineer</DetailsEyebrow>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mt: 1 }}>
-        <EngineerAvatar name={name} src={avatarUrl} size={56} />
+        <UserAvatar name={name} src={avatarUrl} size={56} />
         <Box
           sx={{
             minWidth: 0,
