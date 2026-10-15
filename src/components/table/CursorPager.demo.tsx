@@ -3,7 +3,7 @@ import Divider from "@mui/material/Divider";
 import { CodeBlock } from "../../docs/CodeBlock";
 import { Example } from "../../docs/Example";
 import { invoiceColumns, invoices, type Invoice } from "../../docs/invoices";
-import { SectionCard } from "../SectionCard";
+import { SectionCard } from "../layout/SectionCard";
 import { CursorPager } from "./CursorPager";
 import { DataTable } from "./DataTable";
 

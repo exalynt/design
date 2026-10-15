@@ -1,7 +1,7 @@
 import { CodeBlock } from "../../docs/CodeBlock";
 import { Example } from "../../docs/Example";
 import { invoiceColumns, invoices, type Invoice } from "../../docs/invoices";
-import { useToast } from "../toast";
+import { useToast } from "../feedback/toast";
 import { ListTable, type ListFilter } from "./ListTable";
 
 const noun = { one: "invoice", other: "invoices" };

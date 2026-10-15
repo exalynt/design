@@ -4,10 +4,10 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
 import SearchOffOutlinedIcon from "@mui/icons-material/SearchOffOutlined";
-import { EmptyState } from "../EmptyState";
-import { SectionCard } from "../SectionCard";
+import { EmptyState } from "../data-display/EmptyState";
+import { SectionCard } from "../layout/SectionCard";
 import { DataTable, type Column, type DataTableProps, type TableSort } from "./DataTable";
-import { SearchSelect, type SearchSelectOption } from "../SearchSelect";
+import { SearchSelect, type SearchSelectOption } from "../inputs/SearchSelect";
 import { TablePager } from "./TablePager";
 import { TableToolbar } from "./TableToolbar";
 

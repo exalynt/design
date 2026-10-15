@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import { CodeBlock } from "../../docs/CodeBlock";
 import { Example } from "../../docs/Example";
 import { invoiceColumns, invoices, type Invoice } from "../../docs/invoices";
-import { SectionCard } from "../SectionCard";
+import { SectionCard } from "../layout/SectionCard";
 import { CursorPagedInvoices } from "./CursorPager.demo";
 import { DataTable, type TableSort } from "./DataTable";
 

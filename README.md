@@ -34,8 +34,8 @@ Everything else is plain MUI, styled by the theme. A component joins
 ## Stability and maturity
 
 The stability levels' wording, colors, and GitHub labels are defined here, in
-`src/components/stability.ts`, and maturity's rules are worked out in
-`src/components/maturity.ts`. The [readme](https://readme.exalynt.com)
+`src/components/stability/stability.ts`, and maturity's rules are worked out in
+`src/components/maturity/maturity.ts`. The [readme](https://readme.exalynt.com)
 installs this package for its marks and rings, and is where the concepts are
 explained: [what each level means](https://readme.exalynt.com/how-it-works/stability-levels)
 and [how maturity is worked out](https://readme.exalynt.com/how-it-works/maturity).

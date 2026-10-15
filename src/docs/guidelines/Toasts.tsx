@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { useToast, type Toaster } from "../../components";
-import { TOAST_WIDTH, ToastCard } from "../../components/ToastCard";
+import { TOAST_WIDTH, ToastCard } from "../../components/feedback/ToastCard";
 import { Example } from "../Example";
 import { Guidance } from "../Guidance";
 import { Rules } from "./Rules";

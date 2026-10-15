@@ -3,7 +3,7 @@
 // about Features too.
 
 import type { CapacityProgressProps, EngineerProfile, ProgressCardProps } from "../components";
-import { CapacityTag } from "../components/CapacityTag";
+import { CapacityTag } from "../components/capacity/CapacityTag";
 import { FocusRef } from "./FocusRef";
 
 /* Served from public/, which the package leaves out. */

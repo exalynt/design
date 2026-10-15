@@ -2,52 +2,64 @@
 // color, size and font from the MUI theme they render under, so they look
 // like whichever brand that theme is.
 
-export * from "./CalloutPanel";
-export * from "./CapabilityCard";
-export * from "./CapacityBlock";
-export * from "./CapacityDetails";
-export * from "./CapacityEngineer";
-export * from "./CapacityFigure";
-export * from "./CapacityLine";
-export * from "./CapacityProgress";
-export * from "./CapacityMiniCard";
-export * from "./CapacityPlacement";
-export * from "./ProgressCapability";
-export * from "./ProgressFeature";
-export * from "./ProgressCard";
-export * from "./ProgressKind";
-export * from "./ProgressMedia";
-export * from "./ProgressMetric";
-export * from "./CapacityStatus";
-export * from "./CapacityTag";
-export * from "./ConfirmDialog";
-export * from "./ConversationMessage";
-export * from "./ConversationPopout";
-export * from "./ConversationPreview";
-export * from "./ConversationRow";
-export * from "./DateTime";
-export * from "./EmptyState";
-export * from "./EngineerDetails";
-export * from "./FeatureCard";
-export * from "./EngineerLevelBadge";
-export * from "./EngineerLevelDetails";
-export * from "./MaturityDetails";
-export * from "./MaturityRing";
-export * from "./MentionField";
-export * from "./MessageComposer";
-export * from "./PageHeader";
-export * from "./SearchMultiSelect";
-export * from "./SearchSelect";
-export * from "./SectionCard";
-export * from "./StabilityBanner";
-export * from "./StabilityDetails";
-export * from "./StabilityMark";
-export * from "./StatCard";
-export * from "./ThemeToggle";
-export * from "./ToastProvider";
-export * from "./TypingIndicator";
-export * from "./UserAttribution";
+export * from "./layout/CalloutPanel";
+export * from "./layout/PageHeader";
+export * from "./layout/SectionCard";
+
+export * from "./data-display/DateTime";
+export * from "./data-display/EmptyState";
+export * from "./data-display/StatCard";
+
+export * from "./stability/StabilityBanner";
+export * from "./stability/StabilityDetails";
+export * from "./stability/StabilityMark";
+
+export * from "./maturity/MaturityDetails";
+export * from "./maturity/MaturityRing";
+
+export * from "./catalog/CapabilityCard";
+export * from "./catalog/FeatureCard";
+
+export * from "./capacity/CapacityBlock";
+export * from "./capacity/CapacityDetails";
+export * from "./capacity/CapacityEngineer";
+export * from "./capacity/CapacityFigure";
+export * from "./capacity/CapacityLine";
+export * from "./capacity/CapacityMiniCard";
+export * from "./capacity/CapacityPlacement";
+export * from "./capacity/CapacityProgress";
+export * from "./capacity/CapacityStatus";
+export * from "./capacity/CapacityTag";
+
+export * from "./progress/ProgressCapability";
+export * from "./progress/ProgressCard";
+export * from "./progress/ProgressFeature";
+export * from "./progress/ProgressKind";
+export * from "./progress/ProgressMedia";
+export * from "./progress/ProgressMetric";
+
+export * from "./engineers/EngineerDetails";
+export * from "./engineers/EngineerLevelBadge";
+export * from "./engineers/EngineerLevelDetails";
+export * from "./engineers/UserAttribution";
+
+export * from "./conversations/ConversationMessage";
+export * from "./conversations/ConversationPopout";
+export * from "./conversations/ConversationPreview";
+export * from "./conversations/ConversationRow";
+export * from "./conversations/MentionField";
+export * from "./conversations/MessageComposer";
+export * from "./conversations/TypingIndicator";
+
+export * from "./inputs/SearchMultiSelect";
+export * from "./inputs/SearchSelect";
+
 export * from "./table";
+
+export * from "./feedback/ToastProvider";
+
+export * from "./actions/ConfirmDialog";
+export * from "./actions/ThemeToggle";
 
 // Stability levels and maturity: what each level means, and how maturity is
 // worked out from them. The components' own helpers stay internal.
@@ -59,7 +71,7 @@ export {
   stabilityStep,
   type StabilityLevel,
   type StabilityLevelId,
-} from "./stability";
+} from "./stability/stability";
 // Engineer levels: their names and what each is trusted with. What the levels
 // mean, and how they're set, is the readme's (ENGINEER_LEVEL_DOCS_URL).
 export {
@@ -68,14 +80,14 @@ export {
   ENGINEER_LEVEL_IDS,
   type EngineerLevel,
   type EngineerLevelId,
-} from "./engineerLevel";
+} from "./engineers/engineerLevel";
 // Mentions: someone who can be @mentioned, by an id that survives a rename.
 // MentionField writes them into a message as `<@id>` and ConversationMessage reads them.
-export { type MentionProfile } from "./mentions";
+export { type MentionProfile } from "./conversations/mentions";
 // Toasts: raised with useToast() under a ToastProvider.
-export { useToast, type Toaster } from "./toast";
+export { useToast, type Toaster } from "./feedback/toast";
 // Money: the API's cents, as text for the reader and back.
-export { formatMoney, parseMoney, type MoneyOptions } from "./money";
+export { formatMoney, parseMoney, type MoneyOptions } from "./data-display/money";
 export {
   HEALTHY_MATURITY,
   MATURITY_BANDS,
@@ -83,7 +95,7 @@ export {
   featureMaturity,
   maturityBand,
   projectMaturity,
-} from "./maturity";
+} from "./maturity/maturity";
 
 // Capacity blocks: their names and sizes. What capacity is, and how blocks are
 // priced, is the readme's (CAPACITY_DOCS_URL).
@@ -98,7 +110,7 @@ export {
   type CapacityBlockId,
   type CapacityBlockSize,
   type CapacityStatusId,
-} from "./capacity";
+} from "./capacity/capacity";
 
 // Progress: what came of work on a Focus within a block of capacity, in the
 // readme's forms of value (PROGRESS_DOCS_URL).
@@ -108,4 +120,4 @@ export {
   PROGRESS_KIND_IDS,
   type ProgressKindId,
   type ProgressKindInfo,
-} from "./progress";
+} from "./progress/progress";

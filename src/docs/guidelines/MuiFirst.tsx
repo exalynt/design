@@ -39,8 +39,8 @@ export function MuiFirstGuideline() {
           </li>
           <li>
             <strong>A new component</strong>, only when the same composition is needed in more than
-            one app, or MUI has nothing for the job. It goes in <code>src/components/</code> with a
-            page here.
+            one app, or MUI has nothing for the job. It goes in its group's folder in{" "}
+            <code>src/components/</code> with a page here.
           </li>
         </ol>
       </Guidance>
