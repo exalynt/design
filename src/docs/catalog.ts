@@ -23,6 +23,8 @@ import ContrastOutlinedIcon from "@mui/icons-material/ContrastOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
+import PreviewOutlinedIcon from "@mui/icons-material/PreviewOutlined";
+import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined";
 import AlternateEmailOutlinedIcon from "@mui/icons-material/AlternateEmailOutlined";
 import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
@@ -91,6 +93,8 @@ import { ToastProviderDemo } from "../components/ToastProvider.demo";
 import { UserAttributionDemo } from "../components/UserAttribution.demo";
 import { ConversationMessageDemo } from "../components/ConversationMessage.demo";
 import { ConversationPopoutDemo } from "../components/ConversationPopout.demo";
+import { ConversationPreviewDemo } from "../components/ConversationPreview.demo";
+import { ConversationRowDemo } from "../components/ConversationRow.demo";
 import { MentionFieldDemo } from "../components/MentionField.demo";
 import { MessageComposerDemo } from "../components/MessageComposer.demo";
 import { TypingIndicatorDemo } from "../components/TypingIndicator.demo";
@@ -625,6 +629,26 @@ export const catalog: Group[] = [
           "It fills the screen, without minimize, maximize, moving or sizing; Close, Mark as unread and the link are 40px to tap. With several open, the one in front covers the others. The keyboard hint under the reply box hides.",
         icon: ForumOutlinedIcon,
         Demo: ConversationPopoutDemo,
+      },
+      {
+        title: "ConversationPreview",
+        description:
+          "A glance at a conversation's latest messages on hovering or focusing what it wraps, such as its row in a list, without opening it: ConversationPopout's title bar and its ConversationMessages, read-only, on the same paper, so opening the popout after a glance changes only the size. Pass the latest few as `messages`, cut short with `lines` (four reads well), and how many came before them as `earlier`, which it counts rather than draws. A list only has each conversation's summary, so read them in `onOpen`, the first time it opens, showing `loading` meanwhile and `failed` if they couldn't be read. Under a mouse it follows the pointer, below it; from the keyboard it opens beside the row. `suppressed` keeps it shut while it would cover something in the row, such as an open menu.",
+        importFrom: "components",
+        phone:
+          "A tap never opens it, since a tap opens the row, so on a phone it only opens from a keyboard. It's 400px wide, or the screen less 32px when that's narrower.",
+        icon: PreviewOutlinedIcon,
+        Demo: ConversationPreviewDemo,
+      },
+      {
+        title: "ConversationRow",
+        description:
+          "One conversation in a list, built to be scanned: its subject and how long ago it last moved, its latest message in two lines at most after who wrote it, its `<@id>` mentions read from `people`, and at the foot who's in it and how many messages. The whole row links to `href`; `onOpen` opens it in place instead, such as in a ConversationPopout, while a new tab still goes to `href`. Unread, it stands out from the read rows around it: a bar down its left edge, a faint tint behind it, a bold subject, its latest message in full-strength text, and a pill counting what's new beside its time, all in the primary color, or in the warning color with `mentionsYou`, as ConversationMessage marks a mention, which also adds Mentioned you at the foot. Read rows stay plain. `closed` says who closed it and when, beside its time, and fades its tile. `related` goes under the latest message, `actions` holds the app's menu at the end of the top line, and `preview` opens a ConversationPreview on hover or focus, except over `actions`. Stack rows in an outlined Card with dividers between them.",
+        importFrom: "components",
+        phone:
+          "The subject is cut short on one line before the new pill and its time are, and the latest message wraps to two lines. The margins narrow to 16px. A tap opens the row; the preview never opens from touch.",
+        icon: ListAltOutlinedIcon,
+        Demo: ConversationRowDemo,
       },
       {
         title: "MessageComposer",

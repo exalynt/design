@@ -23,6 +23,8 @@ export * from "./CapacityTag";
 export * from "./ConfirmDialog";
 export * from "./ConversationMessage";
 export * from "./ConversationPopout";
+export * from "./ConversationPreview";
+export * from "./ConversationRow";
 export * from "./DateTime";
 export * from "./EmptyState";
 export * from "./EngineerDetails";
