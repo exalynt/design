@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
@@ -7,6 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import MarkChatReadOutlinedIcon from "@mui/icons-material/MarkChatReadOutlined";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
@@ -27,6 +29,7 @@ import { ConversationRow } from "./ConversationRow";
 
 const [, PRIYA, , SAM] = PEOPLE;
 const PLANS = "Switching annual plans to monthly";
+const REPORTS = "Moving the reports to a weekly email";
 
 /* The latest two of six, read only once its preview opens. */
 const SPAM_MESSAGES: SampleMessage[] = [
@@ -42,9 +45,56 @@ const SPAM_MESSAGES: SampleMessage[] = [
     author: SAM,
     organization: CLIENT,
     at: "2026-10-14T16:05:00Z",
-    body: "<@usr_dana>, the test invoices I sent this afternoon all reached the inbox.",
+    body: "<@usr_dana>, the test invoices I sent this afternoon all reached the inbox, from Gmail and Outlook as well as our own mail server, so I think we can call the records done.\n\nTwo things before we close it. Could the reminder emails go out from the same domain, so they get the same records? And should DMARC move from monitoring to quarantine once we've had a week of clean reports, or would you rather wait for the end of the month?",
   },
 ];
+
+/* Closed, the reader having said the last word. */
+const REPORT_MESSAGES: SampleMessage[] = [
+  {
+    id: "msg-reports-1",
+    author: YOU,
+    organization: EXALYNT,
+    at: "2026-10-01T09:15:00Z",
+    body: "Clients keep asking for fewer report emails. Could the daily ones become one a week, on Monday mornings?",
+  },
+  {
+    id: "msg-reports-2",
+    author: PRIYA,
+    organization: EXALYNT,
+    at: "2026-10-01T11:30:00Z",
+    body: "Yes, it's a schedule change and a template that sums up the week. I'll have it out for next Monday.",
+  },
+  {
+    id: "msg-reports-3",
+    author: PRIYA,
+    organization: EXALYNT,
+    at: "2026-10-02T09:05:00Z",
+    body: "The first weekly email went out this morning. Tell me if anything in it looks off.",
+  },
+  {
+    id: "msg-reports-4",
+    author: YOU,
+    organization: EXALYNT,
+    at: "2026-10-02T13:40:00Z",
+    body: "Thanks, it came through and reads well. Closing this one.",
+  },
+];
+
+/* A row's latest message, which the row makes compact and cuts to two lines. */
+function latestOf(message: SampleMessage) {
+  return (
+    <ConversationMessage
+      author={message.author}
+      {...sideOf(message)}
+      at={message.at}
+      people={PEOPLE}
+      you={YOU}
+    >
+      {message.body}
+    </ConversationMessage>
+  );
+}
 
 /* Messages as a preview shows them: four lines at most, the first marked as the original where nothing came before. */
 function previewOf(messages: SampleMessage[], earlier: number) {
@@ -99,6 +149,7 @@ function RowMenu({ subject }: { subject: string }) {
 
 export function ConversationRowDemo() {
   const [plansOpen, setPlansOpen] = useState(false);
+  const [reportsOpen, setReportsOpen] = useState(false);
   /* How many of its messages are unread, and how many were as it opened, which its popout marks. */
   const [plansUnread, setPlansUnread] = useState(1);
   const [unreadOnOpen, setUnreadOnOpen] = useState(0);
@@ -115,7 +166,7 @@ export function ConversationRowDemo() {
 
   return (
     <>
-      <Example title="A list: hover a row for its latest messages, and click the first to open it over the page, at its new messages; Mark as unread in its title bar brings it back unread. It mentions you, the second is unread, and the last is read and closed">
+      <Example title="A list: hover a row for its latest messages, and click the first or last to open it over the page. The first opens at its new messages, and Mark as unread in its title bar brings it back unread. It mentions you, the second is unread, its latest message cut to two lines, and the last is read and closed, so it opens without a reply box">
         <Card variant="outlined" sx={{ maxWidth: 640 }}>
           <Stack divider={<Divider />}>
             <ConversationRow
@@ -127,7 +178,7 @@ export function ConversationRowDemo() {
                 setPlansOpen(true);
               }}
               at={latest.at}
-              latest={{ author: latest.author.name, body: latest.body }}
+              latest={latestOf(latest)}
               people={PEOPLE}
               count={SAMPLE_MESSAGES.length}
               unread={plansUnread}
@@ -139,7 +190,7 @@ export function ConversationRowDemo() {
               subject="Invoice emails going to spam"
               href="#ConversationRow"
               at="2026-10-14T16:05:00Z"
-              latest={{ author: SAM.name, body: SPAM_MESSAGES[1].body }}
+              latest={latestOf(SPAM_MESSAGES[1])}
               people={PEOPLE}
               count={6}
               unread={2}
@@ -152,13 +203,15 @@ export function ConversationRowDemo() {
               }}
             />
             <ConversationRow
-              subject="Moving the reports to a weekly email"
+              subject={REPORTS}
               href="#ConversationRow"
-              at="2026-10-02T13:40:00Z"
-              latest={{ author: "You", body: "Thanks, the first one came through this morning." }}
+              onOpen={() => setReportsOpen(true)}
+              at="2026-10-02T14:10:00Z"
+              latest={latestOf(REPORT_MESSAGES[3])}
               people={[YOU, PRIYA]}
-              count={4}
+              count={REPORT_MESSAGES.length}
               closed={{ by: YOU.name, at: "2026-10-02T14:10:00Z" }}
+              preview={{ messages: previewOf(REPORT_MESSAGES.slice(-2), 2), earlier: 2 }}
             />
           </Stack>
         </Card>
@@ -173,7 +226,11 @@ export function ConversationRowDemo() {
         href={\`/conversations/\${conversation.id}\`}
         onOpen={() => openPopout(conversation)}
         at={conversation.last_activity_at}
-        latest={{ author: nameOf(latest.created_by), body: latest.body }}
+        latest={
+          <ConversationMessage {...props(latest)}>
+            {latest.body}
+          </ConversationMessage>
+        }
         people={participants}
         count={conversation.message_count}
         unread={unread.count}
@@ -186,11 +243,13 @@ export function ConversationRowDemo() {
   </Stack>
 </Card>
 
-{/* Its popout: which were unread as it opened stay marked while it's read. */}
+{/* Its popout: which were unread as it opened stay marked while it's read. Closed, it still opens, with a notice in place of the reply box. */}
 <ConversationPopout
   title={conversation.subject}
   onClose={close}
   onMarkUnread={() => markUnread(conversation.id)}
+  onSend={conversation.closed ? undefined : send}
+  notice={conversation.closed && <ClosedNotice />}
 >
   {messages.map((message, index) => (
     <ConversationMessage key={message.id} {...props(message)} unread={index >= readOnOpen}>
@@ -198,6 +257,46 @@ export function ConversationRowDemo() {
     </ConversationMessage>
   ))}
 </ConversationPopout>`}
+      />
+
+      <Example title="Without the latest message, where the subject is enough">
+        <Card variant="outlined" sx={{ maxWidth: 640 }}>
+          <Stack divider={<Divider />}>
+            <ConversationRow
+              subject={PLANS}
+              href="#ConversationRow"
+              at={latest.at}
+              people={PEOPLE}
+              count={SAMPLE_MESSAGES.length}
+              unread={1}
+              mentionsYou
+            />
+            <ConversationRow
+              subject="Invoice emails going to spam"
+              href="#ConversationRow"
+              at="2026-10-14T16:05:00Z"
+              people={PEOPLE}
+              count={6}
+            />
+            <ConversationRow
+              subject={REPORTS}
+              href="#ConversationRow"
+              at="2026-10-02T14:10:00Z"
+              people={[YOU, PRIYA]}
+              count={REPORT_MESSAGES.length}
+              closed={{ by: YOU.name, at: "2026-10-02T14:10:00Z" }}
+            />
+          </Stack>
+        </Card>
+      </Example>
+      <CodeBlock
+        code={`<ConversationRow
+  subject={conversation.subject}
+  href={\`/conversations/\${conversation.id}\`}
+  at={conversation.last_activity_at}
+  people={participants}
+  count={conversation.message_count}
+/>`}
       />
 
       {plansOpen ? (
@@ -216,6 +315,36 @@ export function ConversationRowDemo() {
               you={YOU}
               original={index === 0}
               unread={index >= SAMPLE_MESSAGES.length - unreadOnOpen}
+            >
+              {message.body}
+            </ConversationMessage>
+          ))}
+        </ConversationPopout>
+      ) : null}
+
+      {reportsOpen ? (
+        <ConversationPopout
+          title={REPORTS}
+          defaultPosition={{ x: 48, y: 96 }}
+          onClose={() => setReportsOpen(false)}
+          notice={
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1, color: "text.secondary" }}>
+              <LockOutlinedIcon sx={{ fontSize: 18 }} />
+              <Typography variant="body2">
+                This conversation is closed, so no one can send messages in it.
+              </Typography>
+            </Box>
+          }
+        >
+          {REPORT_MESSAGES.map((message, index) => (
+            <ConversationMessage
+              key={message.id}
+              author={message.author}
+              {...sideOf(message)}
+              at={message.at}
+              people={PEOPLE}
+              you={YOU}
+              original={index === 0}
             >
               {message.body}
             </ConversationMessage>
