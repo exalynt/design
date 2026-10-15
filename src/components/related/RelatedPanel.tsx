@@ -22,9 +22,9 @@ type RelatedBase = {
   /** Keeps its row, and tells `onRemove` which it was. */
   id: string;
   /**
-   * Its own page: the row links there. Rendered with the theme's
-   * LinkComponent, so an app's router link works where its theme sets one on
-   * MuiButtonBase.
+   * Its own page: the row links there, opening it in a new tab so the reader
+   * keeps their place. Rendered with the theme's LinkComponent, so an app's
+   * router link works where its theme sets one on MuiButtonBase.
    */
   href?: string;
 };
@@ -172,6 +172,16 @@ function Content({ item, linked }: { item: RelatedItem; linked: boolean }) {
   );
 }
 
+/* Out of sight but still read out. */
+const visuallyHidden = {
+  position: "absolute",
+  width: "1px",
+  height: "1px",
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  whiteSpace: "nowrap",
+} as const;
+
 const row = {
   display: "flex",
   alignItems: "center",
@@ -206,6 +216,8 @@ function Row({ item, onRemove }: { item: RelatedItem; onRemove?: (item: RelatedI
       {item.href ? (
         <ButtonBase
           href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
           sx={{
             ...row,
             justifyContent: "flex-start",
@@ -214,22 +226,45 @@ function Row({ item, onRemove }: { item: RelatedItem; onRemove?: (item: RelatedI
           }}
         >
           {content}
+          <Box component="span" sx={visuallyHidden}>
+            (opens in a new tab)
+          </Box>
         </ButtonBase>
       ) : (
         <Box sx={row}>{content}</Box>
       )}
       {onRemove ? (
-        <Tooltip title="Remove">
-          <IconButton
-            className="remove"
-            size="small"
-            aria-label={`Remove ${nameOf(item)}`}
-            onClick={() => onRemove(item)}
-            sx={{ flex: "none", mr: 0.5 }}
-          >
-            <CloseRoundedIcon sx={{ fontSize: 18 }} />
-          </IconButton>
-        </Tooltip>
+        /*
+         * Its own area, the row's full height and outside the link, with room
+         * either side of the button, so a tap that misses it does nothing
+         * rather than open the thing in a new tab.
+         */
+        <Box
+          sx={{
+            alignSelf: "stretch",
+            display: "flex",
+            alignItems: "center",
+            flex: "none",
+            pl: 1,
+            pr: 0.5,
+          }}
+        >
+          <Tooltip title="Remove">
+            <IconButton
+              className="remove"
+              size="small"
+              aria-label={`Remove ${nameOf(item)}`}
+              onClick={() => onRemove(item)}
+              sx={(theme) => ({
+                color: "error.main",
+                bgcolor: `rgba(${theme.vars.palette.error.mainChannel} / 0.12)`,
+                "&:hover": { bgcolor: `rgba(${theme.vars.palette.error.mainChannel} / 0.2)` },
+              })}
+            >
+              <CloseRoundedIcon sx={{ fontSize: 18 }} />
+            </IconButton>
+          </Tooltip>
+        </Box>
       ) : null}
     </Box>
   );
@@ -243,11 +278,12 @@ function Row({ item, onRemove }: { item: RelatedItem; onRemove?: (item: RelatedI
  * first, leaving out any kind it has none of. Each row is one line: the
  * thing's icon and name, cut short with the whole name on hover, a
  * Capability's stability, and a capacity block's tag and week; `href`
- * makes a row a link to its page. Add offers only the kinds `add` names,
+ * makes a row a link to its page, in a new tab. Add offers only the kinds `add` names,
  * since what belongs depends on where it is. With nothing yet, it says so
  * in a dashed outline, and where the reader can add, what. Where the
- * reader can remove them, each row's remove button shows on its hover or
- * focus. The same card read-only, without `add` and `onRemove`, is how
+ * reader can remove them, each row's remove button, in the error color,
+ * shows on its hover or focus, in an area of its own outside the link, so
+ * a near miss opens nothing. The same card read-only, without `add` and `onRemove`, is how
  * someone who can't change it sees it.
  */
 export function RelatedPanel({
