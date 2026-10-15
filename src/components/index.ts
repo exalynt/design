@@ -52,6 +52,8 @@ export * from "./conversations/MentionField";
 export * from "./conversations/MessageComposer";
 export * from "./conversations/TypingIndicator";
 
+export * from "./related/RelatedPanel";
+
 export * from "./inputs/SearchMultiSelect";
 export * from "./inputs/SearchSelect";
 

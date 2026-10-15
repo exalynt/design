@@ -54,6 +54,7 @@ import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import ViewAgendaOutlinedIcon from "@mui/icons-material/ViewAgendaOutlined";
 import WebAssetOutlinedIcon from "@mui/icons-material/WebAssetOutlined";
 import TimelapseRoundedIcon from "@mui/icons-material/TimelapseRounded";
+import HubOutlinedIcon from "@mui/icons-material/HubOutlined";
 import { CalloutPanelDemo } from "../components/layout/CalloutPanel.demo";
 import { CapabilityCardDemo } from "../components/catalog/CapabilityCard.demo";
 import { CapacityBlockDemo } from "../components/capacity/CapacityBlock.demo";
@@ -71,6 +72,7 @@ import { ProgressFeatureDemo } from "../components/progress/ProgressFeature.demo
 import { ProgressCardDemo } from "../components/progress/ProgressCard.demo";
 import { ProgressKindDemo } from "../components/progress/ProgressKind.demo";
 import { ProgressLinkDemo } from "../components/progress/ProgressLink.demo";
+import { RelatedPanelDemo } from "../components/related/RelatedPanel.demo";
 import { ProgressMediaDemo } from "../components/progress/ProgressMedia.demo";
 import { ProgressMetricDemo } from "../components/progress/ProgressMetric.demo";
 import { ConfirmDialogDemo } from "../components/actions/ConfirmDialog.demo";
@@ -691,6 +693,21 @@ export const catalog: Group[] = [
           "It fills its container's width. The list is 280px wide, or the screen less 32px when that's narrower, opens under the field or above it where there's no room, such as a reply box at the foot of the screen, and keeps MUI's 48px rows below sm.",
         icon: AlternateEmailOutlinedIcon,
         Demo: MentionFieldDemo,
+      },
+    ],
+  },
+  {
+    title: "Related",
+    entries: [
+      {
+        title: "RelatedPanel",
+        description:
+          "What something is related to, such as the Products, Focuses, Features, Capabilities, and capacity a conversation or a Focus is about, as a card for a side column: its `title` (Related), with Add where `add` is given, `description`, a line on what belongs here, then a section per kind it has, broadest first, leaving out any kind it has none of. Each row is one line: the thing's icon and name, cut short with an ellipsis and said in full in a tooltip, a Capability's stability, or a capacity block's tag and week; `href` makes a row a link to its page. With no `items`, it shows its empty state, `empty` (Nothing related yet) in a dashed outline, saying which kinds can be added where `add` is given. `onRemove` puts a remove button on each row, shown on its hover or focus. Without `add` and `onRemove` it's read-only, as for someone who can't change it. What can be added depends on where it is, so `add` names its `kinds`, such as Features and Capabilities alone in a conversation about the Catalog; the empty state names only those. The picker is the app's, offering only those kinds: `add.onAdd` hands it the Add button to anchor a popover with a SearchSelect to.",
+        importFrom: "components",
+        phone:
+          "It fills its container's width, and every row stays one line: a long name is cut short, with the whole name a long press away. Where nothing hovers, every row's remove button shows, so a tap removes without hunting for it; it's a separate target from the row's link.",
+        icon: HubOutlinedIcon,
+        Demo: RelatedPanelDemo,
       },
     ],
   },
