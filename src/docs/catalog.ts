@@ -64,6 +64,7 @@ import { CapacityProgressDemo } from "../components/capacity/CapacityProgress.de
 import { CapacityFigureDemo } from "../components/capacity/CapacityFigure.demo";
 import { CapacityLineDemo } from "../components/capacity/CapacityLine.demo";
 import { CapacityMiniCardDemo } from "../components/capacity/CapacityMiniCard.demo";
+import { CapacityNameDemo } from "../components/capacity/CapacityName.demo";
 import { CapacityPlacementDemo } from "../components/capacity/CapacityPlacement.demo";
 import { CapacityStatusDemo } from "../components/capacity/CapacityStatus.demo";
 import { CapacityTagDemo } from "../components/capacity/CapacityTag.demo";
@@ -434,6 +435,16 @@ export const catalog: Group[] = [
       },
       {
         title: "CapacityStatus",
+      {
+        title: "CapacityName",
+        description:
+          "A capacity block at its smallest, where even CapacityTag is too much, such as a ConversationRow's foot: a 16px figure, filled to the block's size, and its `number`, in the text's own size and color. Its type isn't shown, only read out to assistive tech, as \"Core block BLK-0042\"; where the type matters on screen, use CapacityTag.",
+        importFrom: "components",
+        phone:
+          "About 80px wide with a number. In a tight row the number is cut short before the figure goes.",
+        icon: LabelOutlinedIcon,
+        Demo: CapacityNameDemo,
+      },
         description:
           "Where a block is in its life, for CapacityBlock's `badge`: Available, Scheduled, In progress, or Fulfilled, each with its own icon and color: grey, blue (info), violet, and green (success). In progress's violet is its own, the same under every theme, since no palette role is free: primary and info are often the same blue, and warning is left for CapacityBlock's `attention`. A small outlined Chip with the icon and word, or with `iconOnly` the icon alone, saying the word on hover and to assistive tech.",
         importFrom: "components",

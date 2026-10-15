@@ -26,6 +26,7 @@ export * from "./capacity/CapacityEngineer";
 export * from "./capacity/CapacityFigure";
 export * from "./capacity/CapacityLine";
 export * from "./capacity/CapacityMiniCard";
+export * from "./capacity/CapacityName";
 export * from "./capacity/CapacityPlacement";
 export * from "./capacity/CapacityProgress";
 export * from "./capacity/CapacityStatus";
