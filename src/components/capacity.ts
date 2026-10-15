@@ -29,6 +29,22 @@ export const CAPACITY_BLOCKS: Record<CapacityBlockId, CapacityBlockSize> = {
   dedicated: { id: "dedicated", name: "Dedicated", units: 4, referenceHours: 40 },
 };
 
+/*
+ * Where a block is in its life: Available until it has a week, Scheduled
+ * once it has one, In progress during that week, and Fulfilled once the
+ * week's checkpoint is done. The app decides which; this is the wording.
+ */
+export const CAPACITY_STATUS_IDS = ["available", "scheduled", "in_progress", "fulfilled"] as const;
+
+export type CapacityStatusId = (typeof CAPACITY_STATUS_IDS)[number];
+
+export const CAPACITY_STATUSES: Record<CapacityStatusId, { id: CapacityStatusId; name: string }> = {
+  available: { id: "available", name: "Available" },
+  scheduled: { id: "scheduled", name: "Scheduled" },
+  in_progress: { id: "in_progress", name: "In progress" },
+  fulfilled: { id: "fulfilled", name: "Fulfilled" },
+};
+
 /** The capacity units in one engineer's full capacity: a full CapacityFigure. */
 export const WEEK_UNITS = 4;
 

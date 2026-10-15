@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
-import PlayCircleOutlineRoundedIcon from "@mui/icons-material/PlayCircleOutlineRounded";
+import CenterFocusStrongOutlinedIcon from "@mui/icons-material/CenterFocusStrongOutlined";
+import WebAssetOutlinedIcon from "@mui/icons-material/WebAssetOutlined";
 import { CodeBlock } from "../docs/CodeBlock";
 import { Example } from "../docs/Example";
 import { CapacityFigure } from "./CapacityFigure";
@@ -19,26 +19,26 @@ export function CapacityLineDemo() {
             <CapacityFigure units={2} />
           </Box>
           <CapacityLine
-            icon={<FolderOutlinedIcon />}
+            icon={<WebAssetOutlinedIcon />}
             action
             menu
             onClick={() => {}}
-            hint="Put it on a project so it can be scheduled."
+            hint="Put it on a product so it can be scheduled."
           >
-            Assign project
+            Assign product
           </CapacityLine>
-          <CapacityLine icon={<FolderOutlinedIcon />} menu onClick={() => {}}>
+          <CapacityLine icon={<WebAssetOutlinedIcon />} menu onClick={() => {}}>
             Customer Portal
           </CapacityLine>
-          <CapacityLine icon={<FolderOutlinedIcon sx={{ color: "text.disabled" }} />} muted>
-            No project yet
+          <CapacityLine icon={<WebAssetOutlinedIcon sx={{ color: "text.disabled" }} />} muted>
+            No product yet
           </CapacityLine>
           <CapacityLine
-            icon={<PlayCircleOutlineRoundedIcon />}
+            icon={<CenterFocusStrongOutlinedIcon />}
             disabled
-            hint="Assign a project first; the focus comes from its backlog."
+            hint="Assign a product first; a Focus comes from its board."
           >
-            Choose a focus
+            Choose a Focus
           </CapacityLine>
           <CapacityLine icon={calendar} action onClick={() => {}}>
             Schedule
@@ -56,8 +56,8 @@ export function CapacityLineDemo() {
       <CapacityLine
         icon={<CalendarMonthOutlinedIcon />}
         action
-        disabled={!capacity.project_id}
-        hint={capacity.project_id ? "Choose a week for it on the schedule." : "Assign a project first."}
+        disabled={!capacity.product_id}
+        hint={capacity.product_id ? "Choose a week for it on the schedule." : "Assign a product first."}
         onClick={() => navigate(scheduleUrl(capacity))}
       >
         Schedule
@@ -65,7 +65,7 @@ export function CapacityLineDemo() {
     )
   }
 >
-  <CapacityPlacement project={project?.name ?? null} focus={focus?.name} upNext={next?.name} />
+  <CapacityPlacement product={product?.name ?? null} focus={focus?.name} upNext={next?.name} />
 </CapacityBlock>`}
       />
     </>

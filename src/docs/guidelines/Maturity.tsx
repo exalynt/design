@@ -111,9 +111,9 @@ const project = projectMaturity([88, scheduling, 38, null]); // 48
             card, with <code>focusable={"{false}"}</code> since the card is the link.
           </li>
           <li>
-            <strong>A Feature:</strong> at 24px, with the percentage beside it, on its card in a
-            backlog and in lists of Features. Pass <code>subject=&quot;feature&quot;</code> and the
-            Feature&rsquo;s name as <code>label</code>.
+            <strong>A Feature:</strong> at 24px, on its card in a backlog and in lists of Features.
+            Pass <code>subject=&quot;feature&quot;</code> and the Feature&rsquo;s name as{" "}
+            <code>label</code>.
           </li>
           <li>
             <strong>

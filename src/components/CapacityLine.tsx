@@ -21,11 +21,11 @@ export type CapacityLineProps = {
   onClick?: (anchor: HTMLElement) => void;
   /** Opens a picker or menu: adds the chevron. */
   menu?: boolean;
-  /** The primary-colored prompt to do something, such as "Assign project" or "Schedule". */
+  /** The primary-colored prompt to do something, such as "Assign product" or "Schedule". */
   action?: boolean;
   /** Holds its place until it can be used. */
   disabled?: boolean;
-  /** Says something isn't there yet, such as "No project yet". */
+  /** Says something isn't there yet, such as "No product yet". */
   muted?: boolean;
 };
 

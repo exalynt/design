@@ -3,16 +3,26 @@
 // like whichever brand that theme is.
 
 export * from "./CalloutPanel";
+export * from "./CapabilityCard";
 export * from "./CapacityBlock";
 export * from "./CapacityDetails";
 export * from "./CapacityEngineer";
 export * from "./CapacityFigure";
 export * from "./CapacityLine";
+export * from "./CapacityMiniCard";
 export * from "./CapacityPlacement";
+export * from "./ProgressCapability";
+export * from "./ProgressCard";
+export * from "./ProgressKind";
+export * from "./ProgressMedia";
+export * from "./ProgressMetric";
+export * from "./CapacityStatus";
+export * from "./CapacityTag";
 export * from "./ConfirmDialog";
 export * from "./DateTime";
 export * from "./EmptyState";
 export * from "./EngineerDetails";
+export * from "./FeatureCard";
 export * from "./EngineerLevelBadge";
 export * from "./EngineerLevelDetails";
 export * from "./MaturityDetails";
@@ -68,8 +78,21 @@ export {
   CAPACITY_BLOCKS,
   CAPACITY_BLOCK_IDS,
   CAPACITY_DOCS_URL,
+  CAPACITY_STATUSES,
+  CAPACITY_STATUS_IDS,
   WEEK_UNITS,
   capacitySize,
   type CapacityBlockId,
   type CapacityBlockSize,
+  type CapacityStatusId,
 } from "./capacity";
+
+// Progress: what came of work on a Focus within a block of capacity, in the
+// readme's forms of value (PROGRESS_DOCS_URL).
+export {
+  PROGRESS_DOCS_URL,
+  PROGRESS_KINDS,
+  PROGRESS_KIND_IDS,
+  type ProgressKindId,
+  type ProgressKindInfo,
+} from "./progress";

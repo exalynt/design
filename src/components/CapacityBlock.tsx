@@ -1,23 +1,27 @@
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import DragIndicatorRoundedIcon from "@mui/icons-material/DragIndicatorRounded";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import type { DragEvent, KeyboardEvent, ReactNode } from "react";
-import {
-  CAPACITY_BLOCKS,
-  ICON_COLUMN,
-  ICON_GAP,
-  capacitySize,
-  type CapacityBlockId,
-} from "./capacity";
-import { CapacityDetails } from "./CapacityDetails";
-import { CapacityFigure } from "./CapacityFigure";
-import { DetailsPopover } from "./DetailsPopover";
+import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
+import type { DragEvent, KeyboardEvent, ReactElement, ReactNode } from "react";
+import type { CapacityBlockId } from "./capacity";
+import { CapacityBlockHeading } from "./CapacityBlockHeading";
+
+/** Why a block needs someone's attention, from the app. */
+export type CapacityAttention = {
+  /** The kind of attention, in a word or two: "Unassigned", "Overbooked". */
+  label: string;
+  /** An icon for that kind, such as PersonOffOutlined for "Unassigned". A warning sign without one. */
+  icon?: ReactElement;
+  /** Said on hover: what's wrong, and what would fix it. */
+  hint?: string;
+};
 
 export type CapacityBlockProps = {
   block: CapacityBlockId;
-  /** What the block is on, under its size: its project and focus, from the app. */
+  /** Its number, to refer to it by: "BLK-0042". At the top left, after the handle or lock. */
+  number?: string;
+  /** What the block is on, under its size: its product and Focus (CapacityPlacement), from the app. */
   children?: ReactNode;
   /**
    * Pinned to the foot over a hairline: who works on it (CapacityEngineer) and
@@ -25,8 +29,13 @@ export type CapacityBlockProps = {
    * with the figure.
    */
   footer?: ReactNode;
-  /** Beside the name, such as the app's status chip for it. */
+  /** At the top right, across from the drag handle or lock: its CapacityStatus. */
   badge?: ReactNode;
+  /**
+   * Needs someone to act on it: edged and tinted in warning, with what kind of
+   * attention it needs at the top. One reason at a time, the most pressing.
+   */
+  attention?: CapacityAttention;
   /** In its week on a schedule: tinted and edged in primary, like a calendar event. */
   scheduled?: boolean;
   /** Picked, to act on it: outlined in primary. */
@@ -46,20 +55,22 @@ export type CapacityBlockProps = {
   dragHint?: string;
 };
 
-const handle = { fontSize: 18, color: "text.secondary", mt: 0.25 } as const;
+const handle = { fontSize: 18, color: "text.secondary" } as const;
 
 /*
  * A capacity block as a card, the same wherever it is: waiting for a week,
  * in its week on a schedule, or being moved, so a block always looks like
- * itself. Its figure, its name, which opens CapacityDetails, and its size in
- * words, then what the app says it's on and when. One card per block, never
- * one for several.
+ * itself. A top row with its drag handle or lock, its number, and its status, then its
+ * heading (CapacityBlockHeading) across the full width, then what the app says
+ * it's on and when. One card per block, never one for several.
  */
 export function CapacityBlock({
   block,
+  number,
   children,
   footer,
   badge,
+  attention,
   scheduled = false,
   selected = false,
   preview = false,
@@ -70,11 +81,22 @@ export function CapacityBlock({
   onDragEnd,
   dragHint,
 }: CapacityBlockProps) {
-  const { name, units } = CAPACITY_BLOCKS[block];
   const highlighted = selected || preview;
   const draggable = !preview && Boolean(onDragStart);
   const clickable = !preview && Boolean(onClick);
   const interactive = draggable || clickable;
+
+  const grip = preview ? (
+    <DragIndicatorRoundedIcon sx={handle} />
+  ) : draggable ? (
+    <Tooltip title={dragHint ?? ""} describeChild>
+      <DragIndicatorRoundedIcon sx={handle} />
+    </Tooltip>
+  ) : locked ? (
+    <Tooltip title={locked} describeChild>
+      <LockOutlinedIcon sx={{ fontSize: 16, color: "text.disabled" }} />
+    </Tooltip>
+  ) : null;
 
   return (
     <Box
@@ -98,8 +120,11 @@ export function CapacityBlock({
       sx={(theme) => {
         const tint = (alpha: number) =>
           `rgba(${theme.vars.palette.primary.mainChannel} / ${alpha})`;
+        const warn = (alpha: number) =>
+          `rgba(${theme.vars.palette.warning.mainChannel} / ${alpha})`;
         return {
           display: "flex",
+          flexDirection: "column",
           gap: 1,
           width: "100%",
           boxSizing: "border-box",
@@ -109,9 +134,23 @@ export function CapacityBlock({
           border: 1,
           borderStyle: preview ? "dashed" : "solid",
           borderRadius: 1,
-          borderColor: highlighted ? "primary.main" : scheduled ? tint(0.4) : "divider",
-          bgcolor: highlighted ? "action.selected" : scheduled ? tint(0.14) : "background.paper",
-          ...(scheduled && { borderLeft: 4, borderLeftColor: "primary.main" }),
+          borderColor: highlighted
+            ? "primary.main"
+            : attention
+              ? warn(0.6)
+              : scheduled
+                ? tint(0.4)
+                : "divider",
+          bgcolor: highlighted
+            ? "action.selected"
+            : attention
+              ? warn(0.1)
+              : scheduled
+                ? tint(0.14)
+                : "background.paper",
+          ...(attention
+            ? { borderLeft: 4, borderLeftColor: "warning.main" }
+            : scheduled && { borderLeft: 4, borderLeftColor: "primary.main" }),
           boxShadow: selected ? `inset 0 0 0 1px ${theme.vars.palette.primary.main}` : "none",
           opacity: faded ? 0.4 : 1,
           pointerEvents: preview ? "none" : "auto",
@@ -120,74 +159,86 @@ export function CapacityBlock({
           "&:hover":
             highlighted || !interactive
               ? {}
-              : scheduled
-                ? { bgcolor: tint(0.22), borderColor: "primary.main" }
-                : { borderColor: "text.secondary" },
+              : attention
+                ? { bgcolor: warn(0.16), borderColor: "warning.main" }
+                : scheduled
+                  ? { bgcolor: tint(0.22), borderColor: "primary.main" }
+                  : { borderColor: "text.secondary" },
           "&:focus-visible": { outline: 2, outlineColor: "primary.main", outlineOffset: 2 },
         };
       }}
     >
-      {preview ? (
-        <DragIndicatorRoundedIcon sx={handle} />
-      ) : draggable ? (
-        <Tooltip title={dragHint ?? ""} describeChild>
-          <DragIndicatorRoundedIcon sx={handle} />
-        </Tooltip>
-      ) : locked ? (
-        <Tooltip title={locked} describeChild>
-          <LockOutlinedIcon sx={{ fontSize: 16, color: "text.disabled", mt: 0.25 }} />
-        </Tooltip>
-      ) : null}
-      <Box sx={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 1 }}>
-        {/* The figure, its name and size, then the badge in a column of its own, so it
-            never sits over the size and the text stops short of it. */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: ICON_GAP }}>
-          <CapacityFigure units={units} size={ICON_COLUMN * 2} />
-          <Box sx={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 0.25 }}>
-            <Box sx={{ display: "flex", minWidth: 0 }}>
-              <DetailsPopover title={<CapacityDetails block={block} />}>
-                <Typography
-                  variant="subtitle2"
-                  component="span"
-                  noWrap
-                  tabIndex={preview ? undefined : 0}
-                  sx={{
-                    borderRadius: 0.5,
-                    cursor: "help",
-                    "&:focus-visible": {
-                      outline: 2,
-                      outlineColor: "primary.main",
-                      outlineOffset: 2,
-                    },
-                  }}
-                >
-                  {name} block
-                </Typography>
-              </DetailsPopover>
+      {/* The handle or lock, its number, what attention it needs, and the status share
+          a row of their own above the heading, so none takes width from the heading's
+          words. The attention is what's cut short where the row is narrow. */}
+      {grip || number || attention || badge ? (
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1, minHeight: 24 }}>
+          {grip}
+          {number ? (
+            <Box
+              component="span"
+              sx={{
+                flex: "none",
+                color: "text.secondary",
+                fontSize: 12.5,
+                fontVariantNumeric: "tabular-nums",
+              }}
+            >
+              {number}
             </Box>
-            <Typography variant="caption" component="span" sx={{ color: "text.secondary" }}>
-              {capacitySize(units)}
-            </Typography>
-          </Box>
-          {badge ? <Box sx={{ flex: "none", display: "flex" }}>{badge}</Box> : null}
+          ) : null}
+          {attention ? <Attention {...attention} /> : null}
+          {badge ? <Box sx={{ flex: "none", display: "flex", ml: "auto" }}>{badge}</Box> : null}
         </Box>
-        {children || footer ? (
-          <Box
-            onClick={clickable ? (event) => event.stopPropagation() : undefined}
-            onKeyDown={clickable ? (event) => event.stopPropagation() : undefined}
-            sx={{ display: "flex", flexDirection: "column", gap: 1, flex: 1, minWidth: 0 }}
-          >
-            {children}
-            {footer ? (
-              <Box
-                sx={{ mt: "auto", pt: 1, borderTop: 1, borderColor: "divider", cursor: "default" }}
-              >
-                {footer}
-              </Box>
-            ) : null}
-          </Box>
-        ) : null}
-      </Box>
+      ) : null}
+      <CapacityBlockHeading block={block} focusable={!preview} />
+      {children || footer ? (
+        <Box
+          onClick={clickable ? (event) => event.stopPropagation() : undefined}
+          onKeyDown={clickable ? (event) => event.stopPropagation() : undefined}
+          sx={{ display: "flex", flexDirection: "column", gap: 1, flex: 1, minWidth: 0 }}
+        >
+          {children}
+          {footer ? (
+            <Box
+              sx={{ mt: "auto", pt: 1, borderTop: 1, borderColor: "divider", cursor: "default" }}
+            >
+              {footer}
+            </Box>
+          ) : null}
+        </Box>
+      ) : null}
     </Box>
+  );
+}
+
+/*
+ * What attention a block needs, in warning, as the top row's text: its icon
+ * and its label, cut short where the row is narrow, and its hint on hover.
+ */
+function Attention({ label, icon, hint }: CapacityAttention) {
+  return (
+    <Tooltip title={hint ?? label} describeChild>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 0.5,
+          minWidth: 0,
+          color: "warning.main",
+          fontSize: 12.5,
+          fontWeight: 600,
+          "& .MuiSvgIcon-root": { fontSize: 16, flex: "none" },
+        }}
+      >
+        {icon ?? <WarningAmberRoundedIcon />}
+        <Box
+          component="span"
+          sx={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+        >
+          {label}
+        </Box>
+      </Box>
+    </Tooltip>
   );
 }

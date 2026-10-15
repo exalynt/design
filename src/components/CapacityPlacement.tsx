@@ -1,85 +1,102 @@
 import Box from "@mui/material/Box";
-import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
+import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
+import CenterFocusStrongOutlinedIcon from "@mui/icons-material/CenterFocusStrongOutlined";
 import PlayCircleOutlineRoundedIcon from "@mui/icons-material/PlayCircleOutlineRounded";
-import type { ReactNode } from "react";
+import WebAssetOutlinedIcon from "@mui/icons-material/WebAssetOutlined";
 import { CapacityLine } from "./CapacityLine";
 
 export type CapacityPlacementProps = {
-  /** The project's name, or null while the block is on none. */
-  project: string | null;
-  /** What on the project's backlog it's kept on, or null to follow whatever is first in Up next. */
+  /**
+   * The client organization it was bought for, as a line above the product.
+   * Pass it where blocks from several organizations show together, such as
+   * Exalynt's admin views; leave it out in a client's own view.
+   */
+  organization?: string;
+  /** The product's name, or null while the block is on none. */
+  product: string | null;
+  /** The Focus on the product's board it's kept on, or null to follow whatever is first in Up next. */
   focus?: string | null;
-  /** The focus's icon in its color, such as its Feature or bug icon. */
-  focusIcon?: ReactNode;
-  /** What's first in Up next now, shown after "Up next" while it has no focus of its own. */
+  /** The Focus first in Up next now, shown after "Up next" while it has no Focus of its own. */
   upNext?: string;
-  /** Opens the app's project picker at the line. Without it, the line is read-only. */
-  onProjectClick?: (anchor: HTMLElement) => void;
-  /** Opens the app's focus picker at the line. Without it, the line is read-only. */
+  /** Opens the app's product picker at the line. Without it, the line is read-only. */
+  onProductClick?: (anchor: HTMLElement) => void;
+  /** Opens the app's Focus picker at the line. Without it, the line is read-only. */
   onFocusClick?: (anchor: HTMLElement) => void;
 };
 
 const UP_NEXT_HINT =
-  "No Feature or bug chosen, so it goes to whatever is first in Up next on the project's backlog, even as that changes.";
+  "No Focus chosen, so it goes to whatever is first in Up next on the product's board, even as that changes.";
 
 /*
- * Where a block goes, as two CapacityLines for CapacityBlock's children: the project
- * it's on, then what it goes towards there. A block on no project asks to be
- * assigned one, or says it has none where it can't be, and holds the focus
- * line's place, disabled, so assigning one doesn't resize the card. A block
- * on a project with no focus of its own follows Up next, which is a choice,
- * not something missing. Names are cut short rather than stretching the
- * card, and each line says in full what it is on hover.
+ * Where a block goes, as two CapacityLines for CapacityBlock's children: the
+ * product its work goes to, then the Focus on that product's board it goes
+ * towards, under the organization it was bought for where that's given. The
+ * organization never changes, so its line is read-only. A block on no
+ * product asks to be assigned one, or says it has none where it can't be,
+ * and holds the Focus line's place, disabled, so assigning one doesn't
+ * resize the card. A block on a product with no Focus of its own follows Up
+ * next, which is a choice, not something missing. The icons are the
+ * portal's: a product is software in a window, and a Focus its own target.
+ * Names are cut short rather than stretching the card, and each line says
+ * in full what it is on hover.
  */
 export function CapacityPlacement({
-  project,
+  organization,
+  product,
   focus = null,
-  focusIcon,
   upNext,
-  onProjectClick,
+  onProductClick,
   onFocusClick,
 }: CapacityPlacementProps) {
   const change = (what: string, editable: boolean) => (editable ? ` Click to ${what}.` : "");
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
-      {project ? (
+      {organization ? (
         <CapacityLine
-          icon={<FolderOutlinedIcon />}
-          hint={`${project}: the project this block's work goes to.${change("move it", Boolean(onProjectClick))}`}
-          onClick={onProjectClick}
-          menu={Boolean(onProjectClick)}
+          icon={<BusinessOutlinedIcon />}
+          hint={`${organization}: the organization this block was bought for.`}
         >
-          {project}
+          {organization}
         </CapacityLine>
-      ) : onProjectClick ? (
+      ) : null}
+      {product ? (
         <CapacityLine
-          icon={<FolderOutlinedIcon />}
+          icon={<WebAssetOutlinedIcon />}
+          hint={`${product}: the product this block's work goes to.${change("move it", Boolean(onProductClick))}`}
+          onClick={onProductClick}
+          menu={Boolean(onProductClick)}
+        >
+          {product}
+        </CapacityLine>
+      ) : onProductClick ? (
+        <CapacityLine
+          icon={<WebAssetOutlinedIcon />}
           action
           menu
-          hint="Put it on a project so it can be scheduled."
-          onClick={onProjectClick}
+          hint="Put it on a product so it can be scheduled."
+          onClick={onProductClick}
         >
-          Assign project
+          Assign product
         </CapacityLine>
       ) : (
-        <CapacityLine icon={<FolderOutlinedIcon sx={{ color: "text.disabled" }} />} muted>
-          No project yet
+        <CapacityLine icon={<WebAssetOutlinedIcon sx={{ color: "text.disabled" }} />} muted>
+          No product yet
         </CapacityLine>
       )}
 
-      {!project ? (
+      {!product ? (
         <CapacityLine
-          icon={<PlayCircleOutlineRoundedIcon />}
+          icon={<CenterFocusStrongOutlinedIcon />}
           disabled
-          hint="Assign a project first; the focus comes from its backlog."
+          hint="Assign a product first; a Focus comes from its board."
         >
-          Choose a focus
+          Choose a Focus
         </CapacityLine>
       ) : focus ? (
         <CapacityLine
-          icon={focusIcon ?? <PlayCircleOutlineRoundedIcon />}
-          hint={`${focus}: what this block goes towards.${change("change it, or follow Up next instead", Boolean(onFocusClick))}`}
+          icon={<CenterFocusStrongOutlinedIcon />}
+          hint={`${focus}: the Focus this block goes towards.${change("change it, or follow Up next instead", Boolean(onFocusClick))}`}
           onClick={onFocusClick}
           menu={Boolean(onFocusClick)}
         >
@@ -88,7 +105,7 @@ export function CapacityPlacement({
       ) : (
         <CapacityLine
           icon={<PlayCircleOutlineRoundedIcon sx={{ color: "primary.main" }} />}
-          hint={`${UP_NEXT_HINT}${change("keep it on one Feature or bug instead", Boolean(onFocusClick))}`}
+          hint={`${UP_NEXT_HINT}${change("keep it on one Focus instead", Boolean(onFocusClick))}`}
           onClick={onFocusClick}
           menu={Boolean(onFocusClick)}
         >

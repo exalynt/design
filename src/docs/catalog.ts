@@ -1,9 +1,15 @@
 import type { ComponentType } from "react";
 import type { SvgIconProps } from "@mui/material/SvgIcon";
+import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
+import BoltOutlinedIcon from "@mui/icons-material/BoltOutlined";
+import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
+import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
+import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import GridOnOutlinedIcon from "@mui/icons-material/GridOnOutlined";
 import TableRowsOutlinedIcon from "@mui/icons-material/TableRowsOutlined";
 import DevicesOutlinedIcon from "@mui/icons-material/DevicesOutlined";
+import ViewStreamOutlinedIcon from "@mui/icons-material/ViewStreamOutlined";
 import ViewWeekOutlinedIcon from "@mui/icons-material/ViewWeekOutlined";
 import WidgetsOutlinedIcon from "@mui/icons-material/WidgetsOutlined";
 import TableChartOutlinedIcon from "@mui/icons-material/TableChartOutlined";
@@ -37,17 +43,28 @@ import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import ViewAgendaOutlinedIcon from "@mui/icons-material/ViewAgendaOutlined";
 import WebAssetOutlinedIcon from "@mui/icons-material/WebAssetOutlined";
+import TimelapseRoundedIcon from "@mui/icons-material/TimelapseRounded";
 import { CalloutPanelDemo } from "../components/CalloutPanel.demo";
+import { CapabilityCardDemo } from "../components/CapabilityCard.demo";
 import { CapacityBlockDemo } from "../components/CapacityBlock.demo";
 import { CapacityDetailsDemo } from "../components/CapacityDetails.demo";
 import { CapacityEngineerDemo } from "../components/CapacityEngineer.demo";
 import { CapacityFigureDemo } from "../components/CapacityFigure.demo";
 import { CapacityLineDemo } from "../components/CapacityLine.demo";
+import { CapacityMiniCardDemo } from "../components/CapacityMiniCard.demo";
 import { CapacityPlacementDemo } from "../components/CapacityPlacement.demo";
+import { CapacityStatusDemo } from "../components/CapacityStatus.demo";
+import { CapacityTagDemo } from "../components/CapacityTag.demo";
+import { ProgressCapabilityDemo } from "../components/ProgressCapability.demo";
+import { ProgressCardDemo } from "../components/ProgressCard.demo";
+import { ProgressKindDemo } from "../components/ProgressKind.demo";
+import { ProgressMediaDemo } from "../components/ProgressMedia.demo";
+import { ProgressMetricDemo } from "../components/ProgressMetric.demo";
 import { ConfirmDialogDemo } from "../components/ConfirmDialog.demo";
 import { DateTimeDemo } from "../components/DateTime.demo";
 import { EmptyStateDemo } from "../components/EmptyState.demo";
 import { EngineerDetailsDemo } from "../components/EngineerDetails.demo";
+import { FeatureCardDemo } from "../components/FeatureCard.demo";
 import { EngineerLevelBadgeDemo } from "../components/EngineerLevelBadge.demo";
 import { EngineerLevelDetailsDemo } from "../components/EngineerLevelDetails.demo";
 import { PageHeaderDemo } from "../components/PageHeader.demo";
@@ -318,6 +335,31 @@ export const catalog: Group[] = [
     ],
   },
   {
+    title: "Catalog",
+    entries: [
+      {
+        title: "FeatureCard",
+        description:
+          "A Feature with its Capabilities, as one card: its icon, its name, and its maturity as a 24px ring with its percentage, worked out from its Capabilities and listing them in its popover; its `description`; a row per Capability, as on a CapabilityCard; and, with `onAddCapability`, Add a Capability. Editing and dragging are the app's: `grip` shows the grips, and `actions` hold the Feature's and each Capability's menus.",
+        importFrom: "components",
+        phone:
+          "It fills its container's width. Its name and each Capability's are cut short on one line, with the whole name on hover; its maturity and each Capability's stability always show. Drag doesn't work on touch, so give a phone menus to move things with.",
+        icon: WidgetsOutlinedIcon,
+        Demo: FeatureCardDemo,
+      },
+      {
+        title: "CapabilityCard",
+        description:
+          "A Capability on its own, in no Feature: its bolt, its name, and its stability as a short mark, or Draft for one nobody has started on, in one line. `grip` shows its drag grip, `actions` holds its menu, and `onClick` makes it a button.",
+        importFrom: "components",
+        phone:
+          "It fills its container's width; the name is cut short first, and its stability and menu always show.",
+        icon: BoltOutlinedIcon,
+        Demo: CapabilityCardDemo,
+      },
+    ],
+  },
+  {
     title: "Capacity",
     entries: [
       {
@@ -330,22 +372,52 @@ export const catalog: Group[] = [
       {
         title: "CapacityBlock",
         description:
-          "A capacity block as a card, the same wherever it is: its figure, its name, which opens CapacityDetails, and its size in words, then `children`, normally CapacityPlacement (its project and focus), and `footer` (when it's worked on). `selected`, `scheduled`, `preview`, `faded`, and `locked` are its states; `onClick` and `onDragStart` make it act. One card per block.",
+          "A capacity block as a card, the same wherever it is: a top row with its drag handle or lock, its `number`, and its status (`badge`, a CapacityStatus), then its figure, its badge, and its size in words across the full width, opening CapacityDetails, then `children`, normally CapacityPlacement (its product and Focus), and `footer` (when it's worked on). `selected`, `scheduled`, `preview`, `faded`, and `locked` are its states, and `attention` edges it in warning with the kind of attention it needs; `onClick` and `onDragStart` make it act. One card per block.",
         importFrom: "components",
         phone:
-          "It fills its container's width, and long project names are cut short rather than wrapping. Put cards in a Grid with `size={{ xs: 12, sm: 4 }}` so they stack on phones. Dragging doesn't work on touch, so give a phone another way to schedule, such as the footer's Schedule button.",
+          "It fills its container's width, and long product names are cut short rather than wrapping. Put cards in a Grid with `size={{ xs: 12, sm: 4 }}` so they stack on phones. Dragging doesn't work on touch, so give a phone another way to schedule, such as the footer's Schedule button.",
         icon: ViewWeekOutlinedIcon,
         Demo: CapacityBlockDemo,
       },
       {
         title: "CapacityPlacement",
         description:
-          "Where a block goes, as two lines for CapacityBlock's children: its project, then its focus. With no project it asks to be assigned one and holds the focus line, disabled; on a project with no focus it follows Up next. `onProjectClick` and `onFocusClick` open the app's pickers; without them the lines are read-only.",
+          "Where a block goes, as lines for CapacityBlock's children: its product, then the Focus on that product's board it goes towards, under its client organization where `organization` is given, for views that mix organizations. With no product it asks to be assigned one and holds the Focus line, disabled; on a product with no Focus it follows Up next. The icons are the portal's for a product, a Focus, and Up next. `onProductClick` and `onFocusClick` open the app's pickers; without them the lines are read-only.",
         importFrom: "components",
         phone:
           "It fills the card's width, and long names are cut short with an ellipsis, saying them in full on hover. Each line is a small MUI button, the same height as the portal's other inline controls; the picker it opens should use SearchSelect, whose rows are 48px on phones.",
         icon: AccountTreeOutlinedIcon,
         Demo: CapacityPlacementDemo,
+      },
+      {
+        title: "CapacityMiniCard",
+        description:
+          "A capacity block where it's related to something else, such as the blocks a Focus, a conversation, or progress came from: a 24px figure and its badge, its week, and its status's icon, then its engineer and number, in two lines. `details` opens CapacityDetails over the figure and badge, for readers who may not know the sizes. A reference, not the block: `href` goes to the block's page, rendered with the theme's LinkComponent so an app's router link works.",
+        importFrom: "components",
+        phone:
+          "It fills its container's width, and its text never wraps; a long week or number is cut short. The whole card is the link, about 60px tall, so it's an easy tap. Stack them, one per row, rather than side by side.",
+        icon: ViewStreamOutlinedIcon,
+        Demo: CapacityMiniCardDemo,
+      },
+      {
+        title: "CapacityTag",
+        description:
+          "A capacity block named inline, where a card is too much: a 24px figure, its badge, and its `number`, such as in a byline saying which block progress came from. `details` opens CapacityDetails over it; inside a link or button, pass `inLink` so it takes no focus of its own.",
+        importFrom: "components",
+        phone:
+          "About 150px wide with a number, and it never wraps, so give it a line of its own where a row is tight. A tap opens its popover.",
+        icon: LabelOutlinedIcon,
+        Demo: CapacityTagDemo,
+      },
+      {
+        title: "CapacityStatus",
+        description:
+          "Where a block is in its life, for CapacityBlock's `badge`: Available, Scheduled, In progress, or Fulfilled, each with its own icon and color: grey, blue (info), violet, and green (success). In progress's violet is its own, the same under every theme, since no palette role is free: primary and info are often the same blue, and warning is left for CapacityBlock's `attention`. A small outlined Chip with the icon and word, or with `iconOnly` the icon alone, saying the word on hover and to assistive tech.",
+        importFrom: "components",
+        phone:
+          "The Chip never wraps; In progress is the widest, at about 100px. Use `iconOnly` where cards sit four or more across, or in a week's column. On a phone, where cards stack full width, show the word; the icon alone says it on a tap.",
+        icon: TimelapseRoundedIcon,
+        Demo: CapacityStatusDemo,
       },
       {
         title: "CapacityEngineer",
@@ -386,6 +458,61 @@ export const catalog: Group[] = [
           "The card is 300px wide, or the screen less 24px when that's narrower. With `card={false}` it fills its container.",
         icon: ChatBubbleOutlineOutlinedIcon,
         Demo: CapacityDetailsDemo,
+      },
+    ],
+  },
+  {
+    title: "Progress",
+    entries: [
+      {
+        title: "ProgressCard",
+        description:
+          "One record of progress, what came of work on a Focus within a block of capacity, for a Focus's listing and a block's. One column: its kind and day, what happened as its headline, then only the sections it has (Capabilities, results, and what shows it), and at its foot who reported it and `source`, where it came from. Edged in its kind's color so a listing scans by kind. A Capability made more stable with no words of its own leads with the level it reached. A first pass, to experiment with.",
+        importFrom: "components",
+        phone:
+          "One column at every width, so nothing moves on a phone. Results tiles fit as many to a row as there's room for, one on a phone; media thumbnails wrap; the foot wraps `source` under who reported it.",
+        icon: ArticleOutlinedIcon,
+        Demo: ProgressCardDemo,
+      },
+      {
+        title: "ProgressKind",
+        description:
+          "What kind of progress a record is: New capability, More stable, Retired, Improvement, or Clarity, as a small tinted Chip with its icon and name, or with `iconOnly` the icon alone. Colored by what it did: primary for a Capability added or made more stable, secondary for one retired, success for Improvement, and warning for Clarity, with an icon of its own each. Hover, focus, or tap says what it means to the client.",
+        importFrom: "components",
+        phone:
+          "A 24px Chip that never wraps; New capability is the widest, at about 130px. A tap opens its popover.",
+        icon: CategoryOutlinedIcon,
+        Demo: ProgressKindDemo,
+      },
+      {
+        title: "ProgressCapability",
+        description:
+          "One Capability a record of progress touched, as a small outlined card that sits beside others and wraps: its icon, its name, cut short with the whole name on hover, and its level as a short stability mark, or for one made more stable its old level, faded, to its new. What the progress did to it is in its outline, named in the outline's top edge: New in primary, More stable in the color of the level it reached, Retired dashed and muted with its name struck through. One it was only about has the plain outline.",
+        importFrom: "components",
+        phone:
+          "At most the width of its container; a long name is cut short first, and the marks always show. A tap on a mark opens its popover; the full name is a long press away. Leave room above a row of them for the change in their outlines.",
+        icon: BoltOutlinedIcon,
+        Demo: ProgressCapabilityDemo,
+      },
+      {
+        title: "ProgressMetric",
+        description:
+          "Something measured before the work and after it, as a tile: what was measured, the result after, large, and what it was before, muted. Both are free text, so neither is colored as better or worse.",
+        importFrom: "components",
+        phone:
+          "It fills its grid cell; in a grid of `minmax(180px, 1fr)` columns, a phone shows one a row, and long results wrap.",
+        icon: InsightsOutlinedIcon,
+        Demo: ProgressMetricDemo,
+      },
+      {
+        title: "ProgressMedia",
+        description:
+          "Pictures and recordings that show progress, as 128px thumbnails that wrap. Each opens full size over the darkened page, with its name under it and the others a step away by button or arrow key; a video plays there with its controls. A click on the dark around it closes it.",
+        importFrom: "components",
+        phone:
+          "Thumbnails wrap, two or three to a row. Open, it fills the screen edge to edge, with the previous and next buttons over its sides.",
+        icon: PhotoLibraryOutlinedIcon,
+        Demo: ProgressMediaDemo,
       },
     ],
   },

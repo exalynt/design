@@ -118,7 +118,9 @@ export function CapacityBlocksGuideline() {
           <li>
             <strong>At a few fixed sizes:</strong> 48px tall on a card, 64px in the popover, and
             80px where comparing blocks is the point, such as choosing one to buy. Below 48px the
-            quarters stop reading, so in a list row write the name instead.
+            quarters stop reading on their own: the one smaller size is 24px on{" "}
+            <code>CapacityMiniCard</code>, where the badge beside it names the block. In a list row,
+            write the name instead.
           </li>
           <li>
             <strong>One figure is one engineer&rsquo;s full capacity,</strong> never several blocks
@@ -130,8 +132,8 @@ export function CapacityBlocksGuideline() {
       <Guidance title="The card">
         <p>
           <code>CapacityBlock</code> is how a block appears wherever it is: waiting for a week, in
-          its week on a schedule, or being moved. It shows the figure, the name, and the size, then
-          <code>children</code>, normally <code>CapacityPlacement</code> (the project and focus
+          its week on a schedule, or being moved. It shows the figure, the badge, and the size, then
+          <code>children</code>, normally <code>CapacityPlacement</code> (the product and Focus
           it&rsquo;s on), and <code>footer</code> (who works on it, and when, or the way to schedule
           it).
         </p>
@@ -143,18 +145,34 @@ export function CapacityBlocksGuideline() {
             rather than an icon and text of your own, which would sit a few pixels off.
           </li>
           <li>
-            <strong>The status badge has its own column,</strong> right of the name and size and
-            centred on the figure, so it never sits over the size and the text stops short of it.
+            <strong>The status has a row of its own,</strong> at the top right across from the drag
+            handle or lock, so the figure, badge, and size below it keep the card&rsquo;s full
+            width.
           </li>
           <li>
             <strong>One card per block.</strong> Three Core blocks are three cards, so each can go
-            to its own project and week. Count them in a heading or a group&rsquo;s label instead.
+            to its own product and week. Count them in a heading or a group&rsquo;s label instead.
           </li>
           <li>
             <strong>States are props, not colors of your own:</strong> <code>selected</code> when
             it&rsquo;s picked to act on, <code>scheduled</code> once it&rsquo;s in a week,{" "}
             <code>preview</code> for the dashed outline of where a dragged block will land, and{" "}
             <code>faded</code> on the block being dragged away.
+          </li>
+          <li>
+            <strong>Its number, to refer to it by,</strong> goes in <code>number</code>
+            (&ldquo;BLK-0042&rdquo;), small and muted at the top left. Show it wherever people talk
+            about blocks one by one, the same number the mini card shows, and leave it out where
+            nobody would, such as choosing blocks to buy.
+          </li>
+          <li>
+            <strong>When it needs someone to act,</strong> pass <code>attention</code>: the kind of
+            attention in a word or two (&ldquo;Unassigned&rdquo;, &ldquo;Overbooked&rdquo;), an icon
+            for that kind, and a <code>hint</code> saying what&rsquo;s wrong and what would fix it.
+            The card is edged and tinted in warning, the reason heads it, and it takes the place of
+            the scheduled edge. Give one reason, the most pressing, and only to the people who can
+            act on it, such as Exalynt&rsquo;s admin views; it&rsquo;s a nudge, not a status, so the
+            status stays in <code>badge</code>.
           </li>
           <li>
             <strong>Say why it can&rsquo;t move.</strong> Pass <code>onDragStart</code> and a{" "}
@@ -165,10 +183,24 @@ export function CapacityBlocksGuideline() {
             <strong>
               Status goes in <code>badge</code>,
             </strong>{" "}
-            as the app&rsquo;s own status chip, never as a tint on the card or the figure.
+            as a <code>CapacityStatus</code>, never as a tint on the card or the figure. A block is
+            Available until it has a week, Scheduled once it has one, In progress during that week,
+            and Fulfilled once its checkpoint is done. Each has its own icon and color: grey, blue,
+            violet, and green, so Scheduled and In progress never look alike. None is in warning,
+            which is kept for a block that needs attention. Show the icon and word, or just the icon
+            with <code>iconOnly</code> where cards are narrow, such as four across or in a
+            week&rsquo;s column.
           </li>
           <li>
-            <strong>In a list row or running text,</strong> where a card is too much, write the
+            <strong>Related to something else,</strong> such as the blocks a Focus, a conversation,
+            or progress came from, use <code>CapacityMiniCard</code>: its badge, week, status icon,
+            engineer, and number, linking to the block&rsquo;s page. Leave out what the place
+            already says, such as the engineer beside their own progress. Pass <code>details</code>{" "}
+            where the reader may not know the block sizes, such as a client&rsquo;s view, so
+            hovering the badge says how big it is.
+          </li>
+          <li>
+            <strong>In running text,</strong> where even a mini card is too much, write the
             block&rsquo;s name in words (&ldquo;Core block&rdquo;, in <code>subtitle2</code>) and
             leave the figure out.
           </li>
@@ -183,47 +215,56 @@ export function CapacityBlocksGuideline() {
   locked={lockReason(capacity) ?? undefined}
   footer={<When capacity={capacity} />}
 >
-  <CapacityPlacement project={project?.name ?? null} focus={focus?.name} upNext={next?.name} />
+  <CapacityPlacement product={product?.name ?? null} focus={focus?.name} upNext={next?.name} />
 </CapacityBlock>`}
       />
 
-      <Guidance title="Where it goes: project and focus">
+      <Guidance title="Where it goes: product and Focus">
         <p>
-          A block is bought for the organization, then put on a project, then, optionally, kept on
-          one Feature or bug from that project&rsquo;s Up next. <code>CapacityPlacement</code> shows
+          A block is bought for the organization, then put on one of its products, then, optionally,
+          kept on one Focus from that product&rsquo;s board. <code>CapacityPlacement</code> shows
           where it is on that path as two lines that are always there, so a card never changes size
-          as it moves along.
+          as it moves along. Their icons are the portal&rsquo;s, so a product and a Focus look the
+          same on a block as everywhere else: software in a window for a product, a target for a
+          Focus, and the play circle of the board&rsquo;s Up next column.
         </p>
         <ul>
           <li>
-            <strong>No project:</strong> the project line is the card&rsquo;s call to action,
-            &ldquo;Assign project&rdquo; in the primary color, wherever the reader can assign one
-            (pass <code>onProjectClick</code>). Where they can&rsquo;t, it says &ldquo;No project
-            yet&rdquo;. The focus line stays in place, disabled, as &ldquo;Choose a focus&rdquo;,
-            since a focus comes from a project&rsquo;s backlog, and the footer&rsquo;s Schedule
-            waits, disabled, with a hint saying the block needs a project first. A disabled control
-            always says why on hover.
+            <strong>No product:</strong> the product line is the card&rsquo;s call to action,
+            &ldquo;Assign product&rdquo; in the primary color, wherever the reader can assign one
+            (pass <code>onProductClick</code>). Where they can&rsquo;t, it says &ldquo;No product
+            yet&rdquo;. The Focus line stays in place, disabled, as &ldquo;Choose a Focus&rdquo;,
+            since a Focus comes from a product&rsquo;s board, and the footer&rsquo;s Schedule waits,
+            disabled, with a hint saying the block needs a product first. A disabled control always
+            says why on hover.
           </li>
           <li>
-            <strong>A project but no focus:</strong> the block follows Up next, shown as &ldquo;Up
-            next&rdquo; in the primary color and what&rsquo;s first there now (<code>upNext</code>).
+            <strong>A product but no Focus:</strong> the block follows Up next, shown as &ldquo;Up
+            next&rdquo; in the primary color and the Focus first there now (<code>upNext</code>).
             That&rsquo;s a fine way to leave a block, not a gap, so never show it as a warning or
             ask the client to choose.
           </li>
           <li>
-            <strong>A focus:</strong> its name, with its own Feature or bug icon as{" "}
-            <code>focusIcon</code>.
+            <strong>A Focus:</strong> its title, with the Focus icon. A Focus is a Focus, whatever
+            it&rsquo;s about, so it has no icon of its own.
           </li>
           <li>
-            <strong>Each change is the app&rsquo;s.</strong> <code>onProjectClick</code> and{" "}
+            <strong>Each change is the app&rsquo;s.</strong> <code>onProductClick</code> and{" "}
             <code>onFocusClick</code> hand over the line to anchor a picker to, such as{" "}
             <code>SearchSelect</code> in a popover. Leave them out once the block can&rsquo;t be
             changed, and say why with the card&rsquo;s <code>locked</code>.
           </li>
           <li>
-            <strong>Status is separate:</strong> a block with no project is still
-            &ldquo;Available&rdquo;. Don&rsquo;t invent a status such as &ldquo;Unassigned&rdquo;;
-            the project line already says it.
+            <strong>The organization, where blocks from several show together:</strong> in
+            Exalynt&rsquo;s admin views, pass <code>organization</code> for a read-only line above
+            the product, since a block never moves to another organization. Leave it out in a
+            client&rsquo;s own view, where every block is theirs. Within one view, give it to every
+            card or none, so the cards line up.
+          </li>
+          <li>
+            <strong>Status is separate:</strong> a block with no product is still
+            &ldquo;Available&rdquo;. Don&rsquo;t invent a status such as &ldquo;No product&rdquo;;
+            the product line already says it.
           </li>
         </ul>
       </Guidance>
@@ -257,6 +298,12 @@ export function CapacityBlocksGuideline() {
             <strong>A name, not a status.</strong> A block with no engineer keeps its own status in{" "}
             <code>badge</code>; don&rsquo;t add one such as &ldquo;Unstaffed&rdquo;.
           </li>
+          <li>
+            <strong>Just who, where the week is already said:</strong> on a schedule, where the card
+            sits under its week&rsquo;s heading, or in a list grouped by week, make the{" "}
+            <code>footer</code> the engineer alone and leave the week line out. Anywhere else, keep
+            both, so a card on its own always says when.
+          </li>
         </ul>
       </Guidance>
       <CodeBlock
@@ -274,7 +321,7 @@ export function CapacityBlocksGuideline() {
     </>
   }
 >
-  <CapacityPlacement project={project?.name ?? null} focus={focus?.name} upNext={next?.name} />
+  <CapacityPlacement product={product?.name ?? null} focus={focus?.name} upNext={next?.name} />
 </CapacityBlock>`}
       />
 
