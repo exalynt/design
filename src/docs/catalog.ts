@@ -57,6 +57,7 @@ import TimelapseRoundedIcon from "@mui/icons-material/TimelapseRounded";
 import HubOutlinedIcon from "@mui/icons-material/HubOutlined";
 import CenterFocusStrongOutlinedIcon from "@mui/icons-material/CenterFocusStrongOutlined";
 import FormatListNumberedOutlinedIcon from "@mui/icons-material/FormatListNumberedOutlined";
+import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import { CalloutPanelDemo } from "../components/layout/CalloutPanel.demo";
 import { CapabilityCardDemo } from "../components/catalog/CapabilityCard.demo";
 import { CapacityBlockDemo } from "../components/capacity/CapacityBlock.demo";
@@ -78,6 +79,7 @@ import { ProgressLinkDemo } from "../components/progress/ProgressLink.demo";
 import { RelatedPanelDemo } from "../components/related/RelatedPanel.demo";
 import { FocusCardDemo } from "../components/focus/FocusCard.demo";
 import { FocusPriorityListDemo } from "../components/focus/FocusPriorityList.demo";
+import { FiltersPanelDemo } from "../components/filters/FiltersPanel.demo";
 import { ProgressMediaDemo } from "../components/progress/ProgressMedia.demo";
 import { ProgressMetricDemo } from "../components/progress/ProgressMetric.demo";
 import { ConfirmDialogDemo } from "../components/actions/ConfirmDialog.demo";
@@ -770,6 +772,21 @@ export const catalog: Group[] = [
           "The numbers keep their 24px gutter and the items take the rest of the width. Nothing else changes.",
         icon: FormatListNumberedOutlinedIcon,
         Demo: FocusPriorityListDemo,
+      },
+    ],
+  },
+  {
+    title: "Filters",
+    entries: [
+      {
+        title: "FiltersPanel",
+        description:
+          "What narrows a list, as a card for a side column beside it, such as a list of conversations: its `title` (Filters) and `summary`, a line such as how many the filters match, then a section for each of `sections`, in their order, with dividers between. Each section's heading, after its `icon`, collapses it, and it starts collapsed with `defaultCollapsed`, counting what's picked beside its heading while it is. `select: \"single\"` picks one of its options with radios, and clicking the picked one again unpicks it; the default, `multiple`, picks any number with checkboxes. `search` puts a box over its options, as \"Search 13 features\" from its `title`, matching every word typed as SearchSelect does and bolding them. Each option can have a `count`, quietly at the row's right. A section shows its first `limit` options (5), plus any picked beyond them, so a filter in use never hides, then Show all with how many there are and Show fewer. Clear empties a section, and Clear all in the header every one. It holds no filter state: `value` is what's picked, a list of ids by section id, and `onChange` gets all of it back, so the app decides what the picks match, usually any of a section's picks and every section's. Given a height, such as a sticky column's, its sections scroll under its header. `onClose` puts a close button in the header, for a Drawer.",
+        importFrom: "components",
+        phone:
+          "A side column doesn't fit beside a list on a phone, so below md put it in a Drawer behind a Filters button that counts what's picked, with `onClose` for its close button, as the example does. It fills the Drawer's height, its sections scrolling. Rows are 44px tall below sm, the whole row a tap target, and long labels wrap.",
+        icon: FilterListOutlinedIcon,
+        Demo: FiltersPanelDemo,
       },
     ],
   },

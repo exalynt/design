@@ -30,8 +30,8 @@ function wordsOf(text: string) {
 
 /* Every word typed has to appear somewhere in the label, description or group,
    in any order, so "sam acme" finds Sam Lee at Acme. */
-export function filterOptions(
-  options: SearchSelectOption[],
+export function filterOptions<Option extends SearchSelectOption>(
+  options: Option[],
   { inputValue }: { inputValue: string },
 ) {
   const words = wordsOf(normalize(inputValue));
