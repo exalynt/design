@@ -3,7 +3,7 @@ import { CodeBlock } from "../../docs/CodeBlock";
 import { MARCUS, PRIYA } from "../../docs/engineers";
 import { Example } from "../../docs/Example";
 import { CapacityBlock } from "./CapacityBlock";
-import { When } from "./CapacityBlock.demo";
+import { CapacitySchedule } from "./CapacitySchedule";
 import { CapacityEngineer } from "./CapacityEngineer";
 import { CapacityPlacement } from "./CapacityPlacement";
 import { CapacityStatus } from "./CapacityStatus";
@@ -19,12 +19,20 @@ export function CapacityPlacementDemo() {
       <Example title="From no product to a Focus of its own (hover a line)">
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6, md: 4 }} sx={{ display: "flex" }}>
-            <CapacityBlock block="core" badge={available} footer={<When onProduct={false} />}>
+            <CapacityBlock
+              block="core"
+              badge={available}
+              footer={<CapacitySchedule week={null} onProduct={false} onScheduleClick={() => {}} />}
+            >
               <CapacityPlacement product={null} onProductClick={pick} />
             </CapacityBlock>
           </Grid>
           <Grid size={{ xs: 12, sm: 6, md: 4 }} sx={{ display: "flex" }}>
-            <CapacityBlock block="core" badge={available} footer={<When />}>
+            <CapacityBlock
+              block="core"
+              badge={available}
+              footer={<CapacitySchedule week={null} onScheduleClick={() => {}} />}
+            >
               <CapacityPlacement
                 product="Customer Portal"
                 upNext="Invoice export"
@@ -34,7 +42,11 @@ export function CapacityPlacementDemo() {
             </CapacityBlock>
           </Grid>
           <Grid size={{ xs: 12, sm: 6, md: 4 }} sx={{ display: "flex" }}>
-            <CapacityBlock block="core" badge={available} footer={<When />}>
+            <CapacityBlock
+              block="core"
+              badge={available}
+              footer={<CapacitySchedule week={null} onScheduleClick={() => {}} />}
+            >
               <CapacityPlacement
                 product="Customer Portal"
                 focus="Invoice export"
@@ -84,7 +96,7 @@ export function CapacityPlacementDemo() {
               footer={
                 <>
                   <CapacityEngineer engineer={null} onAssignClick={pick} />
-                  <When onProduct={false} />
+                  <CapacitySchedule week={null} onProduct={false} onScheduleClick={() => {}} />
                 </>
               }
             >
@@ -103,7 +115,7 @@ export function CapacityPlacementDemo() {
               footer={
                 <>
                   <CapacityEngineer engineer={PRIYA} onAssignClick={pick} />
-                  <When week="Week of Oct 19" />
+                  <CapacitySchedule week="Week of Oct 19" />
                 </>
               }
             >
@@ -125,7 +137,7 @@ export function CapacityPlacementDemo() {
               footer={
                 <>
                   <CapacityEngineer engineer={MARCUS} onAssignClick={pick} />
-                  <When week="This week" />
+                  <CapacitySchedule week="This week" />
                 </>
               }
             >

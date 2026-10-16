@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Grid from "@mui/material/Grid";
-import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import EventBusyOutlinedIcon from "@mui/icons-material/EventBusyOutlined";
 import HourglassBottomRoundedIcon from "@mui/icons-material/HourglassBottomRounded";
 import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
@@ -11,37 +10,13 @@ import { CAPACITY_BLOCK_IDS } from "./capacity";
 import type { CapacityBlockProps } from "./CapacityBlock";
 import { CapacityBlock } from "./CapacityBlock";
 import { CapacityEngineer } from "./CapacityEngineer";
-import { CapacityLine } from "./CapacityLine";
 import { CapacityPlacement } from "./CapacityPlacement";
+import { CapacitySchedule } from "./CapacitySchedule";
 import { CapacityStatus, type CapacityStatusProps } from "./CapacityStatus";
 
 const placement = (
   <CapacityPlacement product="Customer Portal" upNext="Invoice export" onFocusClick={() => {}} />
 );
-
-/*
- * A block's footer, as an app might draw it: its week once it has one, or
- * the way to schedule it, which waits, disabled, until it's on a product.
- */
-export function When({ week, onProduct = true }: { week?: string; onProduct?: boolean }) {
-  const icon = <CalendarMonthOutlinedIcon sx={{ color: "text.secondary" }} />;
-  if (week) return <CapacityLine icon={icon}>{week}</CapacityLine>;
-  return (
-    <CapacityLine
-      icon={icon}
-      action
-      disabled={!onProduct}
-      onClick={() => {}}
-      hint={
-        onProduct
-          ? "Choose a week for it on the schedule."
-          : "Assign a product first; only blocks on a product can be scheduled."
-      }
-    >
-      Schedule
-    </CapacityLine>
-  );
-}
 
 /* One block at each status, as an app might draw it there. */
 const LIFE: (CapacityBlockProps & { status: CapacityStatusProps["status"] })[] = [
@@ -54,7 +29,7 @@ const LIFE: (CapacityBlockProps & { status: CapacityStatusProps["status"] })[] =
     footer: (
       <>
         <CapacityEngineer engineer={null} />
-        <When />
+        <CapacitySchedule week={null} onScheduleClick={() => {}} />
       </>
     ),
     children: placement,
@@ -69,7 +44,7 @@ const LIFE: (CapacityBlockProps & { status: CapacityStatusProps["status"] })[] =
     footer: (
       <>
         <CapacityEngineer engineer={PRIYA} />
-        <When week="Week of Oct 19" />
+        <CapacitySchedule week="Week of Oct 19" />
       </>
     ),
     children: placement,
@@ -83,7 +58,7 @@ const LIFE: (CapacityBlockProps & { status: CapacityStatusProps["status"] })[] =
     footer: (
       <>
         <CapacityEngineer engineer={MARCUS} />
-        <When week="This week" />
+        <CapacitySchedule week="This week" />
       </>
     ),
     children: <CapacityPlacement product="Customer Portal" focus="Invoice export" />,
@@ -96,7 +71,7 @@ const LIFE: (CapacityBlockProps & { status: CapacityStatusProps["status"] })[] =
     footer: (
       <>
         <CapacityEngineer engineer={PRIYA} />
-        <When week="Week of Oct 5" />
+        <CapacitySchedule week="Week of Oct 5" />
       </>
     ),
     children: <CapacityPlacement product="Customer Portal" focus="Saved searches" />,
@@ -115,7 +90,7 @@ export function CapacityBlockDemo() {
                 block={id}
                 selected={picked === id}
                 onClick={() => setPicked(picked === id ? null : id)}
-                footer={<When />}
+                footer={<CapacitySchedule week={null} onScheduleClick={() => {}} />}
               >
                 {placement}
               </CapacityBlock>
@@ -128,7 +103,7 @@ export function CapacityBlockDemo() {
   block={capacity.type}
   selected={picked === capacity.id}
   onClick={() => pick(capacity.id)}
-  footer={<When capacity={capacity} />}
+  footer={<CapacitySchedule week={weekLabel(capacity)} onScheduleClick={openWeekPicker} />}
 >
   <CapacityPlacement product={product?.name ?? null} focus={focus?.name} upNext={next?.name} />
 </CapacityBlock>`}
@@ -177,7 +152,7 @@ export function CapacityBlockDemo() {
               footer={
                 <>
                   <CapacityEngineer engineer={null} onAssignClick={() => {}} />
-                  <When week="Week of Oct 19" />
+                  <CapacitySchedule week="Week of Oct 19" />
                 </>
               }
             >
@@ -200,7 +175,7 @@ export function CapacityBlockDemo() {
               footer={
                 <>
                   <CapacityEngineer engineer={PRIYA} onAssignClick={() => {}} />
-                  <When week="Week of Oct 19" />
+                  <CapacitySchedule week="Week of Oct 19" />
                 </>
               }
             >
@@ -222,7 +197,7 @@ export function CapacityBlockDemo() {
               footer={
                 <>
                   <CapacityEngineer engineer={null} onAssignClick={() => {}} />
-                  <When />
+                  <CapacitySchedule week={null} onScheduleClick={() => {}} />
                 </>
               }
             >
@@ -245,7 +220,11 @@ export function CapacityBlockDemo() {
       <Example title="On a schedule: scheduled, draggable, locked, and where one will land">
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6 }} sx={{ display: "flex" }}>
-            <CapacityBlock block="core" scheduled footer={<When week="Week of Oct 12" />}>
+            <CapacityBlock
+              block="core"
+              scheduled
+              footer={<CapacitySchedule week="Week of Oct 12" />}
+            >
               {placement}
             </CapacityBlock>
           </Grid>
@@ -264,7 +243,7 @@ export function CapacityBlockDemo() {
               block="dedicated"
               scheduled
               locked="Its week has started, so it can't be changed."
-              footer={<When week="This week" />}
+              footer={<CapacitySchedule week="This week" />}
             >
               <CapacityPlacement product="Customer Portal" focus="Invoice export" />
             </CapacityBlock>

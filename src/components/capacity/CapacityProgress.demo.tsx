@@ -6,7 +6,7 @@ import { MARCUS, PRIYA } from "../../docs/engineers";
 import { Example } from "../../docs/Example";
 import { SAMPLE_PROGRESS, onBlock, progressCounts } from "../../docs/progress";
 import { CapacityBlock } from "./CapacityBlock";
-import { When } from "./CapacityBlock.demo";
+import { CapacitySchedule } from "./CapacitySchedule";
 import { CapacityEngineer } from "./CapacityEngineer";
 import { CapacityPlacement } from "./CapacityPlacement";
 import { CapacityProgress } from "./CapacityProgress";
@@ -35,7 +35,7 @@ function Blk0042({
       footer={
         <>
           <CapacityEngineer engineer={MARCUS} />
-          <When week="This week" />
+          <CapacitySchedule week="This week" />
           <CapacityProgress counts={progressCounts("BLK-0042")} onClick={onProgressClick} />
         </>
       }
@@ -69,7 +69,7 @@ export function CapacityProgressDemo() {
               footer={
                 <>
                   <CapacityEngineer engineer={PRIYA} />
-                  <When week="Week of Sep 28" />
+                  <CapacitySchedule week="Week of Sep 28" />
                   <CapacityProgress
                     counts={progressCounts("BLK-0038")}
                     onClick={() => openProgress("BLK-0038")}
@@ -90,7 +90,7 @@ export function CapacityProgressDemo() {
               footer={
                 <>
                   <CapacityEngineer engineer={PRIYA} />
-                  <When week="This week" />
+                  <CapacitySchedule week="This week" />
                   <CapacityProgress counts={{}} />
                 </>
               }
@@ -107,7 +107,7 @@ export function CapacityProgressDemo() {
   footer={
     <>
       <CapacityEngineer engineer={capacity.engineer} />
-      <When capacity={capacity} />
+      <CapacitySchedule week={weekLabel(capacity)} onScheduleClick={openWeekPicker} />
       {capacity.status === "in_progress" || capacity.status === "fulfilled" ? (
         <CapacityProgress
           counts={capacity.progress_counts}

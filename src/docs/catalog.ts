@@ -63,6 +63,7 @@ import { CapabilityCardDemo } from "../components/catalog/CapabilityCard.demo";
 import { CapacityBlockDemo } from "../components/capacity/CapacityBlock.demo";
 import { CapacityDetailsDemo } from "../components/capacity/CapacityDetails.demo";
 import { CapacityEngineerDemo } from "../components/capacity/CapacityEngineer.demo";
+import { CapacityScheduleDemo } from "../components/capacity/CapacitySchedule.demo";
 import { CapacityProgressDemo } from "../components/capacity/CapacityProgress.demo";
 import { CapacityFigureDemo } from "../components/capacity/CapacityFigure.demo";
 import { CapacityLineDemo } from "../components/capacity/CapacityLine.demo";
@@ -470,6 +471,16 @@ export const catalog: Group[] = [
           "It fills the card's width, and a long name is cut short; the popover says it in full. A tap on the name opens the popover, and the change button is separate, so a tap never opens both. The picker it opens should use SearchSelect, whose rows are 48px on phones.",
         icon: EngineeringOutlinedIcon,
         Demo: CapacityEngineerDemo,
+      },
+      {
+        title: "CapacitySchedule",
+        description:
+          "When a block is worked on, as one line for CapacityBlock's footer, under CapacityEngineer: its week, as the app words it, or \"Not scheduled yet\". `onScheduleClick` makes it the admin's inline control: \"Schedule\" with no week, disabled with a hint until the block is on a product (`onProduct`), and a week that opens the picker to move it. Without it, as in a client's view or once the week has started, it's read-only.",
+        importFrom: "components",
+        phone:
+          "It fills the card's width, and a long week is cut short; the hint says it in full. Dragging doesn't work on touch, so on a phone this line is the way to schedule.",
+        icon: CalendarMonthOutlinedIcon,
+        Demo: CapacityScheduleDemo,
       },
       {
         title: "CapacityProgress",

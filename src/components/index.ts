@@ -29,6 +29,7 @@ export * from "./capacity/CapacityMiniCard";
 export * from "./capacity/CapacityName";
 export * from "./capacity/CapacityPlacement";
 export * from "./capacity/CapacityProgress";
+export * from "./capacity/CapacitySchedule";
 export * from "./capacity/CapacityStatus";
 export * from "./capacity/CapacityTag";
 

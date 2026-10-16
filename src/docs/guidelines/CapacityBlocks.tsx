@@ -207,13 +207,13 @@ export function CapacityBlocksGuideline() {
         </ul>
       </Guidance>
       <CodeBlock
-        code={`import { CapacityBlock, CapacityPlacement } from "@exalynt/design/components";
+        code={`import { CapacityBlock, CapacityPlacement, CapacitySchedule } from "@exalynt/design/components";
 
 <CapacityBlock
   block={capacity.type}
   scheduled={Boolean(capacity.week_starts_on)}
   locked={lockReason(capacity) ?? undefined}
-  footer={<When capacity={capacity} />}
+  footer={<CapacitySchedule week={weekLabel(capacity)} onScheduleClick={openWeekPicker} />}
 >
   <CapacityPlacement product={product?.name ?? null} focus={focus?.name} upNext={next?.name} />
 </CapacityBlock>`}
@@ -272,8 +272,9 @@ export function CapacityBlocksGuideline() {
       <Guidance title="Who works on it">
         <p>
           <code>CapacityEngineer</code> is the block&rsquo;s engineer, as the first line of its{" "}
-          <code>footer</code>, above when. Who and when sit together under the hairline; what
-          it&rsquo;s on stays above it.
+          <code>footer</code>, and <code>CapacitySchedule</code> is when, under it. Who and when sit
+          together under the hairline; what it&rsquo;s on stays above it. Each is optional, and each
+          is read-only unless it&rsquo;s given its click handler.
         </p>
         <ul>
           <li>
@@ -299,15 +300,24 @@ export function CapacityBlocksGuideline() {
             <code>badge</code>; don&rsquo;t add one such as &ldquo;Unstaffed&rdquo;.
           </li>
           <li>
-            <strong>Just who, where the week is already said:</strong> on a schedule, where the card
-            sits under its week&rsquo;s heading, or in a list grouped by week, make the{" "}
-            <code>footer</code> the engineer alone and leave the week line out. Anywhere else, keep
-            both, so a card on its own always says when.
+            <strong>When, the same way:</strong> pass <code>onScheduleClick</code> where the reader
+            can choose a week. With no week, the line is &ldquo;Schedule&rdquo; in the primary
+            color, disabled with a hint until the block is on a product (<code>onProduct</code>);
+            with one, the week opens the app&rsquo;s picker to move it. Leave it out in a
+            client&rsquo;s view, or once the week has started: the line shows the week, or
+            &ldquo;Not scheduled yet&rdquo;, muted.
+          </li>
+          <li>
+            <strong>Show only what the view needs.</strong> On a schedule, where the card sits under
+            its week&rsquo;s heading, or in a list grouped by week, make the <code>footer</code> the
+            engineer alone and leave the week line out. Where who doesn&rsquo;t matter yet, leave
+            the engineer out; where neither does, leave the <code>footer</code> out, and the
+            hairline goes with it. Within one view, give every card the same lines, so they line up.
           </li>
         </ul>
       </Guidance>
       <CodeBlock
-        code={`import { CapacityBlock, CapacityEngineer } from "@exalynt/design/components";
+        code={`import { CapacityBlock, CapacityEngineer, CapacitySchedule } from "@exalynt/design/components";
 
 <CapacityBlock
   block={capacity.type}
@@ -317,7 +327,7 @@ export function CapacityBlocksGuideline() {
         engineer={engineerProfile}
         onAssignClick={isAdmin ? (anchor) => openEngineerPicker(anchor) : undefined}
       />
-      <When capacity={capacity} />
+      <CapacitySchedule week={weekLabel(capacity)} onScheduleClick={openWeekPicker} />
     </>
   }
 >

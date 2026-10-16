@@ -6,7 +6,7 @@ import { CodeBlock } from "../../docs/CodeBlock";
 import { MARCUS, PRIYA } from "../../docs/engineers";
 import { Example } from "../../docs/Example";
 import { CapacityBlock } from "./CapacityBlock";
-import { When } from "./CapacityBlock.demo";
+import { CapacitySchedule } from "./CapacitySchedule";
 import { CapacityEngineer } from "./CapacityEngineer";
 import { CapacityPlacement } from "./CapacityPlacement";
 import { CapacityStatus } from "./CapacityStatus";
@@ -27,7 +27,7 @@ export function CapacityEngineerDemo() {
               footer={
                 <>
                   <CapacityEngineer engineer={null} onAssignClick={pick} />
-                  <When />
+                  <CapacitySchedule week={null} onScheduleClick={() => {}} />
                 </>
               }
             >
@@ -41,7 +41,7 @@ export function CapacityEngineerDemo() {
               footer={
                 <>
                   <CapacityEngineer engineer={PRIYA} onAssignClick={pick} />
-                  <When week="Week of Oct 12" />
+                  <CapacitySchedule week="Week of Oct 12" />
                 </>
               }
             >
@@ -65,7 +65,7 @@ export function CapacityEngineerDemo() {
         }}
         onAssignClick={(anchor) => openEngineerPicker(anchor)}
       />
-      <When capacity={capacity} />
+      <CapacitySchedule week={weekLabel(capacity)} onScheduleClick={openWeekPicker} />
     </>
   }
 >
@@ -81,7 +81,7 @@ export function CapacityEngineerDemo() {
               footer={
                 <>
                   <CapacityEngineer engineer={null} />
-                  <When />
+                  <CapacitySchedule week={null} />
                 </>
               }
             >
@@ -95,7 +95,7 @@ export function CapacityEngineerDemo() {
               footer={
                 <>
                   <CapacityEngineer engineer={MARCUS} />
-                  <When week="Week of Oct 12" />
+                  <CapacitySchedule week="Week of Oct 12" />
                 </>
               }
             >
