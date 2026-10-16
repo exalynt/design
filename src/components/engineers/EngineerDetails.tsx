@@ -1,13 +1,15 @@
 import Box from "@mui/material/Box";
 import { DetailsCard, DetailsEyebrow, DetailsLink } from "../DetailsPopover";
 import type { UserProfile } from "./UserAttribution";
-import { UserAvatar } from "./UserAvatar";
+import { TeamLeadLabel, UserAvatar } from "./UserAvatar";
 import type { EngineerLevelId } from "./engineerLevel";
 import { EngineerLevelBadge } from "./EngineerLevelBadge";
 
 /** An engineer as the app has them, for EngineerDetails, CapacityEngineer, and UserAttribution. */
 export type EngineerProfile = UserProfile & {
   level: EngineerLevelId;
+  /** They lead their Engineering Team: their picture has a gold mark, and EngineerDetails says so. */
+  teamLead?: boolean;
   /** A sentence or two about them. Cut short after four lines. */
   bio?: string;
   /** Their profile page in the app, opened in the same tab. Without it, no link. */
@@ -23,16 +25,25 @@ export type EngineerDetailsProps = {
 /*
  * Who an engineer is, for whoever is looking at their work: their picture,
  * name, and level as its badge, a short bio, and a link to their profile
- * page. It's the content of CapacityEngineer's popover, and draws its own
- * card there.
+ * page. A Team Lead's picture has the gold mark, and the eyebrow reads
+ * Engineer · Team Lead, the mark and "Team Lead" in the same gold. It's the
+ * content of CapacityEngineer's popover, and draws its own card there.
  */
 export function EngineerDetails({ engineer, card = true }: EngineerDetailsProps) {
-  const { name, level, avatarUrl, bio, profileHref } = engineer;
+  const { name, level, teamLead = false, avatarUrl, bio, profileHref } = engineer;
   return (
     <DetailsCard card={card}>
-      <DetailsEyebrow>Engineer</DetailsEyebrow>
+      <DetailsEyebrow>
+        Engineer
+        {teamLead ? (
+          <>
+            {" · "}
+            <TeamLeadLabel />
+          </>
+        ) : null}
+      </DetailsEyebrow>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mt: 1 }}>
-        <UserAvatar name={name} src={avatarUrl} size={56} />
+        <UserAvatar name={name} src={avatarUrl} size={56} lead={teamLead} />
         <Box
           sx={{
             minWidth: 0,

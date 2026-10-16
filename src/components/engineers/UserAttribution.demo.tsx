@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack";
 import { CodeBlock } from "../../docs/CodeBlock";
 import { Example } from "../../docs/Example";
-import { MARCUS, PRIYA } from "../../docs/engineers";
+import { ANA, MARCUS, PRIYA } from "../../docs/engineers";
 import { UserAttribution } from "./UserAttribution";
 
 const CLIENT = { name: "Dana Ortiz" };
@@ -51,6 +51,22 @@ export function UserAttributionDemo() {
         </Stack>
       </Example>
       <CodeBlock code={`<UserAttribution user={engineerProfile} photoOnly details size={32} />`} />
+
+      <Example title="A Team Lead, in each form: a gold arrowhead on their picture (hover the picture)">
+        <Stack spacing={2} sx={{ fontSize: 14 }}>
+          <UserAttribution user={ANA} />
+          <UserAttribution user={ANA} showLevel="squares" />
+          <UserAttribution user={ANA} showLevel details />
+          <Stack direction="row" spacing={0.75} sx={{ alignItems: "center" }}>
+            <UserAttribution user={ANA} photoOnly details size={32} />
+            <UserAttribution user={PRIYA} photoOnly details size={32} />
+            <UserAttribution user={MARCUS} photoOnly details size={32} />
+          </Stack>
+        </Stack>
+      </Example>
+      <CodeBlock
+        code={`<UserAttribution user={{ ...engineerProfile, teamLead: true }} showLevel />`}
+      />
     </>
   );
 }

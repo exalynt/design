@@ -20,6 +20,15 @@ export const PRIYA: EngineerProfile = {
   profileHref: "#engineers/priya-shah",
 };
 
+/* Any level can lead a team, so the sample lead is Mid. */
+export const ANA: EngineerProfile = {
+  name: "Ana Ruiz",
+  level: "mid",
+  teamLead: true,
+  avatarUrl: PORTRAIT,
+  bio: "Keeps the team's clients and context in one place, and pairs on whatever is stuck.",
+};
+
 export const MARCUS: EngineerProfile = {
   name: "Marcus Webb",
   level: "associate",

@@ -64,6 +64,13 @@ export function EngineerLevelsGuideline() {
             on avatars or rows that marks a level.
           </li>
           <li>
+            <strong>Team Lead isn&rsquo;t a level.</strong> It&rsquo;s{" "}
+            <ReadmeLink path="engineers/team-lead">a responsibility</ReadmeLink> any level can hold,
+            so it&rsquo;s marked on the picture, not the badge: set <code>teamLead</code> on the{" "}
+            <code>EngineerProfile</code>, and <code>UserAttribution</code> puts a gold arrowhead on
+            their picture in every form.
+          </li>
+          <li>
             <strong>Name the level in copy as the badge does,</strong> from{" "}
             <code>ENGINEER_LEVELS[level].name</code>: &ldquo;a Senior engineer&rdquo;.
           </li>

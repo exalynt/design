@@ -23,7 +23,7 @@ import { brand, chromeToken, dividerToken, floatingToken, fonts, geometry, statu
  */
 
 /*
- * `lead`: the Engineering Lead marker beside a lead's name.
+ * `lead`: the Team Lead mark, the gold arrowhead on a lead's picture and its "Team Lead" label.
  * `chrome`: the top bar and navigation rail's surface (see chromeToken).
  */
 declare module "@mui/material/styles" {

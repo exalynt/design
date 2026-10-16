@@ -41,7 +41,9 @@ const isEngineer = (user: UserProfile | EngineerProfile): user is EngineerProfil
  * for the whole badge. `details` opens EngineerDetails over all of it. With
  * both, the badge's own popover is left out: EngineerDetails has the badge,
  * with its popover, so the two never open together. The name is cut short
- * where there's no room, before the badge is.
+ * where there's no room, before the badge is. A Team Lead (`teamLead` on
+ * their profile) has a gold arrowhead on their picture in every form, and
+ * "Team Lead" on hovering it, or after their name with `photoOnly`.
  */
 export function UserAttribution({
   user,
@@ -54,10 +56,33 @@ export function UserAttribution({
   const withDetails = Boolean(engineer && details);
   const withLevel = Boolean(engineer && showLevel === true && !photoOnly);
   const withSquares = Boolean(engineer && showLevel === "squares" && !photoOnly);
+  const lead = Boolean(engineer?.teamLead);
+  const label = lead ? `${user.name}, Team Lead` : user.name;
 
-  const avatar = (
-    <UserAvatar name={user.name} src={user.avatarUrl} size={size ?? (withLevel ? 40 : 20)} />
+  const picture = (
+    <UserAvatar
+      name={user.name}
+      src={user.avatarUrl}
+      size={size ?? (withLevel ? 40 : 20)}
+      lead={lead}
+    />
   );
+  /* Beside the name, the lead's mark says it in words: to assistive tech, and on hover unless EngineerDetails does. */
+  const leadPicture = (
+    <Box component="span" role="img" aria-label="Team Lead" sx={{ display: "inline-flex" }}>
+      {picture}
+    </Box>
+  );
+  const avatar =
+    !lead || photoOnly ? (
+      picture
+    ) : withDetails ? (
+      leadPicture
+    ) : (
+      <Tooltip title="Team Lead" enterTouchDelay={0}>
+        {leadPicture}
+      </Tooltip>
+    );
   const name = (
     <Box
       component="span"
@@ -79,7 +104,7 @@ export function UserAttribution({
       component="span"
       tabIndex={withDetails ? 0 : undefined}
       role={photoOnly ? "img" : undefined}
-      aria-label={photoOnly ? user.name : undefined}
+      aria-label={photoOnly ? label : undefined}
       sx={[
         {
           display: "inline-flex",
@@ -129,7 +154,7 @@ export function UserAttribution({
   }
   if (photoOnly) {
     return (
-      <Tooltip title={user.name} enterTouchDelay={0}>
+      <Tooltip title={label} enterTouchDelay={0}>
         {content}
       </Tooltip>
     );
