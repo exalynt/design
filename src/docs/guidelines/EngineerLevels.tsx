@@ -37,10 +37,10 @@ export function EngineerLevelsGuideline() {
 
       <Guidance title="The badge">
         <p>
-          <code>EngineerLevelBadge</code> is the only way to show a level: a small, quiet outlined
-          Chip with four squares, filled in reading order to the level (one for Associate up to all
-          four for Principal), and the level&rsquo;s name. It&rsquo;s there to give clients and
-          other engineers context on who they&rsquo;re working with, not to rank anyone.
+          <code>EngineerLevelBadge</code> is the way to show a level: a small, quiet outlined Chip
+          with four squares, filled in reading order to the level (one for Associate up to all four
+          for Principal), and the level&rsquo;s name. It&rsquo;s there to give clients and other
+          engineers context on who they&rsquo;re working with, not to rank anyone.
         </p>
         <p>
           A client shouldn&rsquo;t feel they got a bargain with a Principal or a worse deal with an
@@ -70,6 +70,12 @@ export function EngineerLevelsGuideline() {
           <li>
             <strong>With their picture,</strong> use <code>UserAttribution</code> with{" "}
             <code>showLevel</code>, which sets the badge under their name for you.
+          </li>
+          <li>
+            <strong>Where the whole badge won&rsquo;t fit,</strong> such as a single line in a card,
+            use <code>UserAttribution</code> with <code>showLevel=&quot;squares&quot;</code>: the
+            badge without its text, after the name, named to assistive tech, with the same popover.
+            It&rsquo;s the only place the badge goes without the level&rsquo;s name.
           </li>
         </ul>
       </Guidance>

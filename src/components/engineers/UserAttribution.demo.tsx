@@ -35,6 +35,14 @@ export function UserAttributionDemo() {
       </Example>
       <CodeBlock code={`<UserAttribution user={engineerProfile} showLevel details />`} />
 
+      <Example title="Smaller: the badge without its text, after the name on one line, where the whole badge won't fit (hover the badge)">
+        <Stack spacing={1.5} sx={{ fontSize: 14 }}>
+          <UserAttribution user={PRIYA} showLevel="squares" />
+          <UserAttribution user={MARCUS} showLevel="squares" details />
+        </Stack>
+      </Example>
+      <CodeBlock code={`<UserAttribution user={engineerProfile} showLevel="squares" />`} />
+
       <Example title="Just the picture, where names would crowd, such as who's on a Focus (hover one)">
         <Stack direction="row" spacing={0.75} sx={{ alignItems: "center" }}>
           <UserAttribution user={PRIYA} photoOnly details size={32} />

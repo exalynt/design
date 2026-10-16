@@ -17,11 +17,15 @@ export type UserAttributionProps = {
   user: UserProfile | EngineerProfile;
   /** Just their picture, with their name on hover, focus, or tap and to assistive tech. */
   photoOnly?: boolean;
-  /** An engineer's level badge under their name. Ignored for anyone else, and with `photoOnly`. */
-  showLevel?: boolean;
+  /**
+   * An engineer's level: `true` for its badge under their name, or `"squares"`
+   * for the badge without its text after the name, on one line. Ignored for
+   * anyone else, and with `photoOnly`.
+   */
+  showLevel?: boolean | "squares";
   /** Open EngineerDetails on hover, focus, or tap. Ignored for anyone else. */
   details?: boolean;
-  /** The picture's size in px: 20 by default, or 40 with the level under the name. */
+  /** The picture's size in px: 20 by default, or 40 with the badge under the name. */
   size?: number;
 };
 
@@ -32,11 +36,12 @@ const isEngineer = (user: UserProfile | EngineerProfile): user is EngineerProfil
  * Who something is by, for, or assigned to: their picture and name, in the
  * primary text color at weight 600, at the size of the text around it; or,
  * with `photoOnly`, just their picture, naming them on hover. For an
- * engineer, `showLevel` puts their level badge under the name, and
- * `details` opens EngineerDetails over all of it. With both, the badge's
- * own popover is left out: EngineerDetails has the badge, with its popover,
- * so the two never open together. The name is cut short where there's no
- * room.
+ * engineer, `showLevel` puts their level badge under the name, or with
+ * `"squares"` the badge without its text after it, where a line has no room
+ * for the whole badge. `details` opens EngineerDetails over all of it. With
+ * both, the badge's own popover is left out: EngineerDetails has the badge,
+ * with its popover, so the two never open together. The name is cut short
+ * where there's no room, before the badge is.
  */
 export function UserAttribution({
   user,
@@ -47,7 +52,8 @@ export function UserAttribution({
 }: UserAttributionProps) {
   const engineer = isEngineer(user) ? user : null;
   const withDetails = Boolean(engineer && details);
-  const withLevel = Boolean(engineer && showLevel && !photoOnly);
+  const withLevel = Boolean(engineer && showLevel === true && !photoOnly);
+  const withSquares = Boolean(engineer && showLevel === "squares" && !photoOnly);
 
   const avatar = (
     <UserAvatar name={user.name} src={user.avatarUrl} size={size ?? (withLevel ? 40 : 20)} />
@@ -110,6 +116,9 @@ export function UserAttribution({
       ) : (
         name
       )}
+      {withSquares && engineer ? (
+        <EngineerLevelBadge level={engineer.level} label={false} details={!withDetails} />
+      ) : null}
     </Box>
   );
 

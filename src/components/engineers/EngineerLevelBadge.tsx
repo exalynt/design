@@ -6,6 +6,12 @@ import { EngineerLevelSquares } from "./EngineerLevelSquares";
 
 export type EngineerLevelBadgeProps = {
   level: EngineerLevelId;
+  /**
+   * Show the level's name beside its squares. `label={false}` is just the
+   * squares in the outline, named to assistive tech, where a line has no room
+   * for the name, as UserAttribution's `showLevel="squares"` uses it.
+   */
+  label?: boolean;
   /** End the popover with a link to the level on readme.exalynt.com. */
   link?: boolean;
   /**
@@ -30,18 +36,24 @@ export type EngineerLevelBadgeProps = {
  */
 export function EngineerLevelBadge({
   level,
+  label = true,
   link = true,
   focusable = true,
   details = true,
 }: EngineerLevelBadgeProps) {
+  const name = ENGINEER_LEVELS[level].name;
   const chip = (
     <Chip
       size="small"
       icon={<EngineerLevelSquares level={level} />}
-      label={ENGINEER_LEVELS[level].name}
+      label={label ? name : undefined}
+      role={label ? undefined : "img"}
+      aria-label={label ? undefined : `${name} engineer`}
       tabIndex={details && focusable ? 0 : undefined}
       variant="outlined"
       sx={{
+        /* Without its name, it's too small to cut short, so whatever's beside it gives way. */
+        flexShrink: label ? undefined : 0,
         borderColor: "divider",
         color: "text.secondary",
         height: 20,
@@ -49,8 +61,13 @@ export function EngineerLevelBadge({
         fontWeight: 500,
         cursor: details ? "help" : "inherit",
         verticalAlign: "middle",
-        "& .MuiChip-label": { px: "6px" },
-        "& .MuiChip-icon": { color: "inherit", fontSize: 11, ml: "6px", mr: "-1px" },
+        "& .MuiChip-label": label ? { px: "6px" } : { display: "none" },
+        "& .MuiChip-icon": {
+          color: "inherit",
+          fontSize: 11,
+          ml: label ? "6px" : "5px",
+          mr: label ? "-1px" : "5px",
+        },
         "&:focus-visible": { outline: 2, outlineColor: "primary.main", outlineOffset: 2 },
       }}
     />
