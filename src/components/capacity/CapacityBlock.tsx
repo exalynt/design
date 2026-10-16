@@ -1,11 +1,18 @@
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import DragIndicatorRoundedIcon from "@mui/icons-material/DragIndicatorRounded";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import type { DragEvent, KeyboardEvent, ReactElement, ReactNode } from "react";
-import type { CapacityBlockId } from "./capacity";
+import { CAPACITY_BLOCKS, ICON_COLUMN, ICON_GAP, type CapacityBlockId } from "./capacity";
+import { CapacityBadge } from "./CapacityBadge";
 import { CapacityBlockHeading } from "./CapacityBlockHeading";
+import { CapacityDetails } from "./CapacityDetails";
+import { CapacityFigure } from "./CapacityFigure";
+import type { OrganizationProfile } from "../conversations/ConversationMessage";
+import { DetailsPopover } from "../DetailsPopover";
+import { OrganizationLogo } from "../OrganizationLogo";
 
 /** Why a block needs someone's attention, from the app. */
 export type CapacityAttention = {
@@ -31,6 +38,14 @@ export type CapacityBlockProps = {
   footer?: ReactNode;
   /** At the top right, across from the drag handle or lock: its CapacityStatus. */
   badge?: ReactNode;
+  /**
+   * The client organization it was bought for, where the organization is what
+   * a view is about, such as Exalynt's admin views across clients: its logo and
+   * name lead the card, under its number, and the block's type moves to the
+   * bottom left, its figure and badge on the icons' axis, opening CapacityDetails. Leave
+   * CapacityPlacement's own `organization` out then, so it isn't said twice.
+   */
+  organization?: OrganizationProfile;
   /**
    * Needs someone to act on it: edged and tinted in warning, with what kind of
    * attention it needs at the top. One reason at a time, the most pressing.
@@ -62,7 +77,9 @@ const handle = { fontSize: 18, color: "text.secondary" } as const;
  * in its week on a schedule, or being moved, so a block always looks like
  * itself. A top row with its drag handle or lock, its number, and its status, then its
  * heading (CapacityBlockHeading) across the full width, then what the app says
- * it's on and when. One card per block, never one for several.
+ * it's on and when. Given its organization, the card leads with that instead,
+ * its logo and name in the heading's place, and its type, a small figure and
+ * its badge, is at the bottom left. One card per block, never one for several.
  */
 export function CapacityBlock({
   block,
@@ -70,6 +87,7 @@ export function CapacityBlock({
   children,
   footer,
   badge,
+  organization,
   attention,
   scheduled = false,
   selected = false,
@@ -191,7 +209,11 @@ export function CapacityBlock({
           {badge ? <Box sx={{ flex: "none", display: "flex", ml: "auto" }}>{badge}</Box> : null}
         </Box>
       ) : null}
-      <CapacityBlockHeading block={block} focusable={!preview} />
+      {organization ? (
+        <Organization organization={organization} />
+      ) : (
+        <CapacityBlockHeading block={block} focusable={!preview} />
+      )}
       {children || footer ? (
         <Box
           onClick={clickable ? (event) => event.stopPropagation() : undefined}
@@ -208,7 +230,75 @@ export function CapacityBlock({
           ) : null}
         </Box>
       ) : null}
+      {organization ? <BlockType block={block} focusable={!preview} /> : null}
     </Box>
+  );
+}
+
+/*
+ * The organization a block was bought for, in the heading's place: its logo
+ * as wide as the icon column, as the heading's figure is, so it lines up with
+ * the icons below, and its name, level with their text, cut short where the
+ * card is narrow and in full on hover. It never changes, so it's read-only.
+ */
+function Organization({ organization }: { organization: OrganizationProfile }) {
+  return (
+    <Tooltip
+      title={`${organization.name}: the organization this block was bought for.`}
+      describeChild
+    >
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          alignSelf: "flex-start",
+          gap: ICON_GAP,
+          minWidth: 0,
+          maxWidth: "100%",
+        }}
+      >
+        <OrganizationLogo organization={organization} size={ICON_COLUMN} />
+        <Typography
+          variant="subtitle1"
+          component="span"
+          noWrap
+          aria-hidden
+          sx={{ fontWeight: 700 }}
+        >
+          {organization.name}
+        </Typography>
+      </Box>
+    </Tooltip>
+  );
+}
+
+/*
+ * The block's type at the foot of a card led by its organization: its figure
+ * centred in the icon column, on the axis the icons above share, and its
+ * badge level with their text, as one target that opens CapacityDetails.
+ */
+function BlockType({ block, focusable }: { block: CapacityBlockId; focusable: boolean }) {
+  return (
+    <DetailsPopover title={<CapacityDetails block={block} />}>
+      <Box
+        tabIndex={focusable ? 0 : undefined}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          alignSelf: "flex-start",
+          gap: ICON_GAP,
+          mt: "auto",
+          borderRadius: 0.5,
+          cursor: "help",
+          "&:focus-visible": { outline: 2, outlineColor: "primary.main", outlineOffset: 2 },
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "center", width: ICON_COLUMN }}>
+          <CapacityFigure units={CAPACITY_BLOCKS[block].units} size={ICON_COLUMN} />
+        </Box>
+        <CapacityBadge block={block} />
+      </Box>
+    </DetailsPopover>
   );
 }
 

@@ -262,6 +262,17 @@ export function CapacityBlocksGuideline() {
             card or none, so the cards line up.
           </li>
           <li>
+            <strong>Led by the organization,</strong> where whose block it is matters more than its
+            size, such as an admin&rsquo;s list of blocks across clients: pass{" "}
+            <code>organization</code> to <code>CapacityBlock</code> instead, with its name and logo.
+            The organization&rsquo;s logo and name take the heading&rsquo;s place, under the number,
+            with its initials where it has no logo, and the block&rsquo;s type moves to the bottom
+            left, a small figure and its badge that open its size on hover. The logo and the figure
+            keep to the icon column, so they line up with the icons between them. Leave{" "}
+            <code>CapacityPlacement</code>&rsquo;s own <code>organization</code> out then, and use
+            one layout or the other within a view.
+          </li>
+          <li>
             <strong>Status is separate:</strong> a block with no product is still
             &ldquo;Available&rdquo;. Don&rsquo;t invent a status such as &ldquo;No product&rdquo;;
             the product line already says it.
