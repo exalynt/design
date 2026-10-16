@@ -203,6 +203,15 @@ export function CapacityBlocksGuideline() {
             hovering the badge says how big it is.
           </li>
           <li>
+            <strong>Small, across clients,</strong> such as an engineer&rsquo;s blocks laid out over
+            a month, pass <code>organization</code> to <code>CapacityMiniCard</code>, with its{" "}
+            <code>product</code>. The client&rsquo;s logo and name lead the card, the product
+            follows its icon, and the block&rsquo;s type and number move to its last line. Leave the
+            Focus to the block&rsquo;s page; it crowds a card this small. Where it shows a
+            block&rsquo;s size, make the card as wide or tall as the block is big, so the size reads
+            without the badge.
+          </li>
+          <li>
             <strong>In running text,</strong> where even a mini card is too much, write the
             block&rsquo;s name in words (&ldquo;Core block&rdquo;, in <code>subtitle2</code>) and
             leave the figure out.

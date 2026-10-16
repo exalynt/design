@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { CAPACITY_BLOCKS, type CapacityBlockId } from "./capacity";
+import { CAPACITY_BLOCKS, ICON_COLUMN, ICON_GAP, type CapacityBlockId } from "./capacity";
 import { CapacityBadge } from "./CapacityBadge";
 import { CapacityDetails } from "./CapacityDetails";
 import { CapacityFigure } from "./CapacityFigure";
@@ -16,14 +16,27 @@ export type CapacityTagProps = {
    * focus of its own, and a tap opens its popover rather than the link.
    */
   inLink?: boolean;
+  /**
+   * Its figure centred in the icon column (ICON_COLUMN) and its badge
+   * ICON_GAP after, so it lines up under the icons and text of rows above
+   * it, as in CapacityMiniCard.
+   */
+  aligned?: boolean;
 };
 
 /*
  * A capacity block named inline, where a card is too much: a 24px figure,
  * its badge, and its number, such as in a byline saying which block a piece
- * of progress came from. CapacityMiniCard starts with one.
+ * of progress came from. CapacityMiniCard has one.
  */
-export function CapacityTag({ block, number, details = false, inLink = false }: CapacityTagProps) {
+export function CapacityTag({
+  block,
+  number,
+  details = false,
+  inLink = false,
+  aligned = false,
+}: CapacityTagProps) {
+  const figure = <CapacityFigure units={CAPACITY_BLOCKS[block].units} size={24} />;
   const tag = (
     <Box
       component="span"
@@ -47,7 +60,22 @@ export function CapacityTag({ block, number, details = false, inLink = false }: 
         "&:focus-visible": { outline: 2, outlineColor: "primary.main", outlineOffset: 2 },
       }}
     >
-      <CapacityFigure units={CAPACITY_BLOCKS[block].units} size={24} />
+      {aligned ? (
+        <Box
+          component="span"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            width: ICON_COLUMN,
+            // The row's own gap, made up to ICON_GAP before the badge.
+            mr: ICON_GAP - 0.75,
+          }}
+        >
+          {figure}
+        </Box>
+      ) : (
+        figure
+      )}
       <CapacityBadge block={block} />
       {number ? (
         <Box

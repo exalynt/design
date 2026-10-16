@@ -425,17 +425,17 @@ export const catalog: Group[] = [
       {
         title: "CapacityMiniCard",
         description:
-          "A capacity block where it's related to something else, such as the blocks a Focus, a conversation, or progress came from: a 24px figure and its badge, its week, and its status's icon, then its engineer and number, in two lines. `details` opens CapacityDetails over the figure and badge, for readers who may not know the sizes. A reference, not the block: `href` goes to the block's page, rendered with the theme's LinkComponent so an app's router link works.",
+          "A capacity block where it's related to something else, such as the blocks a Focus, a conversation, or progress came from: a 24px figure and its badge, its week, and its status's icon, then its engineer and number, in two lines. `organization` leads it with the client's logo and name instead, moving the block's type and number to the last line, for views across clients; `product` adds a line for the product it's on, after the product icon. `details` opens CapacityDetails over the figure and badge, for readers who may not know the sizes. A reference, not the block: `href` goes to the block's page, rendered with the theme's LinkComponent so an app's router link works.",
         importFrom: "components",
         phone:
-          "It fills its container's width, and its text never wraps; a long week or number is cut short. The whole card is the link, about 60px tall, so it's an easy tap. Stack them, one per row, rather than side by side.",
+          "It fills its container's width, and its text never wraps; a long week, number, organization, or product is cut short. The whole card is the link, about 60px tall, or about 85px led by its organization with a product line, so it's an easy tap. Stack them, one per row, rather than side by side.",
         icon: ViewStreamOutlinedIcon,
         Demo: CapacityMiniCardDemo,
       },
       {
         title: "CapacityTag",
         description:
-          "A capacity block named inline, where a card is too much: a 24px figure, its badge, and its `number`, such as in a byline saying which block progress came from. `details` opens CapacityDetails over it; inside a link or button, pass `inLink` so it takes no focus of its own.",
+          "A capacity block named inline, where a card is too much: a 24px figure, its badge, and its `number`, such as in a byline saying which block progress came from. `details` opens CapacityDetails over it; inside a link or button, pass `inLink` so it takes no focus of its own. `aligned` centres its figure in the icon column, so it lines up under icons and text in the rows above, as in CapacityMiniCard.",
         importFrom: "components",
         phone:
           "About 150px wide with a number, and it never wraps, so give it a line of its own where a row is tight. A tap opens its popover.",

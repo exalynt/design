@@ -4,7 +4,18 @@ import Typography from "@mui/material/Typography";
 import { CodeBlock } from "../../docs/CodeBlock";
 import { MARCUS, PRIYA } from "../../docs/engineers";
 import { Example } from "../../docs/Example";
+import type { OrganizationProfile } from "../conversations/ConversationMessage";
 import { CapacityMiniCard } from "./CapacityMiniCard";
+
+const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+const NORTHWIND: OrganizationProfile = {
+  name: "Northwind Traders",
+  logoUrl: asset("capacity/northwind-logo.svg"),
+};
+const CONTOSO: OrganizationProfile = {
+  name: "Contoso Pharmaceuticals",
+  logoUrl: asset("capacity/contoso-logo.svg"),
+};
 
 export function CapacityMiniCardDemo() {
   return (
@@ -75,6 +86,56 @@ export function CapacityMiniCardDemo() {
           </Grid>
         </Grid>
       </Example>
+
+      <Example title="Led by its organization, across clients: an engineer's week, each card as wide as its block is big (Fabrikam has no logo, so its initials show)">
+        <Grid container spacing={0.5} columns={4}>
+          <Grid size={{ xs: 4, sm: 2 }}>
+            <CapacityMiniCard
+              block="core"
+              organization={NORTHWIND}
+              product="Freight Portal"
+              status="in_progress"
+              number="BLK-1188"
+              details
+              href="#capacity/blocks/BLK-1188"
+            />
+          </Grid>
+          <Grid size={{ xs: 4, sm: 1 }}>
+            <CapacityMiniCard
+              block="flex"
+              organization={CONTOSO}
+              product="Lab Results"
+              status="scheduled"
+              number="BLK-1191"
+              details
+              href="#capacity/blocks/BLK-1191"
+            />
+          </Grid>
+          <Grid size={{ xs: 4, sm: 1 }}>
+            <CapacityMiniCard
+              block="flex"
+              organization={{ name: "Fabrikam" }}
+              product="Storefront"
+              status="fulfilled"
+              number="BLK-1185"
+              details
+              href="#capacity/blocks/BLK-1185"
+            />
+          </Grid>
+        </Grid>
+      </Example>
+      <CodeBlock
+        code={`<CapacityMiniCard
+  block={capacity.type}
+  organization={{ name: organization.name, logoUrl: organization.image_url }}
+  product={product.name}
+  status={capacity.status}
+  week={weekLabel(capacity.week_starts_on)}
+  number={capacity.number}
+  details
+  href={\`/capacity/blocks/\${capacity.number}\`}
+/>`}
+      />
     </>
   );
 }
