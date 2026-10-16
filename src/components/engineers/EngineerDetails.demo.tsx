@@ -1,6 +1,7 @@
+import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { Example } from "../../docs/Example";
-import { MARCUS, PRIYA } from "../../docs/engineers";
+import { ANA, MARCUS, PRIYA } from "../../docs/engineers";
 import { EngineerDetails } from "./EngineerDetails";
 import { SectionCard } from "../layout/SectionCard";
 
@@ -19,6 +20,11 @@ export function EngineerDetailsDemo() {
             </Grid>
           ))}
         </Grid>
+      </Example>
+      <Example title="A Team Lead: the star on their picture, and Engineer · Team Lead above">
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <EngineerDetails engineer={ANA} />
+        </Box>
       </Example>
       <Example title="In a card of your own, with card={false}">
         <SectionCard title="Your engineer">
