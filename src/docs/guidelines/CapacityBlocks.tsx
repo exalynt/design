@@ -170,9 +170,12 @@ export function CapacityBlocksGuideline() {
             attention in a word or two (&ldquo;Unassigned&rdquo;, &ldquo;Overbooked&rdquo;), an icon
             for that kind, and a <code>hint</code> saying what&rsquo;s wrong and what would fix it.
             The card is edged and tinted in warning, the reason heads it, and it takes the place of
-            the scheduled edge. Give one reason, the most pressing, and only to the people who can
-            act on it, such as Exalynt&rsquo;s admin views; it&rsquo;s a nudge, not a status, so the
-            status stays in <code>badge</code>.
+            the scheduled edge. Where the block can&rsquo;t go ahead as it&rsquo;s booked, such as
+            overbooking its engineer&rsquo;s week, pass <code>severity: &quot;error&quot;</code> to
+            edge and tint it in red instead; keep warning for what only needs seeing to, such as a
+            block nobody&rsquo;s on. Give one reason, the most pressing, and only to the people who
+            can act on it, such as Exalynt&rsquo;s admin views; it&rsquo;s a nudge, not a status, so
+            the status stays in <code>badge</code>.
           </li>
           <li>
             <strong>Say why it can&rsquo;t move.</strong> Pass <code>onDragStart</code> and a{" "}

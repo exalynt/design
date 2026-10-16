@@ -22,6 +22,12 @@ export type CapacityAttention = {
   icon?: ReactElement;
   /** Said on hover: what's wrong, and what would fix it. */
   hint?: string;
+  /**
+   * How pressing it is. `warning`, the default, for something to see to, such
+   * as a block nobody's on; `error`, edged and tinted in red, where the block
+   * can't go ahead as it's booked, such as overbooking its engineer's week.
+   */
+  severity?: "warning" | "error";
 };
 
 export type CapacityBlockProps = {
@@ -47,8 +53,9 @@ export type CapacityBlockProps = {
    */
   organization?: OrganizationProfile;
   /**
-   * Needs someone to act on it: edged and tinted in warning, with what kind of
-   * attention it needs at the top. One reason at a time, the most pressing.
+   * Needs someone to act on it: edged and tinted in warning, or in error with
+   * `severity: "error"`, with what kind of attention it needs at the top. One
+   * reason at a time, the most pressing.
    */
   attention?: CapacityAttention;
   /** In its week on a schedule: tinted and edged in primary, like a calendar event. */
@@ -138,8 +145,8 @@ export function CapacityBlock({
       sx={(theme) => {
         const tint = (alpha: number) =>
           `rgba(${theme.vars.palette.primary.mainChannel} / ${alpha})`;
-        const warn = (alpha: number) =>
-          `rgba(${theme.vars.palette.warning.mainChannel} / ${alpha})`;
+        const tone = attention?.severity ?? "warning";
+        const warn = (alpha: number) => `rgba(${theme.vars.palette[tone].mainChannel} / ${alpha})`;
         return {
           display: "flex",
           flexDirection: "column",
@@ -167,7 +174,7 @@ export function CapacityBlock({
                 ? tint(0.14)
                 : "background.paper",
           ...(attention
-            ? { borderLeft: 4, borderLeftColor: "warning.main" }
+            ? { borderLeft: 4, borderLeftColor: `${tone}.main` }
             : scheduled && { borderLeft: 4, borderLeftColor: "primary.main" }),
           boxShadow: selected ? `inset 0 0 0 1px ${theme.vars.palette.primary.main}` : "none",
           opacity: faded ? 0.4 : 1,
@@ -178,7 +185,7 @@ export function CapacityBlock({
             highlighted || !interactive
               ? {}
               : attention
-                ? { bgcolor: warn(0.16), borderColor: "warning.main" }
+                ? { bgcolor: warn(0.16), borderColor: `${tone}.main` }
                 : scheduled
                   ? { bgcolor: tint(0.22), borderColor: "primary.main" }
                   : { borderColor: "text.secondary" },
@@ -303,10 +310,11 @@ function BlockType({ block, focusable }: { block: CapacityBlockId; focusable: bo
 }
 
 /*
- * What attention a block needs, in warning, as the top row's text: its icon
- * and its label, cut short where the row is narrow, and its hint on hover.
+ * What attention a block needs, in warning or error, as the top row's text:
+ * its icon and its label, cut short where the row is narrow, and its hint on
+ * hover.
  */
-function Attention({ label, icon, hint }: CapacityAttention) {
+function Attention({ label, icon, hint, severity = "warning" }: CapacityAttention) {
   return (
     <Tooltip title={hint ?? label} describeChild>
       <Box
@@ -315,7 +323,7 @@ function Attention({ label, icon, hint }: CapacityAttention) {
           alignItems: "center",
           gap: 0.5,
           minWidth: 0,
-          color: "warning.main",
+          color: `${severity}.main`,
           fontSize: 12.5,
           fontWeight: 600,
           "& .MuiSvgIcon-root": { fontSize: 16, flex: "none" },

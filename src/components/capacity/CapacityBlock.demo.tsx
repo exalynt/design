@@ -145,7 +145,7 @@ export function CapacityBlockDemo() {
 />`}
       />
 
-      <Example title="Needs attention: edged in warning, with the kind of attention it needs (hover it)">
+      <Example title="Needs attention: edged in warning, or in red where it can't go ahead as booked, with the kind of attention it needs (hover it)">
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6, md: 4 }} sx={{ display: "flex" }}>
             <CapacityBlock
@@ -181,6 +181,7 @@ export function CapacityBlockDemo() {
                 label: "Overbooked",
                 icon: <EventBusyOutlinedIcon />,
                 hint: "Priya has more than a full engineer's capacity booked that week. Move a block or assign someone else.",
+                severity: "error",
               }}
               badge={<CapacityStatus status="scheduled" iconOnly />}
               footer={
@@ -222,7 +223,7 @@ export function CapacityBlockDemo() {
   block={capacity.type}
   attention={
     overbooked
-      ? { label: "Overbooked", icon: <EventBusyOutlinedIcon />, hint: \`\${engineer.name} has more than a full engineer's capacity booked that week.\` }
+      ? { label: "Overbooked", icon: <EventBusyOutlinedIcon />, hint: \`\${engineer.name} has more than a full engineer's capacity booked that week.\`, severity: "error" }
       : undefined
   }
 />`}
