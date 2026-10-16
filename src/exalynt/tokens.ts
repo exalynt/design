@@ -35,13 +35,14 @@ export const status = {
   warningDark: "#f59e0b",
   errorLight: "#b91c1c",
   errorDark: "#ef4444",
-  /* The Team Lead mark, a gold arrowhead on their picture and beside "Team Lead"
-     (and the portal's LeadBadge). A gold rather than warning's amber, so a
-     lead never reads as a status, a stability level, or an engineer level.
-     Light's is dark enough for 4.5:1 on white, since "Team Lead" is small
-     text in it. */
-  leadLight: "#96700a",
-  leadDark: "#facc15",
+  /* The Team Lead mark, a star on their picture and beside "Team Lead" (and
+     the portal's LeadBadge), in a light blue-silver metal: a sheen, the metal,
+     and a darker rim. The same in both schemes, so the metal reads as itself.
+     "Team Lead" is small text in the rim on light (5.9:1 on white) and in the
+     metal on dark (9.3:1 on the elevated surface). */
+  leadSheen: "#f4f7fc",
+  leadMetal: "#aebfd6",
+  leadRim: "#506582",
 } as const;
 
 export const dividerToken = {

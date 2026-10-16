@@ -8,7 +8,7 @@ import { EngineerLevelBadge } from "./EngineerLevelBadge";
 /** An engineer as the app has them, for EngineerDetails, CapacityEngineer, and UserAttribution. */
 export type EngineerProfile = UserProfile & {
   level: EngineerLevelId;
-  /** They lead their Engineering Team: their picture has a gold mark, and EngineerDetails says so. */
+  /** They lead their Engineering Team: their picture has a blue-silver star, and EngineerDetails says so. */
   teamLead?: boolean;
   /** A sentence or two about them. Cut short after four lines. */
   bio?: string;
@@ -25,8 +25,8 @@ export type EngineerDetailsProps = {
 /*
  * Who an engineer is, for whoever is looking at their work: their picture,
  * name, and level as its badge, a short bio, and a link to their profile
- * page. A Team Lead's picture has the gold mark, and the eyebrow reads
- * Engineer · Team Lead, the mark and "Team Lead" in the same gold. It's the
+ * page. A Team Lead's picture has the blue-silver star, and the eyebrow
+ * reads Engineer · Team Lead, with the star before "Team Lead". It's the
  * content of CapacityEngineer's popover, and draws its own card there.
  */
 export function EngineerDetails({ engineer, card = true }: EngineerDetailsProps) {

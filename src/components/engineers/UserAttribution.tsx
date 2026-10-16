@@ -42,7 +42,7 @@ const isEngineer = (user: UserProfile | EngineerProfile): user is EngineerProfil
  * both, the badge's own popover is left out: EngineerDetails has the badge,
  * with its popover, so the two never open together. The name is cut short
  * where there's no room, before the badge is. A Team Lead (`teamLead` on
- * their profile) has a gold arrowhead on their picture in every form, and
+ * their profile) has a blue-silver star on their picture in every form, and
  * "Team Lead" on hovering it, or after their name with `photoOnly`.
  */
 export function UserAttribution({

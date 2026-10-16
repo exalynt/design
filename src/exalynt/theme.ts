@@ -23,7 +23,7 @@ import { brand, chromeToken, dividerToken, floatingToken, fonts, geometry, statu
  */
 
 /*
- * `lead`: the Team Lead mark, the gold arrowhead on a lead's picture and its "Team Lead" label.
+ * `lead`: the Team Lead mark, the blue-silver star on a lead's picture and its "Team Lead" label.
  * `chrome`: the top bar and navigation rail's surface (see chromeToken).
  */
 declare module "@mui/material/styles" {
@@ -71,7 +71,7 @@ export const theme = createTheme({
         warning: { main: status.warningLight },
         error: { main: status.errorLight },
         info: { main: brand.blue },
-        lead: { main: status.leadLight },
+        lead: { light: status.leadSheen, main: status.leadMetal, dark: status.leadRim },
         chrome: chromeToken.light,
       },
     },
@@ -92,7 +92,7 @@ export const theme = createTheme({
         warning: { main: status.warningDark },
         error: { main: status.errorDark },
         info: { main: brand.blueBright },
-        lead: { main: status.leadDark },
+        lead: { light: status.leadSheen, main: status.leadMetal, dark: status.leadRim },
         chrome: chromeToken.dark,
       },
     },

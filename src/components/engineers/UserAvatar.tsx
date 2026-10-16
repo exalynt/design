@@ -1,13 +1,14 @@
-import NavigationRoundedIcon from "@mui/icons-material/NavigationRounded";
+import { useId } from "react";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Badge from "@mui/material/Badge";
-import type { SxProps, Theme } from "@mui/material/styles";
+import SvgIcon from "@mui/material/SvgIcon";
+import { useTheme, type SxProps, type Theme } from "@mui/material/styles";
 
 /*
  * Someone's profile picture, or their initials where they have none or it
  * doesn't load. Decorative: their name is always beside it. `lead` marks a
- * Team Lead with a gold arrowhead (TeamLeadIcon) over the picture's bottom
+ * Team Lead with a blue-silver star (TeamLeadIcon) over the picture's bottom
  * right; whatever shows it says "Team Lead" in words.
  */
 export function UserAvatar({
@@ -58,42 +59,66 @@ export function UserAvatar({
   );
 }
 
-/* The Team Lead mark, an arrowhead leading the way, in the lead color. Decorative: show it beside "Team Lead" or a label saying it. */
+/* MUI's StarRounded, so the mark is drawn with a gradient of its own. */
+const STAR =
+  "m12 17.27 4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72 3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18-1.1 4.72c-.2.86.73 1.54 1.49 1.08z";
+
+/*
+ * The Team Lead mark, a star in the lead metal: a sheen from the role's light
+ * to main and back, and a rim in its dark. Decorative: show it beside "Team
+ * Lead" or a label saying it.
+ */
 function TeamLeadIcon({ sx }: { sx?: SxProps<Theme> }) {
+  const gradient = `team-lead-${useId().replace(/[^\w-]/g, "")}`;
+  const { light, main, dark } = leadColors(useTheme());
   return (
-    <NavigationRoundedIcon
-      aria-hidden
-      sx={[{ color: leadColor }, ...(Array.isArray(sx) ? sx : [sx])]}
-    />
+    <SvgIcon aria-hidden sx={sx}>
+      <defs>
+        <linearGradient id={gradient} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" style={{ stopColor: light }} />
+          <stop offset="0.5" style={{ stopColor: main }} />
+          <stop offset="0.7" style={{ stopColor: light }} />
+          <stop offset="1" style={{ stopColor: main }} />
+        </linearGradient>
+      </defs>
+      <path
+        d={STAR}
+        fill={`url(#${gradient})`}
+        strokeWidth={1.25}
+        strokeLinejoin="round"
+        style={{ stroke: dark }}
+      />
+    </SvgIcon>
   );
 }
 
-/* The mark and "Team Lead", both in the lead color, in the type of the text around it, as EngineerDetails's eyebrow has them. */
+/*
+ * The mark and "Team Lead", in the type of the text around it, as
+ * EngineerDetails's eyebrow has them. The words are in the lead role's dark,
+ * or its main in dark mode, so they hold their contrast on either card.
+ */
 export function TeamLeadLabel() {
   return (
     <Box
       component="span"
-      sx={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 0.25,
-        verticalAlign: "bottom",
-        color: leadColor,
-      }}
+      sx={(theme) => ({
+        whiteSpace: "nowrap",
+        color: leadColors(theme).dark,
+        ...theme.applyStyles("dark", { color: leadColors(theme).main }),
+      })}
     >
-      <TeamLeadIcon sx={{ fontSize: "1.3em" }} />
+      {/* Inline on the text's baseline, lowered to center on the capitals without growing the line. */}
+      <TeamLeadIcon sx={{ fontSize: "1.3em", verticalAlign: "-0.3em", mr: 0.25 }} />
       Team Lead
     </Box>
   );
 }
 
-/* Exalynt's theme has a `lead` role for Team Leads; a theme without one uses its primary color. */
-function leadColor(theme: Theme) {
-  const palette = (theme.vars ?? theme).palette as {
-    lead?: { main?: string };
-    primary: { main: string };
-  };
-  return palette.lead?.main ?? palette.primary.main;
+/* Exalynt's theme has a `lead` role for Team Leads, its blue-silver metal; a theme without one uses its primary color. */
+function leadColors(theme: Theme) {
+  type Colors = { light: string; main: string; dark: string };
+  const palette = (theme.vars ?? theme).palette as { lead?: Colors; primary: Colors };
+  return palette.lead ?? palette.primary;
 }
 
 /* "Priya Shah" is "PS": the first and last names' first letters. */

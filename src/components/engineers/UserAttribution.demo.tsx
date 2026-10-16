@@ -52,7 +52,7 @@ export function UserAttributionDemo() {
       </Example>
       <CodeBlock code={`<UserAttribution user={engineerProfile} photoOnly details size={32} />`} />
 
-      <Example title="A Team Lead, in each form: a gold arrowhead on their picture (hover the picture)">
+      <Example title="A Team Lead, in each form: a blue-silver star on their picture (hover the picture)">
         <Stack spacing={2} sx={{ fontSize: 14 }}>
           <UserAttribution user={ANA} />
           <UserAttribution user={ANA} showLevel="squares" />
