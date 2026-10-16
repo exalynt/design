@@ -7,7 +7,6 @@ import {
   type ReactElement,
   type ReactNode,
 } from "react";
-import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -27,6 +26,7 @@ import { mentionLabel, parseMentions, type MentionProfile } from "./mentions";
 import { ProgressMedia, type ProgressMediaItem } from "../progress/ProgressMedia";
 import { ThreadNote } from "./ThreadNote";
 import { DetailsPopover } from "../DetailsPopover";
+import { OrganizationLogo } from "../OrganizationLogo";
 import { EngineerDetails, type EngineerProfile } from "../engineers/EngineerDetails";
 import type { UserProfile } from "../engineers/UserAttribution";
 import { UserAvatar } from "../engineers/UserAvatar";
@@ -540,12 +540,6 @@ function Organization({
   /** Just its logo, which names it on hover. */
   condensed: boolean;
 }) {
-  const initials = organization.name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((word) => word[0].toUpperCase())
-    .join("");
   return (
     /* The logo and name together, so hovering either names it, as it must once just the logo shows. */
     <Tooltip title={organization.name}>
@@ -560,24 +554,7 @@ function Organization({
           color: "text.secondary",
         }}
       >
-        <Avatar
-          variant="rounded"
-          src={organization.logoUrl}
-          alt=""
-          role="img"
-          aria-label={organization.name}
-          sx={{
-            width: 16,
-            height: 16,
-            borderRadius: 0.5,
-            fontSize: 8,
-            fontWeight: 700,
-            color: "text.primary",
-            bgcolor: "action.selected",
-          }}
-        >
-          {initials}
-        </Avatar>
+        <OrganizationLogo organization={organization} size={16} />
         <Typography
           variant="caption"
           noWrap
