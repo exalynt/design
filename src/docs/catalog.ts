@@ -90,6 +90,7 @@ import { EngineerDetailsDemo } from "../components/engineers/EngineerDetails.dem
 import { FeatureCardDemo } from "../components/catalog/FeatureCard.demo";
 import { EngineerLevelBadgeDemo } from "../components/engineers/EngineerLevelBadge.demo";
 import { EngineerLevelDetailsDemo } from "../components/engineers/EngineerLevelDetails.demo";
+import { TeamLeadChipDemo } from "../components/engineers/TeamLeadChip.demo";
 import { PageHeaderDemo } from "../components/layout/PageHeader.demo";
 import { SearchMultiSelectDemo } from "../components/inputs/SearchMultiSelect.demo";
 import { SearchSelectDemo } from "../components/inputs/SearchSelect.demo";
@@ -628,6 +629,16 @@ export const catalog: Group[] = [
           "The card is 300px wide, or the screen less 24px when that's narrower. The four levels fit side by side down to a 320px screen. With `card={false}` it fills its container.",
         icon: ChatBubbleOutlineOutlinedIcon,
         Demo: EngineerLevelDetailsDemo,
+      },
+      {
+        title: "TeamLeadChip",
+        description:
+          "\"Team Lead\" as a small outlined chip with the blue-silver star, for beside a lead's name where saying it in words helps, such as a team's list or a lead's page title, alongside the star on their picture. The words and outline are in the theme's `lead` color where it has one (Exalynt's blue-silver) or its primary color: its dark on light, for contrast, and its main on dark, over a faint sheen of the metal. Team Lead isn't a level, so it sits after the level badge, not in it.",
+        importFrom: "components",
+        phone:
+          "About 80px wide, the level badge's height, and never wraps. Beside a name in a row, let the row wrap so it drops under the name on a narrow screen.",
+        icon: WorkspacePremiumOutlinedIcon,
+        Demo: TeamLeadChipDemo,
       },
       {
         title: "UserAttribution",

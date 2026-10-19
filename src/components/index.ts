@@ -44,6 +44,7 @@ export * from "./progress/ProgressMetric";
 export * from "./engineers/EngineerDetails";
 export * from "./engineers/EngineerLevelBadge";
 export * from "./engineers/EngineerLevelDetails";
+export * from "./engineers/TeamLeadChip";
 export * from "./engineers/UserAttribution";
 
 export * from "./conversations/ConversationMessage";

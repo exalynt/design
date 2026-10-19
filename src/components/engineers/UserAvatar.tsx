@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Badge from "@mui/material/Badge";
 import SvgIcon from "@mui/material/SvgIcon";
 import { useTheme, type SxProps, type Theme } from "@mui/material/styles";
+import { leadColors } from "./leadColors";
 
 /*
  * Someone's profile picture, or their initials where they have none or it
@@ -68,11 +69,11 @@ const STAR =
  * to main and back, and a rim in its dark. Decorative: show it beside "Team
  * Lead" or a label saying it.
  */
-function TeamLeadIcon({ sx }: { sx?: SxProps<Theme> }) {
+export function TeamLeadIcon({ sx, className }: { sx?: SxProps<Theme>; className?: string }) {
   const gradient = `team-lead-${useId().replace(/[^\w-]/g, "")}`;
   const { light, main, dark } = leadColors(useTheme());
   return (
-    <SvgIcon aria-hidden sx={sx}>
+    <SvgIcon aria-hidden sx={sx} className={className}>
       <defs>
         <linearGradient id={gradient} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" style={{ stopColor: light }} />
@@ -112,13 +113,6 @@ export function TeamLeadLabel() {
       Team Lead
     </Box>
   );
-}
-
-/* Exalynt's theme has a `lead` role for Team Leads, its blue-silver metal; a theme without one uses its primary color. */
-function leadColors(theme: Theme) {
-  type Colors = { light: string; main: string; dark: string };
-  const palette = (theme.vars ?? theme).palette as { lead?: Colors; primary: Colors };
-  return palette.lead ?? palette.primary;
 }
 
 /* "Priya Shah" is "PS": the first and last names' first letters. */
