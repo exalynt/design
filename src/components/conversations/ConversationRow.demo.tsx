@@ -161,7 +161,7 @@ export function ConversationRowDemo() {
 
   return (
     <>
-      <Example title="A list: hover a row for its latest messages, and click the first or last to open it over the page. The first opens at its new messages, and Mark as unread in its title bar brings it back unread. It mentions you, the second is unread, with a long latest message cut short in its preview, and the last is read and closed, so it opens without a reply box">
+      <Example title="A list: hover a row for its latest messages, and click the first or last to open it over the page. The first opens at its new messages, and Mark as unread in its title bar brings it back unread. It mentions you, the second is unread, with a long latest message cut short in its preview, and says which space it's in, and the last is read and closed, so it opens without a reply box">
         <Card variant="outlined" sx={{ maxWidth: 640 }}>
           <Stack divider={<Divider />}>
             <ConversationRow
@@ -184,6 +184,7 @@ export function ConversationRowDemo() {
             <ConversationRow
               subject="Invoice emails going to spam"
               href="#ConversationRow"
+              space="Default · Northwind"
               at="2026-10-14T16:05:00Z"
               people={PEOPLE}
               count={6}
@@ -220,6 +221,7 @@ export function ConversationRowDemo() {
         subject={conversation.subject}
         href={\`/conversations/\${conversation.id}\`}
         onOpen={() => openPopout(conversation)}
+        space={spaceName(conversation.space_id)}
         at={conversation.last_activity_at}
         people={participants}
         count={conversation.message_count}

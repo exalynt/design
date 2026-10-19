@@ -6,6 +6,7 @@ import Tooltip from "@mui/material/Tooltip";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import WorkspacesOutlinedIcon from "@mui/icons-material/WorkspacesOutlined";
 import { ConversationPreview, type ConversationPreviewProps } from "./ConversationPreview";
 import { ConversationRelatedPopover } from "./ConversationRelatedPopover";
 import { ConversationTile } from "./ConversationTile";
@@ -37,6 +38,8 @@ export type ConversationRowProps = {
   href: string;
   /** Opens it in place, such as in a ConversationPopout, rather than going to `href`. */
   onOpen?: () => void;
+  /** Where it is, such as the app's space for it, as a quiet caption before its time, cut short where it's long. */
+  space?: string;
   /** When it last moved: an RFC 3339 timestamp in UTC, shown as how long ago, with DateTime's popover for the full time. */
   at: string;
   /** Everyone in it, in the order they joined, at the foot. */
@@ -70,7 +73,8 @@ export type ConversationRowProps = {
  * the warning color where one of the new messages mentions the reader, as
  * ConversationMessage marks that, and Mentioned you says so at the foot.
  * Read, it's plain. Closed, it says so beside its time, and its tile fades,
- * but it opens as any other does.
+ * but it opens as any other does. With `space`, where it is comes before its
+ * time, quietly, for lists that span more than one.
  *
  * With `preview`, hovering or focusing it opens ConversationPreview, except
  * over `actions` or "+N more", which the preview would cover.
@@ -79,6 +83,7 @@ export function ConversationRow({
   subject,
   href,
   onOpen,
+  space,
   at,
   people,
   count,
@@ -210,6 +215,30 @@ export function ConversationRow({
               }}
             >
               {unread} new
+            </Box>
+          ) : null}
+          {space ? (
+            <Box
+              title={space}
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                alignSelf: "center",
+                gap: 0.5,
+                minWidth: 0,
+                maxWidth: { xs: "35%", sm: 220 },
+                flexShrink: 0,
+                typography: "caption",
+                color: "text.secondary",
+              }}
+            >
+              <WorkspacesOutlinedIcon sx={{ fontSize: 14, flexShrink: 0 }} />
+              <Box
+                component="span"
+                sx={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+              >
+                {space}
+              </Box>
             </Box>
           ) : null}
           {/* Above the link that covers the row, so its popover opens, and the row's preview waits meanwhile. */}
