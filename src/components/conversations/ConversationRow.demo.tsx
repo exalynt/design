@@ -25,11 +25,12 @@ import {
   type SampleMessage,
 } from "../../docs/conversations";
 import { Example } from "../../docs/Example";
-import { ConversationMessage } from "./ConversationMessage";
+import { ConversationMessage, type OrganizationProfile } from "./ConversationMessage";
 import { ConversationPopout } from "./ConversationPopout";
 import { ConversationRow, type ConversationRelated } from "./ConversationRow";
 
 const [, PRIYA, , SAM] = PEOPLE;
+const NORTHWIND: OrganizationProfile = { name: "Northwind Traders" };
 const PLANS = "Switching annual plans to monthly";
 const REPORTS = "Moving the reports to a weekly email";
 
@@ -161,7 +162,7 @@ export function ConversationRowDemo() {
 
   return (
     <>
-      <Example title="A list: hover a row for its latest messages, and click the first or last to open it over the page. The first opens at its new messages, and Mark as unread in its title bar brings it back unread. It mentions you, the second is unread, with a long latest message cut short in its preview, and says which space it's in, and the last is read and closed, so it opens without a reply box">
+      <Example title="A list: hover a row for its latest messages, and click the first or last to open it over the page. The first opens at its new messages, and Mark as unread in its title bar brings it back unread. It mentions you, the second is unread, with a long latest message cut short in its preview, and the last is read and closed, so it opens without a reply box">
         <Card variant="outlined" sx={{ maxWidth: 640 }}>
           <Stack divider={<Divider />}>
             <ConversationRow
@@ -184,7 +185,6 @@ export function ConversationRowDemo() {
             <ConversationRow
               subject="Invoice emails going to spam"
               href="#ConversationRow"
-              space="Default · Northwind"
               at="2026-10-14T16:05:00Z"
               people={PEOPLE}
               count={6}
@@ -221,7 +221,6 @@ export function ConversationRowDemo() {
         subject={conversation.subject}
         href={\`/conversations/\${conversation.id}\`}
         onOpen={() => openPopout(conversation)}
-        space={spaceName(conversation.space_id)}
         at={conversation.last_activity_at}
         people={participants}
         count={conversation.message_count}
@@ -270,6 +269,50 @@ export function ConversationRowDemo() {
           />
         </Card>
       </Example>
+
+      <Example title="A list across spaces, such as an engineer's conversations with every client: each row leads with where it is, its organization's logo and name and then its space. A list in one space leaves them out">
+        <Card variant="outlined" sx={{ maxWidth: 640 }}>
+          <Stack divider={<Divider />}>
+            <ConversationRow
+              subject="Renewal pricing for next year"
+              href="#ConversationRow"
+              organization={CLIENT}
+              space="Default"
+              at="2026-10-14T13:40:00Z"
+              people={[YOU, SAM]}
+              count={3}
+              unread={1}
+              related={REPORTS_RELATED}
+            />
+            <ConversationRow
+              subject="Dashboard takes a minute to load on Mondays"
+              href="#ConversationRow"
+              organization={NORTHWIND}
+              space="Analytics rollout"
+              at="2026-10-13T09:10:00Z"
+              people={[PRIYA, YOU]}
+              count={7}
+              related={SPAM_RELATED}
+            />
+            <ConversationRow
+              subject="Onboarding checklist for new engineers"
+              href="#ConversationRow"
+              organization={EXALYNT}
+              space="Engineering"
+              at="2026-10-09T15:00:00Z"
+              people={[PRIYA, YOU]}
+              count={2}
+            />
+          </Stack>
+        </Card>
+      </Example>
+      <CodeBlock
+        code={`<ConversationRow
+  {...props(conversation)}
+  space={space.name}
+  organization={{ name: organization.name, logoUrl: organization.image_url }}
+/>`}
+      />
 
       {plansOpen ? (
         <ConversationPopout

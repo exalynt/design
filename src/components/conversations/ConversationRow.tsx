@@ -10,11 +10,13 @@ import WorkspacesOutlinedIcon from "@mui/icons-material/WorkspacesOutlined";
 import { ConversationPreview, type ConversationPreviewProps } from "./ConversationPreview";
 import { ConversationRelatedPopover } from "./ConversationRelatedPopover";
 import { ConversationTile } from "./ConversationTile";
+import type { OrganizationProfile } from "./ConversationMessage";
 import type { MentionProfile } from "./mentions";
 import { RELATED, groupRelated, relatedName, type ConversationRelated } from "./related";
 import { DateTime } from "../data-display/DateTime";
 import { UserAvatar } from "../engineers/UserAvatar";
 import { CapacityName } from "../capacity/CapacityName";
+import { OrganizationLogo } from "../OrganizationLogo";
 
 export type { ConversationRelated } from "./related";
 
@@ -28,6 +30,8 @@ const visuallyHidden = {
   clip: "rect(0 0 0 0)",
   whiteSpace: "nowrap",
 } as const;
+/* One line, cut short where it's long. */
+const cut = { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } as const;
 /* Between what it's related to, at the foot. */
 const RELATED_GAP = 1.25;
 
@@ -38,8 +42,10 @@ export type ConversationRowProps = {
   href: string;
   /** Opens it in place, such as in a ConversationPopout, rather than going to `href`. */
   onOpen?: () => void;
-  /** Where it is, such as the app's space for it, as a quiet caption before its time, cut short where it's long. */
+  /** The space it's in, by name, in a line over its subject, for a list that spans more than one. */
   space?: string;
+  /** Its space's organization, by its logo and name before the space, for a list that spans more than one organization's spaces. */
+  organization?: OrganizationProfile;
   /** When it last moved: an RFC 3339 timestamp in UTC, shown as how long ago, with DateTime's popover for the full time. */
   at: string;
   /** Everyone in it, in the order they joined, at the foot. */
@@ -73,8 +79,9 @@ export type ConversationRowProps = {
  * the warning color where one of the new messages mentions the reader, as
  * ConversationMessage marks that, and Mentioned you says so at the foot.
  * Read, it's plain. Closed, it says so beside its time, and its tile fades,
- * but it opens as any other does. With `space`, where it is comes before its
- * time, quietly, for lists that span more than one.
+ * but it opens as any other does. With `space` or `organization`, where it is
+ * leads the row, in a quiet line over its subject, for lists that span more
+ * than one: the organization's logo and name, then the space's.
  *
  * With `preview`, hovering or focusing it opens ConversationPreview, except
  * over `actions` or "+N more", which the preview would cover.
@@ -84,6 +91,7 @@ export function ConversationRow({
   href,
   onOpen,
   space,
+  organization,
   at,
   people,
   count,
@@ -137,6 +145,7 @@ export function ConversationRow({
         <ConversationTile size={36} />
       </Box>
       <Box sx={{ flex: 1, minWidth: 0 }}>
+        {space || organization ? <Place space={space} organization={organization} /> : null}
         <Box sx={{ display: "flex", alignItems: "baseline", gap: 1.5 }}>
           <Link
             href={href}
@@ -215,30 +224,6 @@ export function ConversationRow({
               }}
             >
               {unread} new
-            </Box>
-          ) : null}
-          {space ? (
-            <Box
-              title={space}
-              sx={{
-                display: "inline-flex",
-                alignItems: "center",
-                alignSelf: "center",
-                gap: 0.5,
-                minWidth: 0,
-                maxWidth: { xs: "35%", sm: 220 },
-                flexShrink: 0,
-                typography: "caption",
-                color: "text.secondary",
-              }}
-            >
-              <WorkspacesOutlinedIcon sx={{ fontSize: 14, flexShrink: 0 }} />
-              <Box
-                component="span"
-                sx={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
-              >
-                {space}
-              </Box>
             </Box>
           ) : null}
           {/* Above the link that covers the row, so its popover opens, and the row's preview waits meanwhile. */}
@@ -348,6 +333,57 @@ export function ConversationRow({
     </ConversationPreview>
   ) : (
     row
+  );
+}
+
+/*
+ * Where a conversation is, over its subject: its organization's logo and
+ * name, then its space's, as "Acme Logistics / Billing", on one line, cut
+ * short where it's long. Without an organization, the space's icon leads
+ * in the logo's place. The logo names the organization to assistive tech,
+ * so its name beside it is hidden from it.
+ */
+function Place({ space, organization }: { space?: string; organization?: OrganizationProfile }) {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 0.75,
+        minWidth: 0,
+        mb: 0.5,
+        typography: "caption",
+        lineHeight: "16px",
+        color: "text.secondary",
+      }}
+    >
+      {organization ? (
+        <OrganizationLogo organization={organization} size={16} />
+      ) : (
+        <WorkspacesOutlinedIcon aria-hidden sx={{ fontSize: 16, flex: "none" }} />
+      )}
+      <Box component="span" sx={{ minWidth: 0, ...cut }}>
+        {organization ? (
+          <Box component="span" aria-hidden sx={{ fontWeight: 600 }}>
+            {organization.name}
+          </Box>
+        ) : null}
+        {organization && space ? (
+          <Box component="span" aria-hidden sx={{ mx: 0.75, color: "text.disabled" }}>
+            /
+          </Box>
+        ) : null}
+        {space ? (
+          <>
+            {space}
+            <Box component="span" sx={visuallyHidden}>
+              {" "}
+              space
+            </Box>
+          </>
+        ) : null}
+      </Box>
+    </Box>
   );
 }
 
