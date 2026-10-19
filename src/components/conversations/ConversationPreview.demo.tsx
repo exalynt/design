@@ -68,7 +68,7 @@ export function ConversationPreviewDemo() {
 
   return (
     <>
-      <Example title="Hover a row, or tab to one, for its latest messages. The second reads them as it first opens">
+      <Example title="Hover a row, or tab to one, for its latest messages. The second reads them as it first opens, and says where it is, its organization and space, over its title, for a list across spaces">
         <Box
           sx={{
             maxWidth: 480,
@@ -93,6 +93,8 @@ export function ConversationPreviewDemo() {
             </ConversationPreview>
             <ConversationPreview
               title="Invoice emails going to spam"
+              organization={CLIENT}
+              space="Billing"
               messages={spam && messagesOf(spam, 4)}
               earlier={spam ? 4 : 0}
               loading={!spam}
@@ -112,6 +114,9 @@ export function ConversationPreviewDemo() {
       <CodeBlock
         code={`<ConversationPreview
   title={conversation.subject}
+  // Where it could be in any of several spaces, as ConversationRow's are:
+  space={space.name}
+  organization={{ name: organization.name, logoUrl: organization.image_url }}
   loading={recent.status === "loading"}
   failed={recent.status === "failed"}
   earlier={conversation.message_count - recent.messages.length}

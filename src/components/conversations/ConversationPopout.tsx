@@ -24,7 +24,8 @@ import HubOutlinedIcon from "@mui/icons-material/HubOutlined";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import MarkChatUnreadOutlinedIcon from "@mui/icons-material/MarkChatUnreadOutlined";
 import RemoveRoundedIcon from "@mui/icons-material/RemoveRounded";
-import { ConversationThread } from "./ConversationMessage";
+import { ConversationThread, type OrganizationProfile } from "./ConversationMessage";
+import { ConversationPlace } from "./ConversationPlace";
 import { ConversationRelatedDetails } from "./ConversationRelatedDetails";
 import { ConversationTile } from "./ConversationTile";
 import { MessageComposer } from "./MessageComposer";
@@ -51,6 +52,10 @@ type Mode = "normal" | "minimized" | "maximized";
 export type ConversationPopoutProps = {
   /** The conversation's subject, in the title bar. */
   title: string;
+  /** The space it's in, by name, in a line over the title, as ConversationRow has it, where it could be any of several. */
+  space?: string;
+  /** Its space's organization, by its logo and name before the space, where it could be any of several organizations'. */
+  organization?: OrganizationProfile;
   /** Its messages, oldest first: each a ConversationMessage. A long conversation's latest few, with `earlier`. */
   children?: ReactNode;
   /** How many came before those shown, counted at the top (ConversationThread's). */
@@ -102,7 +107,8 @@ export type ConversationPopoutProps = {
  * `earlier` and `onShowEarlier` to bring in more above. Keep which were unread as it opened, so marking
  * it read on opening doesn't clear them while they're read; `onMarkUnread`
  * puts a Mark as unread button in the title bar, and `related` a Related tab
- * that slides what it's related to in from the right, as a sidebar. Its draft,
+ * that slides what it's related to in from the right, as a sidebar. `space`
+ * and `organization` say where it is, in a quiet line over the title. Its draft,
  * and any files attached with `canAttach`, last while it's minimized.
  *
  * It keeps its own place, size and mode, but not which are open: render one
@@ -111,6 +117,8 @@ export type ConversationPopoutProps = {
  */
 export function ConversationPopout({
   title,
+  space,
+  organization,
   children,
   earlier,
   onShowEarlier,
@@ -317,9 +325,14 @@ export function ConversationPopout({
           }}
         >
           <ConversationTile />
-          <Typography variant="subtitle2" component="h2" noWrap sx={{ flex: 1, minWidth: 0 }}>
-            {title}
-          </Typography>
+          <Box sx={{ flex: 1, minWidth: 0, py: 0.75 }}>
+            {space || organization ? (
+              <ConversationPlace space={space} organization={organization} />
+            ) : null}
+            <Typography variant="subtitle2" component="h2" noWrap>
+              {title}
+            </Typography>
+          </Box>
           {actions}
           {related.length ? (
             <RelatedTab

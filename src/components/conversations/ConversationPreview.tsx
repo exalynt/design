@@ -12,7 +12,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { ConversationThread } from "./ConversationMessage";
+import { ConversationThread, type OrganizationProfile } from "./ConversationMessage";
+import { ConversationPlace } from "./ConversationPlace";
 import { ConversationTile } from "./ConversationTile";
 import { ThreadNote } from "./ThreadNote";
 
@@ -27,6 +28,10 @@ type PointerHandlers = {
 export type ConversationPreviewProps = {
   /** The conversation's subject, in the title bar. */
   title: string;
+  /** The space it's in, by name, in a line over the title, as ConversationPopout has it. */
+  space?: string;
+  /** Its space's organization, by its logo and name before the space, as ConversationPopout has it. */
+  organization?: OrganizationProfile;
   /** The latest few messages, oldest first: each a ConversationMessage, cut short with `lines`. */
   messages?: ReactNode;
   /** How many came before `messages`, counted rather than drawn. */
@@ -48,7 +53,8 @@ export type ConversationPreviewProps = {
  * what it previews (`children`), without opening it: ConversationPopout's
  * title bar and messages, read-only, on the same paper, so opening the
  * popout after a glance changes nothing but the size. Anything earlier is
- * counted, not drawn.
+ * counted, not drawn. `space` and `organization` say where it is, over the
+ * title, as the popout's do.
  *
  * Under a mouse it follows the pointer, below it, so it never covers the
  * row being read; from the keyboard it opens beside the row. A tap never
@@ -57,6 +63,8 @@ export type ConversationPreviewProps = {
  */
 export function ConversationPreview({
   title,
+  space,
+  organization,
   messages,
   earlier = 0,
   loading = false,
@@ -98,9 +106,14 @@ export function ConversationPreview({
             }}
           >
             <ConversationTile />
-            <Typography variant="subtitle2" component="p" noWrap sx={{ flex: 1, minWidth: 0 }}>
-              {title}
-            </Typography>
+            <Box sx={{ flex: 1, minWidth: 0, py: 0.75 }}>
+              {space || organization ? (
+                <ConversationPlace space={space} organization={organization} />
+              ) : null}
+              <Typography variant="subtitle2" component="p" noWrap>
+                {title}
+              </Typography>
+            </Box>
           </Box>
           <Box sx={{ p: 2 }}>
             {loading ? (

@@ -108,7 +108,7 @@ export function ConversationPopoutDemo() {
 
   return (
     <>
-      <Example title="Open one or both: drag a title bar to move it, its corner to size it, and click one to bring it forward. Type @ in the reply to mention someone, and send one to see Priya typing back. Related, at the top right of the first, slides in what it's related to">
+      <Example title="Open one or both: drag a title bar to move it, its corner to size it, and click one to bring it forward. Type @ in the reply to mention someone, and send one to see Priya typing back. Related, at the top right of the first, slides in what it's related to. The first also says where it is, its organization and space, over its title, as one opened from a list across spaces would">
         <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: "wrap" }}>
           <Button variant="outlined" onClick={() => show(OPEN)}>
             Open a conversation
@@ -131,6 +131,8 @@ export function ConversationPopoutDemo() {
       {open.includes(OPEN) ? (
         <ConversationPopout
           title={OPEN}
+          organization={CLIENT}
+          space="Billing"
           href="#ConversationPopout"
           related={PLANS_RELATED}
           people={PEOPLE.filter((person) => person !== YOU)}
@@ -214,6 +216,9 @@ export function ConversationPopoutDemo() {
   <ConversationPopout
     key={conversation.id}
     title={conversation.subject}
+    // Where it could be in any of several spaces, such as from an engineer's list across clients:
+    space={space.name}
+    organization={{ name: organization.name, logoUrl: organization.image_url }}
     related={related}
     href={\`/conversations/\${conversation.id}\`}
     loading={thread.status === "loading"}
