@@ -6,17 +6,16 @@ import Tooltip from "@mui/material/Tooltip";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import WorkspacesOutlinedIcon from "@mui/icons-material/WorkspacesOutlined";
 import { ConversationPreview, type ConversationPreviewProps } from "./ConversationPreview";
 import { ConversationRelatedPopover } from "./ConversationRelatedPopover";
 import { ConversationTile } from "./ConversationTile";
 import type { OrganizationProfile } from "./ConversationMessage";
+import { ConversationPlace } from "./ConversationPlace";
 import type { MentionProfile } from "./mentions";
 import { RELATED, groupRelated, relatedName, type ConversationRelated } from "./related";
 import { DateTime } from "../data-display/DateTime";
 import { UserAvatar } from "../engineers/UserAvatar";
 import { CapacityName } from "../capacity/CapacityName";
-import { OrganizationLogo } from "../OrganizationLogo";
 
 export type { ConversationRelated } from "./related";
 
@@ -30,8 +29,6 @@ const visuallyHidden = {
   clip: "rect(0 0 0 0)",
   whiteSpace: "nowrap",
 } as const;
-/* One line, cut short where it's long. */
-const cut = { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } as const;
 /* Between what it's related to, at the foot. */
 const RELATED_GAP = 1.25;
 
@@ -145,7 +142,9 @@ export function ConversationRow({
         <ConversationTile size={36} />
       </Box>
       <Box sx={{ flex: 1, minWidth: 0 }}>
-        {space || organization ? <Place space={space} organization={organization} /> : null}
+        {space || organization ? (
+          <ConversationPlace space={space} organization={organization} sx={{ mb: 0.5 }} />
+        ) : null}
         <Box sx={{ display: "flex", alignItems: "baseline", gap: 1.5 }}>
           <Link
             href={href}
@@ -333,57 +332,6 @@ export function ConversationRow({
     </ConversationPreview>
   ) : (
     row
-  );
-}
-
-/*
- * Where a conversation is, over its subject: its organization's logo and
- * name, then its space's, as "Acme Logistics / Billing", on one line, cut
- * short where it's long. Without an organization, the space's icon leads
- * in the logo's place. The logo names the organization to assistive tech,
- * so its name beside it is hidden from it.
- */
-function Place({ space, organization }: { space?: string; organization?: OrganizationProfile }) {
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        gap: 0.75,
-        minWidth: 0,
-        mb: 0.5,
-        typography: "caption",
-        lineHeight: "16px",
-        color: "text.secondary",
-      }}
-    >
-      {organization ? (
-        <OrganizationLogo organization={organization} size={16} />
-      ) : (
-        <WorkspacesOutlinedIcon aria-hidden sx={{ fontSize: 16, flex: "none" }} />
-      )}
-      <Box component="span" sx={{ minWidth: 0, ...cut }}>
-        {organization ? (
-          <Box component="span" aria-hidden sx={{ fontWeight: 600 }}>
-            {organization.name}
-          </Box>
-        ) : null}
-        {organization && space ? (
-          <Box component="span" aria-hidden sx={{ mx: 0.75, color: "text.disabled" }}>
-            /
-          </Box>
-        ) : null}
-        {space ? (
-          <>
-            {space}
-            <Box component="span" sx={visuallyHidden}>
-              {" "}
-              space
-            </Box>
-          </>
-        ) : null}
-      </Box>
-    </Box>
   );
 }
 
