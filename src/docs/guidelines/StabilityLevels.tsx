@@ -428,6 +428,11 @@ export function StabilityLevelsGuideline() {
             <code>STABILITY_DOCS_URL</code>: where the levels are explained. Each level is at{" "}
             <code>#stability-&lt;level&gt;</code>.
           </li>
+          <li>
+            <strong>In a GitHub README,</strong> where components can&rsquo;t render, use the SVG
+            marks at <code>https://design.exalynt.io/stability/</code>: the extra-long mark under
+            the title, linked to the level. This repository&rsquo;s README has the snippet.
+          </li>
         </ul>
         <p>
           For the labels on issues and pull requests, see the readme&rsquo;s{" "}

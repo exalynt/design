@@ -66,3 +66,29 @@ jobs:
 
       - name: Build package
         run: npm run build:lib
+
+  stability-marks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate stability marks
+        run: npm run stability:marks
+
+      - name: Check the committed marks are current
+        run: |
+          if [ -n "$(git status --porcelain public/stability)" ]; then
+            git status --porcelain public/stability
+            echo "::error::public/stability/ is out of date. Run npm run stability:marks and commit the result."
+            exit 1
+          fi

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="102" height="18" viewBox="0 0 102 18" role="img" aria-label="Stability: Prototype">
+  <title>Stability: Prototype</title>
+  <g>
+    <rect x="0" y="6.67" width="4.67" height="4.67" rx="1.17" fill="#6d6a7c"/>
+    <rect x="5.83" y="6.67" width="4.67" height="4.67" rx="1.17" fill="rgb(100 116 139 / 22%)"/>
+    <rect x="11.67" y="6.67" width="4.67" height="4.67" rx="1.17" fill="rgb(100 116 139 / 22%)"/>
+    <rect x="17.5" y="6.67" width="4.67" height="4.67" rx="1.17" fill="rgb(100 116 139 / 22%)"/>
+  </g>
+  <text x="29.17" y="9" dominant-baseline="central" fill="#6d6a7c" font-family="-apple-system, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif" font-size="14" font-weight="500">Prototype</text>
+</svg>

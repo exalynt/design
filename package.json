@@ -24,7 +24,8 @@
     "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json",
     "lint": "oxlint",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "stability:marks": "node scripts/stability-marks.ts"
   },
   "peerDependencies": {
     "@emotion/react": "^11.14.0",

@@ -43,6 +43,29 @@ This repository covers how, when, and where to show them, and links there
 rather than repeating it. A change to a level's wording or color is made here,
 published, and then picked up by updating `@exalynt/design` in the readme.
 
+### Stability marks as SVGs
+
+For places that can't render `StabilityMark`, such as a repository's
+`README.md` on GitHub, `public/stability/` has each level's mark as an SVG,
+served by the design system page at `https://design.exalynt.io/stability/`:
+`<level>-long-<scheme>.svg` (the Track and the name) and
+`<level>-extra-long-<scheme>.svg` (adding how stable it is), in `light` and
+`dark`, for every level. Show GA's only where the stability guidelines allow
+a GA mark, since no mark already means GA.
+Put the extra-long mark under the README's title, linked to the level:
+
+<!-- prettier-ignore -->
+```html
+<a href="https://readme.exalynt.com/how-it-works/stability-levels#stability-alpha"><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://design.exalynt.io/stability/alpha-extra-long-dark.svg">
+  <img src="https://design.exalynt.io/stability/alpha-extra-long-light.svg" alt="Stability: Alpha · Developing" height="18">
+</picture></a>
+```
+
+They're written by `npm run stability:marks` from `stability.ts`, and CI fails
+if the committed files are out of date. Other repositories link to these
+URLs, so don't rename or move them.
+
 ## Stack
 
 React 19 + TypeScript on MUI v9 with CSS theme variables, built with Vite.
