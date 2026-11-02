@@ -866,7 +866,7 @@ export const catalog: Group[] = [
           "A whole table in a card, with each extra picked by a prop: `search`, `filters`, `pagination`, and sorting from any column marked `sortable`. It works on rows the app already has in full, in memory.",
         importFrom: "components",
         phone:
-          "Search and the Filters button share a row, and the filters stack full width when opened. The row count hides, and pagination keeps its arrows but drops the Per page label. Columns follow their `hideBelow`.",
+          "Search, the Filters button and Clear wrap onto a second row if they don't fit, and the filters stack full width when opened. The row count hides, and pagination keeps its arrows but drops the Per page label. Columns follow their `hideBelow`.",
         icon: TableRowsOutlinedIcon,
         Demo: ListTableDemo,
       },
