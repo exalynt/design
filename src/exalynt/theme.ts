@@ -1,5 +1,7 @@
 /* Enables `colorSchemes` on ThemeOptions and types `theme.vars.*` everywhere. */
 import "@mui/material/themeCssVarsAugmentation";
+/* Types the date pickers' entries under `components`. */
+import "@mui/x-date-pickers/themeAugmentation";
 import { createTheme, alpha } from "@mui/material/styles";
 import type { Shadows } from "@mui/material/styles";
 import { brand, chromeToken, dividerToken, floatingToken, fonts, geometry, status } from "./tokens";
@@ -471,6 +473,58 @@ export const theme = createTheme({
         },
         noOptions: { padding: "10px 14px" },
         loading: { padding: "10px 14px" },
+      },
+    },
+
+    /* A date picker's field is as tall as the other fields beside it. */
+    MuiDatePicker: {
+      defaultProps: {
+        slotProps: { textField: { size: "small" } },
+      },
+    },
+
+    /* Its calendar floats on a Popper too, so it takes the same surface, lifted off the page. */
+    MuiPickerPopper: {
+      styleOverrides: {
+        paper: ({ theme: t }) => ({
+          border: `1px solid ${t.vars.palette.divider}`,
+          borderRadius: geometry.radius,
+          backgroundColor: floatingToken.light,
+          boxShadow: "0 6px 16px -6px rgb(8 15 26 / 25%)",
+          ...t.applyStyles("dark", {
+            backgroundColor: floatingToken.dark,
+            boxShadow: "0 8px 24px -6px rgb(0 0 0 / 60%)",
+          }),
+        }),
+      },
+    },
+
+    MuiPickersCalendarHeader: {
+      styleOverrides: {
+        label: { fontSize: "14px", fontWeight: 600 },
+        switchViewButton: ({ theme: t }) => ({ color: t.vars.palette.text.secondary }),
+      },
+    },
+
+    MuiPickersArrowSwitcher: {
+      styleOverrides: {
+        button: ({ theme: t }) => ({
+          color: t.vars.palette.text.secondary,
+          "& .MuiSvgIcon-root": { fontSize: 18 },
+        }),
+      },
+    },
+
+    /* Today is marked in the brand color, quieter than the selected day it might sit beside. */
+    MuiPickerDay: {
+      styleOverrides: {
+        root: ({ theme: t }) => ({
+          fontSize: "13px",
+          "&.MuiPickerDay-today:not(.Mui-selected)": {
+            border: `1px solid ${t.vars.palette.primary.main}`,
+            color: t.vars.palette.primary.main,
+          },
+        }),
       },
     },
 

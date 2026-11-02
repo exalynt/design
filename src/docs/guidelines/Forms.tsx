@@ -173,6 +173,10 @@ export function FormsGuideline() {
             projects): <a href="#SearchSelect">SearchSelect</a>.
           </li>
           <li>
+            <strong>A date</strong>: <a href="#DatePickerField">DatePickerField</a>, rather than{" "}
+            <code>TextField type="date"</code> or MUI's <code>DatePicker</code> itself.
+          </li>
+          <li>
             <strong>Several from a list</strong>: checkboxes when there are a handful;{" "}
             <a href="#SearchMultiSelect">SearchMultiSelect</a> when there are more, rather than{" "}
             <code>Autocomplete multiple</code>.

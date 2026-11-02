@@ -15,8 +15,8 @@ export default defineConfig({
     },
     rolldownOptions: {
       // The app brings its own React and MUI, so the theme context it sets up
-      // is the one these components read.
-      external: /^(react|react-dom|@mui\/[^/]+|@emotion\/[^/]+)(\/.*)?$/,
+      // is the one these components read. dayjs comes with MUI's date pickers.
+      external: /^(react|react-dom|dayjs|@mui\/[^/]+|@emotion\/[^/]+)(\/.*)?$/,
     },
   },
 });

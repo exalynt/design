@@ -64,6 +64,7 @@ export * from "./focus/FocusPriorityList";
 
 export * from "./filters/FiltersPanel";
 
+export * from "./inputs/DatePickerField";
 export * from "./inputs/SearchMultiSelect";
 export * from "./inputs/SearchSelect";
 

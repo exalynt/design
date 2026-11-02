@@ -93,6 +93,7 @@ import { EngineerLevelDetailsDemo } from "../components/engineers/EngineerLevelD
 import { TeamLeadChipDemo } from "../components/engineers/TeamLeadChip.demo";
 import { PageHeaderDemo } from "../components/layout/PageHeader.demo";
 import { SearchMultiSelectDemo } from "../components/inputs/SearchMultiSelect.demo";
+import { DatePickerFieldDemo } from "../components/inputs/DatePickerField.demo";
 import { SearchSelectDemo } from "../components/inputs/SearchSelect.demo";
 import { SectionCardDemo } from "../components/layout/SectionCard.demo";
 import { StatCardDemo } from "../components/data-display/StatCard.demo";
@@ -823,6 +824,16 @@ export const catalog: Group[] = [
           "Fields fill the width and side-by-side pairs stack. Input text stays at 16px so iOS doesn't zoom in on focus. A select's menu and the search selects' lists keep MUI's 48px rows on phones.",
         icon: DynamicFormOutlinedIcon,
         Demo: FormsGuideline,
+      },
+      {
+        title: "DatePickerField",
+        description:
+          "Picks one calendar date, typed or from a calendar: MUI's DatePicker, kept quiet, with the date as a YYYY-MM-DD string or null. It brings no date library into the code using it, and needs no LocalizationProvider. `min` and `max` limit the dates on offer, and two of them make a range. `onChange` only ever gets a whole date, or null when it's cleared.",
+        importFrom: "components",
+        phone:
+          "Fills its container's width. On a touch screen the calendar opens as a full-screen dialog rather than a popover, with MUI's tap-sized days.",
+        icon: CalendarMonthOutlinedIcon,
+        Demo: DatePickerFieldDemo,
       },
       {
         title: "SearchSelect",
