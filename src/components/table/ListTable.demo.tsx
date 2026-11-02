@@ -1,6 +1,10 @@
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { CodeBlock } from "../../docs/CodeBlock";
 import { Example } from "../../docs/Example";
 import { invoiceColumns, invoices, type Invoice } from "../../docs/invoices";
+import { formatMoney } from "../data-display/money";
 import { useToast } from "../feedback/toast";
 import { ListTable, type ListFilter } from "./ListTable";
 
@@ -10,6 +14,35 @@ const filters: ListFilter<Invoice>[] = [
   { id: "status", label: "Status", value: (row) => row.status },
   { id: "client", label: "Client", value: (row) => row.client },
 ];
+
+/* What an invoice bills for, made up from it, as a row holding several of something. */
+function invoiceLines(invoice: Invoice) {
+  const second = Number(invoice.number.slice(-1)) % 2 === 0 ? "Hosting" : "Support";
+  const hosted = Math.round(invoice.amount * 0.2);
+  return [
+    { label: "Engineering", amount: invoice.amount - hosted },
+    { label: second, amount: hosted },
+  ];
+}
+
+const lineFilters: ListFilter<Invoice>[] = [
+  { id: "line", label: "Billed for", value: (row) => invoiceLines(row).map((line) => line.label) },
+];
+
+function InvoiceLines({ invoice, padded = false }: { invoice: Invoice; padded?: boolean }) {
+  return (
+    <Stack spacing={padded ? 1 : 0.5} sx={padded ? { px: 2, py: 1.5 } : undefined}>
+      {invoiceLines(invoice).map((line) => (
+        <Stack key={line.label} direction="row" sx={{ justifyContent: "space-between", gap: 2 }}>
+          <Typography variant="body2">{line.label}</Typography>
+          <Box component="span" sx={{ fontVariantNumeric: "tabular-nums" }}>
+            {formatMoney(line.amount)}
+          </Box>
+        </Stack>
+      ))}
+    </Stack>
+  );
+}
 
 export function ListTableDemo() {
   const toast = useToast();
@@ -40,6 +73,62 @@ export function ListTableDemo() {
   filters={[{ id: "status", label: "Status", value: (row) => row.status }]}
   pagination
   onRowClick={(row) => navigate(\`/invoices/\${row.number}\`)}
+/>`}
+      />
+
+      <Example title="Between two dates">
+        <ListTable
+          columns={invoiceColumns}
+          rows={invoices}
+          rowKey={(row) => row.number}
+          noun={noun}
+          dateRange={{ value: (row) => row.issued }}
+          filters={filters}
+          pagination
+          defaultSort={{ column: "issued", direction: "desc" }}
+        />
+      </Example>
+      <CodeBlock
+        code={`<ListTable
+  // ...
+  // Each date is optional and includes its own day: with only a start, it's
+  // everything from then on; with only an end, everything up to it.
+  dateRange={{ value: (row) => row.issued }}
+/>`}
+      />
+
+      <Example title="Collapsible rows, with a preview on hover, and fixed columns">
+        <ListTable
+          columns={invoiceColumns.map((column) => ({
+            ...column,
+            width: column.id === "project" ? undefined : 150,
+          }))}
+          rows={invoices}
+          rowKey={(row) => row.number}
+          noun={noun}
+          search
+          searchText={(row) =>
+            invoiceLines(row)
+              .map((line) => line.label)
+              .join(" ")
+          }
+          filters={lineFilters}
+          pagination
+          minWidth={840}
+          rowPreview={(row) => <InvoiceLines invoice={row} />}
+          renderExpanded={(row) => <InvoiceLines invoice={row} padded />}
+        />
+      </Example>
+      <CodeBlock
+        code={`<ListTable
+  // ...
+  columns={columns}            // give a column a width to fix them all in place
+  renderExpanded={(row) => <InvoiceLines invoice={row} />}   // slides open under the row
+  rowPreview={(row) => <InvoiceLines invoice={row} />}       // on hover, until it's open
+  // A filter's value can be several, and a row shows when any of them is chosen.
+  filters={[{ id: "line", label: "Billed for", value: (row) => row.lines.map((l) => l.label) }]}
+  // More to search than the columns show.
+  searchText={(row) => row.lines.map((l) => l.label).join(" ")}
 />`}
       />
 
