@@ -27,7 +27,6 @@ export function TeamLeadChip() {
       sx={(theme) => {
         const { main, dark } = leadColors(theme);
         return {
-          /* The level badge's size and spacing, so the two sit alike beside a name. */
           height: 20,
           fontSize: 11,
           fontWeight: 500,

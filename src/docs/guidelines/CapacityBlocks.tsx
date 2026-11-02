@@ -303,8 +303,8 @@ export function CapacityBlocksGuideline() {
           <li>
             <strong>An assigned engineer is their picture and name,</strong> from an{" "}
             <code>EngineerProfile</code>, and the name opens <code>EngineerDetails</code> on hover,
-            focus, or tap: their level, a short bio, and a link to their profile where the app has
-            one. Without a picture, it shows their initials.
+            focus, or tap: a short bio, and a link to their profile where the app has one. Without a
+            picture, it shows their initials.
           </li>
           <li>
             <strong>In Exalynt&rsquo;s admin views,</strong> pass <code>onAssignClick</code>. With

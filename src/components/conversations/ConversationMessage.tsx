@@ -285,7 +285,7 @@ export function ConversationMessage({
   const tone = mine ? "primary" : ourSide ? "secondary" : null;
   /* A teammate's also say so in words and by a ring round their picture, so they never rest on color alone. */
   const teammate = ourSide && !mine;
-  const engineer = details && "level" in author ? author : null;
+  const engineer = details && "kind" in author ? author : null;
   const showMentionsYou =
     mentionsYou ?? Boolean(you && segments?.some((part) => "id" in part && part.id === you.id));
 

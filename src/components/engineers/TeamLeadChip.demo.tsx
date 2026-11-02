@@ -4,15 +4,14 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Stack from "@mui/material/Stack";
 import { Example } from "../../docs/Example";
-import { EngineerLevelBadge } from "./EngineerLevelBadge";
 import { TeamLeadChip } from "./TeamLeadChip";
 import { PageHeader } from "../layout/PageHeader";
 import { SectionCard } from "../layout/SectionCard";
 
 const ENGINEERS = [
-  { name: "Ana Ruiz", email: "ana@exalynt.com", level: "principal", lead: true },
-  { name: "Priya Shah", email: "priya@exalynt.com", level: "senior", lead: false },
-  { name: "Marcus Webb", email: "marcus@exalynt.com", level: "associate", lead: false },
+  { name: "Ana Ruiz", email: "ana@exalynt.com", lead: true },
+  { name: "Priya Shah", email: "priya@exalynt.com", lead: false },
+  { name: "Marcus Webb", email: "marcus@exalynt.com", lead: false },
 ] as const;
 
 export function TeamLeadChipDemo() {
@@ -21,7 +20,7 @@ export function TeamLeadChipDemo() {
       <Example title="On its own">
         <TeamLeadChip />
       </Example>
-      <Example title="Beside a lead's name, after their level">
+      <Example title="Beside a lead's name">
         <SectionCard title="Engineering Team" disableContentPadding>
           <List disablePadding>
             {ENGINEERS.map((engineer) => (
@@ -37,7 +36,6 @@ export function TeamLeadChipDemo() {
                       <Box component="span" sx={{ fontWeight: 600 }}>
                         {engineer.name}
                       </Box>
-                      <EngineerLevelBadge level={engineer.level} />
                       {engineer.lead ? <TeamLeadChip /> : null}
                     </Stack>
                   }

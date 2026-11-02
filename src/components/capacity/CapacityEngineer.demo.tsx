@@ -58,7 +58,7 @@ export function CapacityEngineerDemo() {
       <CapacityEngineer
         engineer={engineer && {
           name: engineer.name,
-          level: engineer.level,
+          kind: "engineer",
           avatarUrl: engineer.avatar_url,
           bio: engineer.bio,
           profileHref: \`/engineers/\${engineer.id}\`,

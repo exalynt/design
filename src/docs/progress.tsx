@@ -11,10 +11,10 @@ const media = (file: string) => `${import.meta.env.BASE_URL}progress/${file}`;
 
 const LENA: EngineerProfile = {
   name: "Lena Brooks",
-  level: "senior",
+  kind: "engineer",
   bio: "Works across mobile and backend, mostly on what drivers use out on the road.",
 };
-const AVERY: EngineerProfile = { name: "Avery Chen", level: "mid" };
+const AVERY: EngineerProfile = { name: "Avery Chen", kind: "engineer" };
 
 /* The block a record came from, as a Focus's listing shows it. */
 const block = (number: string) => <CapacityTag block="core" number={number} details />;

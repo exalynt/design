@@ -42,8 +42,6 @@ export * from "./progress/ProgressMedia";
 export * from "./progress/ProgressMetric";
 
 export * from "./engineers/EngineerDetails";
-export * from "./engineers/EngineerLevelBadge";
-export * from "./engineers/EngineerLevelDetails";
 export * from "./engineers/TeamLeadChip";
 export * from "./engineers/UserAttribution";
 
@@ -86,15 +84,6 @@ export {
   type StabilityLevel,
   type StabilityLevelId,
 } from "./stability/stability";
-// Engineer levels: their names and what each is trusted with. What the levels
-// mean, and how they're set, is the readme's (ENGINEER_LEVEL_DOCS_URL).
-export {
-  ENGINEER_LEVELS,
-  ENGINEER_LEVEL_DOCS_URL,
-  ENGINEER_LEVEL_IDS,
-  type EngineerLevel,
-  type EngineerLevelId,
-} from "./engineers/engineerLevel";
 // Mentions: someone who can be @mentioned, by an id that survives a rename.
 // MentionField writes them into a message as `<@id>` and ConversationMessage reads them.
 export { type MentionProfile } from "./conversations/mentions";

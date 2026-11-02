@@ -40,7 +40,6 @@ import InsightsOutlinedIcon from "@mui/icons-material/InsightsOutlined";
 import LayersOutlinedIcon from "@mui/icons-material/LayersOutlined";
 import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
 import PlaylistAddCheckOutlinedIcon from "@mui/icons-material/PlaylistAddCheckOutlined";
@@ -88,8 +87,6 @@ import { DateTimeDemo } from "../components/data-display/DateTime.demo";
 import { EmptyStateDemo } from "../components/data-display/EmptyState.demo";
 import { EngineerDetailsDemo } from "../components/engineers/EngineerDetails.demo";
 import { FeatureCardDemo } from "../components/catalog/FeatureCard.demo";
-import { EngineerLevelBadgeDemo } from "../components/engineers/EngineerLevelBadge.demo";
-import { EngineerLevelDetailsDemo } from "../components/engineers/EngineerLevelDetails.demo";
 import { TeamLeadChipDemo } from "../components/engineers/TeamLeadChip.demo";
 import { PageHeaderDemo } from "../components/layout/PageHeader.demo";
 import { SearchMultiSelectDemo } from "../components/inputs/SearchMultiSelect.demo";
@@ -122,7 +119,6 @@ import { BrandDemo } from "../exalynt/Brand.demo";
 import { PaletteDemo } from "./foundations/Palette";
 import { CapacityBlocksGuideline } from "./guidelines/CapacityBlocks";
 import { DatesAndTimesGuideline } from "./guidelines/DatesAndTimes";
-import { EngineerLevelsGuideline } from "./guidelines/EngineerLevels";
 import { FormsGuideline } from "./guidelines/Forms";
 import { MoneyGuideline } from "./guidelines/Money";
 import { MuiFirstGuideline } from "./guidelines/MuiFirst";
@@ -605,59 +601,32 @@ export const catalog: Group[] = [
     title: "Engineers",
     entries: [
       {
-        title: "Engineer levels",
-        description:
-          "How to show an engineer's level: always as the badge, beside their name, with its popover, and never to decorate a person or mention pay. For Exalynt's own tools. What the levels mean and how they're set are in the readme.",
-        icon: WorkspacePremiumOutlinedIcon,
-        Demo: EngineerLevelsGuideline,
-      },
-      {
-        title: "EngineerLevelBadge",
-        description:
-          "An engineer's level as a small, quiet outlined Chip: four squares filled in reading order to the level, and its name, in the theme's secondary text color so the engineer's name beside it leads. Every level looks alike, so none reads as a better or cheaper deal, and a popover (EngineerLevelDetails) saying what the level means. Beside the engineer's name, never in place of it. Pass `focusable={false}` inside a button or link, and `details={false}` inside something whose own popover already says the level. `label={false}` drops the name, leaving the squares in the outline, named to assistive tech; use it through UserAttribution's `showLevel=\"squares\"` rather than on its own.",
-        importFrom: "components",
-        phone:
-          "A 20px Chip with 11px text that never wraps, so it reads the same at 375px; Principal's is the widest, at about 80px. A tap opens the popover, which is 300px wide at most and keeps 12px from the screen's edges. Where a row is tight, let the name wrap above the badge rather than cut the badge.",
-        icon: BadgeOutlinedIcon,
-        Demo: EngineerLevelBadgeDemo,
-      },
-      {
-        title: "EngineerLevelDetails",
-        description:
-          "What an engineer's level means, as EngineerLevelBadge's popover shows it: the four levels' squares and names with this one a step brighter, what an engineer at it leads, what a level is, and a link to the level in the readme's Levels and growth page. Never pay. `card={false}` drops the card to sit in one of your own.",
-        importFrom: "components",
-        phone:
-          "The card is 300px wide, or the screen less 24px when that's narrower. The four levels fit side by side down to a 320px screen. With `card={false}` it fills its container.",
-        icon: ChatBubbleOutlineOutlinedIcon,
-        Demo: EngineerLevelDetailsDemo,
-      },
-      {
         title: "TeamLeadChip",
         description:
-          "\"Team Lead\" as a small outlined chip with the blue-silver star, for beside a lead's name where saying it in words helps, such as a team's list or a lead's page title, alongside the star on their picture. The words and outline are in the theme's `lead` color where it has one (Exalynt's blue-silver) or its primary color: its dark on light, for contrast, and its main on dark, over a faint sheen of the metal. Team Lead isn't a level, so it sits after the level badge, not in it.",
+          "\"Team Lead\" as a small outlined chip with the blue-silver star, for beside a lead's name where saying it in words helps, such as a team's list or a lead's page title, alongside the star on their picture. The words and outline are in the theme's `lead` color where it has one (Exalynt's blue-silver) or its primary color: its dark on light, for contrast, and its main on dark, over a faint sheen of the metal.",
         importFrom: "components",
         phone:
-          "About 80px wide, the level badge's height, and never wraps. Beside a name in a row, let the row wrap so it drops under the name on a narrow screen.",
+          "About 80px wide, 20px tall, and never wraps. Beside a name in a row, let the row wrap so it drops under the name on a narrow screen.",
         icon: WorkspacePremiumOutlinedIcon,
         Demo: TeamLeadChipDemo,
       },
       {
         title: "UserAttribution",
         description:
-          "Who something is by, for, or assigned to, such as who reported progress or a block's engineer on its mini card: their picture, or initials without one, and their name, in the primary text color at weight 600 and the size of the text around it. `photoOnly` is just the picture, naming them on hover and to assistive tech, where names would crowd. Takes a `UserProfile`, or an `EngineerProfile` for an engineer, who can also have `showLevel`, their level badge under the name, or `showLevel=\"squares\"`, the badge without its text after the name on one line where the whole badge won't fit, and `details`, EngineerDetails over all of it; with both, the level's own popover is left out, since EngineerDetails has it. A Team Lead (`teamLead` on their `EngineerProfile`) has a star over their picture's bottom right in every form, a metallic sheen in the theme's `lead` color where it has one (Exalynt's light blue-silver) or its primary color, and \"Team Lead\" on hovering the picture and to assistive tech. Use it wherever a card or line names a person, rather than an avatar and name of your own. `size` is the picture's: 20px by default, 40px with the level.",
+          "Who something is by, for, or assigned to, such as who reported progress or a block's engineer on its mini card: their picture, or initials without one, and their name, in the primary text color at weight 600 and the size of the text around it. `photoOnly` is just the picture, naming them on hover and to assistive tech, where names would crowd. Takes a `UserProfile`, or an `EngineerProfile` for an engineer, who can also have `details`, EngineerDetails over all of it. A Team Lead (`teamLead` on their `EngineerProfile`) has a star over their picture's bottom right in every form, a metallic sheen in the theme's `lead` color where it has one (Exalynt's light blue-silver) or its primary color, and \"Team Lead\" on hovering the picture and to assistive tech. Use it wherever a card or line names a person, rather than an avatar and name of your own. `size` is the picture's: 20px by default.",
         importFrom: "components",
         phone:
-          "It never grows wider than its container: a long name is cut short, before the textless level badge is, and `details` says it in full. A tap opens the details popover, or with `photoOnly` and no details, the name. Give a row of `photoOnly` pictures at least 32px each so they're easy to tell apart and tap.",
+          "It never grows wider than its container: a long name is cut short, and `details` says it in full. A tap opens the details popover, or with `photoOnly` and no details, the name. Give a row of `photoOnly` pictures at least 32px each so they're easy to tell apart and tap.",
         icon: PersonOutlineOutlinedIcon,
         Demo: UserAttributionDemo,
       },
       {
         title: "EngineerDetails",
         description:
-          "Who an engineer is, as CapacityEngineer's popover shows it: their picture, or initials without one, their name and level badge, a short bio cut at four lines, and an optional link to their profile page in the same tab. A Team Lead's picture has the blue-silver star, as UserAttribution's does, and the eyebrow reads Engineer · Team Lead, with the star before \"Team Lead\". Takes an `EngineerProfile`. `card={false}` drops the card to sit in one of your own.",
+          "Who an engineer is, as CapacityEngineer's popover shows it: their picture, or initials without one, their name, a short bio cut at four lines, and an optional link to their profile page in the same tab. A Team Lead's picture has the blue-silver star, as UserAttribution's does, and the eyebrow reads Engineer · Team Lead, with the star before \"Team Lead\". Takes an `EngineerProfile`. `card={false}` drops the card to sit in one of your own.",
         importFrom: "components",
         phone:
-          "The card is 300px wide, or the screen less 24px when that's narrower. A tap on the level badge inside opens its own popover. With `card={false}` it fills its container.",
+          "The card is 300px wide, or the screen less 24px when that's narrower. With `card={false}` it fills its container.",
         icon: AccountCircleOutlinedIcon,
         Demo: EngineerDetailsDemo,
       },

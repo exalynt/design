@@ -14,16 +14,15 @@ const PORTRAIT = `data:image/svg+xml,${encodeURIComponent(
 
 export const PRIYA: EngineerProfile = {
   name: "Priya Shah",
-  level: "senior",
+  kind: "engineer",
   avatarUrl: PORTRAIT,
   bio: "Builds billing and scheduling systems, and likes untangling the data underneath them. Ten years on web products, the last four leading small teams.",
   profileHref: "#engineers/priya-shah",
 };
 
-/* Any level can lead a team, so the sample lead is Mid. */
 export const ANA: EngineerProfile = {
   name: "Ana Ruiz",
-  level: "mid",
+  kind: "engineer",
   teamLead: true,
   avatarUrl: PORTRAIT,
   bio: "Keeps the team's clients and context in one place, and pairs on whatever is stuck.",
@@ -31,6 +30,6 @@ export const ANA: EngineerProfile = {
 
 export const MARCUS: EngineerProfile = {
   name: "Marcus Webb",
-  level: "associate",
+  kind: "engineer",
   bio: "Frontend engineer who cares about forms that are quick to fill in.",
 };
