@@ -121,16 +121,34 @@ export const STABILITY: Record<StabilityLevelId, StabilityLevel> = {
 
 export const STABILITY_LEVELS: StabilityLevel[] = STABILITY_LEVEL_IDS.map((id) => STABILITY[id]);
 
-/** The level's position, 1 (Prototype) to 4 (GA). */
-export function stabilityStep(id: StabilityLevelId): number {
-  return STABILITY_LEVEL_IDS.indexOf(id) + 1;
+/*
+ * Planned comes before the levels: agreed, with no work done yet, so it isn't
+ * one and has no stability. It's marked like them, with none of the Track lit,
+ * and in muted text rather than a color of its own, since it has no level to
+ * color. A draft, not yet agreed, has no mark at all.
+ */
+export const PLANNED = {
+  id: "planned",
+  name: "Planned",
+  fullName: "Planned",
+  stability: "Not started",
+  summary: "Agreed, with no work done yet, so it has no stability.",
+} as const;
+
+/** What a stability mark can show: a level, or Planned. */
+export type StabilityMarkLevel = StabilityLevelId | typeof PLANNED.id;
+
+/** The level's position, 1 (Prototype) to 4 (GA), or 0 for Planned. */
+export function stabilityStep(id: StabilityMarkLevel): number {
+  return STABILITY_LEVEL_IDS.indexOf(id as StabilityLevelId) + 1;
 }
 
 /** Where each level is explained; the popover links to `${STABILITY_DOCS_URL}#stability-<id>`. */
 export const STABILITY_DOCS_URL = "https://readme.exalynt.com/how-it-works/stability-levels";
 
 /** A level's color as the text color, in the shade for the color scheme it's in. */
-export function levelColor(id: StabilityLevelId) {
+export function levelColor(id: StabilityMarkLevel) {
+  if (id === PLANNED.id) return { color: "text.secondary" };
   const { light, dark } = STABILITY[id].colors;
   return (theme: Theme) => ({ color: light, ...theme.applyStyles("dark", { color: dark }) });
 }

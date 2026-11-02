@@ -1,16 +1,18 @@
 import Box from "@mui/material/Box";
 import { DetailsCard, DetailsEyebrow, DetailsLink } from "../DetailsPopover";
 import {
+  PLANNED,
   STABILITY,
   STABILITY_DOCS_URL,
   STABILITY_LEVEL_IDS,
   levelColor,
   stabilityStep,
-  type StabilityLevelId,
+  type StabilityMarkLevel,
 } from "./stability";
 
 export type StabilityDetailsProps = {
-  level: StabilityLevelId;
+  /** A level, or Planned, which sits before them all with no box lit. */
+  level: StabilityMarkLevel;
   /**
    * What the level is on, e.g. "Invoice export". Given, the popover says
    * "Invoice export is in Alpha." before what to expect.
@@ -37,7 +39,7 @@ export type StabilityDetailsProps = {
  * boxes with square-ish corners, so it doesn't read as maturity's scale,
  * which fills a rounded bar to a percentage.
  */
-function LevelBoxes({ level }: { level: StabilityLevelId }) {
+function LevelBoxes({ level }: { level: StabilityMarkLevel }) {
   const step = stabilityStep(level);
   const columns = { display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: "6px" };
   return (
@@ -88,7 +90,8 @@ export function StabilityDetails({
   link = true,
   card = true,
 }: StabilityDetailsProps) {
-  const { fullName, stability, summary } = STABILITY[level];
+  const planned = level === PLANNED.id;
+  const { fullName, stability, summary } = planned ? PLANNED : STABILITY[level];
   const says = Boolean(feature) && statement;
   return (
     <DetailsCard card={card}>
@@ -122,7 +125,7 @@ export function StabilityDetails({
           <Box component="strong" sx={{ fontWeight: 600 }}>
             {feature}
           </Box>{" "}
-          is in {fullName}.
+          is {planned ? fullName : `in ${fullName}`}.
         </Box>
       ) : null}
       <Box sx={{ mt: says ? 0.75 : 1.5 }}>{summary}</Box>
@@ -141,7 +144,9 @@ export function StabilityDetails({
         in real use.
       </Box>
       {link ? (
-        <DetailsLink href={`${STABILITY_DOCS_URL}#stability-${level}`}>
+        <DetailsLink
+          href={planned ? STABILITY_DOCS_URL : `${STABILITY_DOCS_URL}#stability-${level}`}
+        >
           How stability levels work
         </DetailsLink>
       ) : null}

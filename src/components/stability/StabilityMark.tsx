@@ -1,13 +1,14 @@
 import Box from "@mui/material/Box";
 import { DetailsPopover } from "../DetailsPopover";
-import { STABILITY, levelColor, type StabilityLevelId } from "./stability";
+import { PLANNED, STABILITY, levelColor, type StabilityMarkLevel } from "./stability";
 import { StabilityDetails } from "./StabilityDetails";
 import { StabilityTrack } from "./StabilityTrack";
 
 export type StabilityMarkSize = "short" | "long" | "extra-long";
 
 export type StabilityMarkProps = {
-  level: StabilityLevelId;
+  /** A level, or Planned, which has none of the Track lit. */
+  level: StabilityMarkLevel;
   /**
    * What the level is on, e.g. "Invoice export", so the popover says
    * "Invoice export is in Alpha." Pass it wherever the mark isn't right
@@ -52,7 +53,8 @@ export function StabilityMark({
   link = true,
   focusable = true,
 }: StabilityMarkProps) {
-  const { name, stability } = STABILITY[level];
+  const { name, stability } = level === PLANNED.id ? PLANNED : STABILITY[level];
+  const named = level === PLANNED.id ? name : `${name} stability`;
   return (
     <DetailsPopover
       title={<StabilityDetails level={level} feature={feature} statement={statement} link={link} />}
@@ -60,9 +62,7 @@ export function StabilityMark({
       <Box
         component="span"
         role={size === "short" ? "img" : undefined}
-        aria-label={
-          size === "short" ? `${feature ? `${feature}: ` : ""}${name} stability` : undefined
-        }
+        aria-label={size === "short" ? `${feature ? `${feature}: ` : ""}${named}` : undefined}
         tabIndex={focusable ? 0 : undefined}
         sx={[
           {

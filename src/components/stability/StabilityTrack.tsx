@@ -1,13 +1,13 @@
 import Box from "@mui/material/Box";
-import { STABILITY_LEVEL_IDS, stabilityStep, type StabilityLevelId } from "./stability";
+import { STABILITY_LEVEL_IDS, stabilityStep, type StabilityMarkLevel } from "./stability";
 
 /*
  * The Track: four cells, one per level from Prototype to GA, lit up to
- * `level` in the current text color, so whatever sets the level's color sets
- * the Track's. Sized in em, so it scales with the text around it: 4px cells
+ * `level` in the current text color, or none for Planned, so whatever sets the
+ * level's color sets the Track's. Sized in em, so it scales with the text around it: 4px cells
  * next to 12px text. Decorative: the mark around it carries the name.
  */
-export function StabilityTrack({ level }: { level: StabilityLevelId }) {
+export function StabilityTrack({ level }: { level: StabilityMarkLevel }) {
   const step = stabilityStep(level);
   return (
     <Box

@@ -16,7 +16,7 @@ import { useId, type ReactNode } from "react";
 import { CAPACITY_BLOCKS, type CapacityBlockId } from "../capacity/capacity";
 import { CapacityTag } from "../capacity/CapacityTag";
 import { CapabilityStability } from "../catalog/CapabilityLabel";
-import type { StabilityLevelId } from "../stability/stability";
+import type { StabilityMarkLevel } from "../stability/stability";
 
 type RelatedBase = {
   /** Keeps its row, and tells `onRemove` which it was. */
@@ -34,8 +34,8 @@ export type RelatedItem =
   | (RelatedBase & {
       kind: "capability";
       name: string;
-      /** Its stability, or null for a draft. */
-      level: StabilityLevelId | null;
+      /** Its stability, "planned" once it's agreed with no work done, or null for a draft. */
+      level: StabilityMarkLevel | null;
     })
   | (RelatedBase & {
       kind: "capacity";

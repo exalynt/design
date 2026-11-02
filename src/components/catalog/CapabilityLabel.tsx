@@ -2,18 +2,21 @@ import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import BoltOutlinedIcon from "@mui/icons-material/BoltOutlined";
 import type { ReactNode } from "react";
-import type { StabilityLevelId } from "../stability/stability";
+import type { StabilityLevelId, StabilityMarkLevel } from "../stability/stability";
 import { StabilityMark } from "../stability/StabilityMark";
 import { Grip } from "../Grip";
 
-/* A Capability's stability: its short mark, or "Draft" for one nobody has started on. */
+/*
+ * A Capability's stability: its short mark, with none of it lit for Planned, or
+ * "Draft" for one not yet agreed, which has no mark.
+ */
 export function CapabilityStability({
   name,
   level,
   focusable = true,
 }: {
   name: string;
-  level: StabilityLevelId | null;
+  level: StabilityMarkLevel | null;
   focusable?: boolean;
 }) {
   return level ? (

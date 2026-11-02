@@ -80,9 +80,11 @@ export {
   STABILITY_DOCS_URL,
   STABILITY_LEVELS,
   STABILITY_LEVEL_IDS,
+  PLANNED,
   stabilityStep,
   type StabilityLevel,
   type StabilityLevelId,
+  type StabilityMarkLevel,
 } from "./stability/stability";
 // Mentions: someone who can be @mentioned, by an id that survives a rename.
 // MentionField writes them into a message as `<@id>` and ConversationMessage reads them.

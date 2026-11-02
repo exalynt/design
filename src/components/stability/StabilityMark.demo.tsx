@@ -16,6 +16,13 @@ export function StabilityMarkDemo() {
           ))}
         </Stack>
       </Example>
+      <Example title="Planned: agreed, with no work done, so none of the Track is lit">
+        <Stack direction="row" spacing={2.5} useFlexGap sx={{ flexWrap: "wrap" }}>
+          <StabilityMark level="planned" size="short" feature="Bulk invoice export" />
+          <StabilityMark level="planned" feature="Bulk invoice export" />
+          <StabilityMark level="planned" size="extra-long" feature="Bulk invoice export" />
+        </Stack>
+      </Example>
       <Example title="Short, long, and extra long">
         <Stack direction="row" spacing={2.5} useFlexGap sx={{ flexWrap: "wrap" }}>
           <StabilityMark level="beta" size="short" />
