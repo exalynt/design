@@ -14,13 +14,26 @@ const cleared = {
 /*
  * The popover a stability mark, a maturity, or a DateTime opens on hover, focus, or tap.
  * Its content draws its own card (DetailsCard), so the tooltip's is cleared.
+ * `hoverOnly` is for something a tap does something else on, such as a table row: it opens
+ * after a moment on hover, lets the pointer through to what's under it, and never on a tap.
  */
-export function DetailsPopover({ title, children }: { title: ReactNode; children: ReactElement }) {
+export function DetailsPopover({
+  title,
+  hoverOnly = false,
+  children,
+}: {
+  title: ReactNode;
+  hoverOnly?: boolean;
+  children: ReactElement;
+}) {
   return (
     <Tooltip
       describeChild
       enterTouchDelay={0}
       leaveTouchDelay={8000}
+      enterDelay={hoverOnly ? 250 : undefined}
+      disableInteractive={hoverOnly}
+      disableTouchListener={hoverOnly}
       title={title}
       slotProps={{
         tooltip: {

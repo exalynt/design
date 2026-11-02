@@ -69,6 +69,31 @@ export function DataTableDemo() {
 />`}
       />
 
+      <Example title="Collapsible rows (click a row or its chevron)">
+        <SectionCard disableContentPadding>
+          <DataTable
+            columns={invoiceColumns}
+            rows={rows}
+            rowKey={(row) => row.number}
+            renderExpanded={(row) => (
+              <Typography variant="body2" sx={{ color: "text.secondary", px: 2, py: 1.5 }}>
+                {row.project} for {row.client}, issued {row.issued}.
+              </Typography>
+            )}
+            rowPreview={(row) => `${row.project} for ${row.client}`}
+          />
+        </SectionCard>
+      </Example>
+      <CodeBlock
+        code={`<DataTable
+  columns={columns}
+  rows={rows}
+  rowKey={(row) => row.id}
+  renderExpanded={(row) => <Details row={row} />}   // no padding of its own; not striped
+  rowPreview={(row) => <Summary row={row} />}       // on hover, until the row is open
+/>`}
+      />
+
       <Example title="Paged by the server, by cursor (CursorPager)">
         <CursorPagedInvoices />
       </Example>

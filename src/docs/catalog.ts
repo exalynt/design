@@ -873,10 +873,10 @@ export const catalog: Group[] = [
       {
         title: "DataTable",
         description:
-          "The table alone: columns, striped rows, sortable headings, and rows that open something on click. It holds no state, so the rows and their order can come from anywhere, a server-paged list included.",
+          "The table alone: columns, striped rows, sortable headings, and rows that open something on click. `renderExpanded` makes rows collapsible, sliding details open under them; `rowPreview` shows a popover on hover; and a column `width` fixes the columns in place. The only state it holds is which rows are open, so the rows and their order can come from anywhere, a server-paged list included.",
         importFrom: "components",
         phone:
-          "Wider than the screen, it scrolls inside its own container. A column with `hideBelow` drops out instead, and while one does the table lets go of its minimum width so the rest fits.",
+          "Wider than the screen, it scrolls inside its own container. A column with `hideBelow` drops out instead, and while one does the table lets go of its minimum width so the rest fits. A tap opens a collapsible row; `rowPreview` only shows on hover, so it adds nothing a phone needs.",
         icon: GridOnOutlinedIcon,
         Demo: DataTableDemo,
       },
