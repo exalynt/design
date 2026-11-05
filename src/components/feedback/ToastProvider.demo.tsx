@@ -79,9 +79,10 @@ export function ToastProviderDemo() {
       </Example>
 
       <CodeBlock
-        code={`// Once, around the app, inside the ThemeProvider.
+        code={`// Once, around the app, inside the ThemeProvider. top is the app bar's
+// height, so toasts start below it.
 <ThemeProvider theme={theme}>
-  <ToastProvider>
+  <ToastProvider top={64}>
     <App />
   </ToastProvider>
 </ThemeProvider>

@@ -58,7 +58,8 @@ export function App() {
     /* Dark until the visitor picks a mode with the toggle; MUI remembers it. */
     <ThemeProvider theme={theme} defaultMode="dark">
       <CssBaseline enableColorScheme />
-      <ToastProvider>
+      {/* Framed, the page has no header to keep the toasts under. */}
+      <ToastProvider top={framed ? 0 : geometry.headerHeight}>
         {framed ? (
           /* Just the page, without the chrome, padded as the main area is on a phone. */
           <Box sx={{ px: 2.5, py: 3.5 }}>

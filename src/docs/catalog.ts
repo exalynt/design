@@ -1028,7 +1028,7 @@ export const catalog: Group[] = [
       {
         title: "ToastProvider",
         description:
-          'Shows the toasts raised with `useToast()`: `success`, `info`, `warning` or `error`, each with one message. Top right and newest in front, up to three stack with the older ones peeking out underneath; hovering the stack spreads them into a list, with Clear all under it when there\'s more than one, and pauses their timers. With more than three, the list scrolls one toast at a time by wheel, swipe, arrow keys or its arrows, with a scrollbar and "4–6 of 9" saying where it is. Each stays up longer the longer it is (4 to 15 seconds). Mount it once around the app, inside the ThemeProvider.',
+          'Shows the toasts raised with `useToast()`: `success`, `info`, `warning` or `error`, each with one message. Top right and newest in front, up to three stack with the older ones peeking out underneath; hovering the stack spreads them into a list, with Clear all under it when there\'s more than one, and pauses their timers. With more than three, the list scrolls one toast at a time by wheel, swipe, arrow keys or its arrows, with a scrollbar and "4–6 of 9" saying where it is. Each stays up longer the longer it is (4 to 15 seconds). Mount it once around the app, inside the ThemeProvider; with a sticky or fixed app bar, set `top` to its height so the toasts start below it.',
         importFrom: "components",
         phone:
           "Below sm the stack spans the top of the screen, 8px from its edges; from sm it's 356px wide, top right. A tap spreads the stack as hover does, and a swipe up or down scrolls it. The close button shows all the time on a touch screen, 22px to look at with a 38px tap area.",

@@ -7,7 +7,12 @@ import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRound
 import { TOAST_WIDTH, ToastCard, type ToastSeverity } from "./ToastCard";
 import { ToastContext } from "./toast";
 
-export type ToastProviderProps = { children: ReactNode };
+export type ToastProviderProps = {
+  children: ReactNode;
+  /* The height of a fixed or sticky header across the top of the app, in
+     pixels, so the toasts start below it rather than over it. */
+  top?: number;
+};
 
 type Toast = { id: number; severity: ToastSeverity; message: string; leaving: boolean };
 
@@ -44,9 +49,10 @@ function durationFor(message: string) {
  * leaves. With more than three, the spread-out list is a window onto them that
  * scrolls one toast at a time, by wheel, swipe, arrow keys or its arrows, with
  * a scrollbar and "4–6 of 9" to say where it is. Mount it once, inside the
- * ThemeProvider, around the whole app.
+ * ThemeProvider, around the whole app, with top set to the app bar's height
+ * when there is one.
  */
-export function ToastProvider({ children }: ToastProviderProps) {
+export function ToastProvider({ children, top = 0 }: ToastProviderProps) {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const nextId = useRef(0);
 
@@ -84,7 +90,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
       {children}
       {/* Mounted only while there are toasts, so it starts collapsed each time. */}
       {toasts.length > 0 ? (
-        <ToastStack toasts={toasts} dismiss={dismiss} dismissAll={dismissAll} />
+        <ToastStack toasts={toasts} top={top} dismiss={dismiss} dismissAll={dismissAll} />
       ) : null}
     </ToastContext.Provider>
   );
@@ -102,10 +108,12 @@ const pillSx = {
 
 function ToastStack({
   toasts,
+  top,
   dismiss,
   dismissAll,
 }: {
   toasts: Toast[];
+  top: number;
   dismiss: (id: number) => void;
   dismissAll: () => void;
 }) {
@@ -220,7 +228,7 @@ function ToastStack({
       sx={{
         position: "fixed",
         zIndex: "snackbar",
-        top: { xs: 8, sm: 24 },
+        top: { xs: top + 8, sm: top + 24 },
         right: { xs: 8, sm: 24 },
         left: { xs: 8, sm: "auto" },
         width: { sm: TOAST_WIDTH },
