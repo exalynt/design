@@ -90,6 +90,7 @@ export function DataTableDemo() {
   rows={rows}
   rowKey={(row) => row.id}
   renderExpanded={(row) => <Details row={row} />}   // no padding of its own; not striped
+  defaultExpanded={[linkedId]}   // open from the start, such as the row a link points to
   rowPreview={(row) => <Summary row={row} />}       // on hover, until the row is open
 />`}
       />

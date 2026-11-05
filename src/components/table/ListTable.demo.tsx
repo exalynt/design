@@ -167,6 +167,7 @@ export function ListTableDemo() {
   columns={columns}            // give a column a width to fix them all in place
   renderExpanded={(row) => <InvoiceLines invoice={row} />}   // slides open under the row
   rowPreview={(row) => <InvoiceLines invoice={row} />}       // on hover, until it's open
+  defaultExpanded={[linkedNumber]}  // rows open from the start, such as one a link points to
   // A filter's value can be several, and a row shows when any of them is chosen.
   filters={[{ id: "line", label: "Billed for", value: (row) => row.lines.map((l) => l.label) }]}
   // More to search than the columns show.

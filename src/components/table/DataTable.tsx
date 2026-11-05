@@ -60,6 +60,8 @@ export type DataTableProps<T> = {
    * a click anywhere on the row, unless `onRowClick` has that.
    */
   renderExpanded?: (row: T) => ReactNode;
+  /** The keys of the rows that start open, such as the one a link points to. */
+  defaultExpanded?: string[];
   /** A preview of the row, in a popover on hover, until the row is open. Touch screens go without. */
   rowPreview?: (row: T) => ReactNode;
 };
@@ -87,9 +89,10 @@ export function DataTable<T>({
   striped,
   minWidth,
   renderExpanded,
+  defaultExpanded,
   rowPreview,
 }: DataTableProps<T>) {
-  const [expanded, setExpanded] = useState<ReadonlySet<string>>(new Set());
+  const [expanded, setExpanded] = useState<ReadonlySet<string>>(() => new Set(defaultExpanded));
   const hides = columns.some((column) => column.hideBelow);
   const fixed = columns.some((column) => column.width !== undefined);
   const expandable = renderExpanded !== undefined;

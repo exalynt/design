@@ -984,7 +984,7 @@ export const catalog: Group[] = [
       {
         title: "ListTable",
         description:
-          "A whole table in a card, with each extra picked by a prop: `search`, `filters`, `dateRange`, `pagination`, and sorting from any column marked `sortable`. A filter's `value` can be several for one row, `searchText` adds to what the search looks through, `renderSummary` draws totals or the like from every row that matches, and DataTable's `renderExpanded`, `rowPreview` and column `width` pass straight through. It works on rows the app already has in full, in memory.",
+          "A whole table in a card, with each extra picked by a prop: `search`, `filters`, `dateRange`, `pagination`, and sorting from any column marked `sortable`. A filter's `value` can be several for one row, `searchText` adds to what the search looks through, `renderSummary` draws totals or the like from every row that matches, and DataTable's `renderExpanded`, `defaultExpanded`, `rowPreview` and column `width` pass straight through. It works on rows the app already has in full, in memory.",
         importFrom: "components",
         phone:
           "Search, the Filters button and Clear wrap onto a second row if they don't fit, and the filters stack full width when opened. The row count hides, and pagination keeps its arrows but drops the Per page label. Columns follow their `hideBelow`.",
@@ -994,7 +994,7 @@ export const catalog: Group[] = [
       {
         title: "DataTable",
         description:
-          "The table alone: columns, striped rows, sortable headings, and rows that open something on click. `renderExpanded` makes rows collapsible, sliding details open under them; `rowPreview` shows a popover on hover; and a column `width` fixes the columns in place. The only state it holds is which rows are open, so the rows and their order can come from anywhere, a server-paged list included.",
+          "The table alone: columns, striped rows, sortable headings, and rows that open something on click. `renderExpanded` makes rows collapsible, sliding details open under them, and `defaultExpanded` names the rows that start open; `rowPreview` shows a popover on hover; and a column `width` fixes the columns in place. The only state it holds is which rows are open, so the rows and their order can come from anywhere, a server-paged list included.",
         importFrom: "components",
         phone:
           "Wider than the screen, it scrolls inside its own container. A column with `hideBelow` drops out instead, and while one does the table lets go of its minimum width so the rest fits. A tap opens a collapsible row; `rowPreview` only shows on hover, so it adds nothing a phone needs.",
