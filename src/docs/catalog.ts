@@ -39,6 +39,11 @@ import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
 import InsightsOutlinedIcon from "@mui/icons-material/InsightsOutlined";
 import LayersOutlinedIcon from "@mui/icons-material/LayersOutlined";
 import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
+import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import AdjustOutlinedIcon from "@mui/icons-material/AdjustOutlined";
+import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
+import SavingsOutlinedIcon from "@mui/icons-material/SavingsOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
@@ -71,6 +76,18 @@ import { CapacityNameDemo } from "../components/capacity/CapacityName.demo";
 import { CapacityPlacementDemo } from "../components/capacity/CapacityPlacement.demo";
 import { CapacityStatusDemo } from "../components/capacity/CapacityStatus.demo";
 import { CapacityTagDemo } from "../components/capacity/CapacityTag.demo";
+import { EarningCalculationDemo } from "../components/earnings/EarningCalculation.demo";
+import { EarningDetailsDemo } from "../components/earnings/EarningDetails.demo";
+import { EarningForDemo } from "../components/earnings/EarningFor.demo";
+import { EarningInfoDemo } from "../components/earnings/EarningInfo.demo";
+import { EarningKindDemo } from "../components/earnings/EarningKind.demo";
+import { EarningKindDetailsDemo } from "../components/earnings/EarningKindDetails.demo";
+import { EarningLineDemo } from "../components/earnings/EarningLine.demo";
+import { EarningStatusDemo } from "../components/earnings/EarningStatus.demo";
+import { EarningTypeDemo } from "../components/earnings/EarningType.demo";
+import { EarningTypeDetailsDemo } from "../components/earnings/EarningTypeDetails.demo";
+import { EarningsCollectedDemo } from "../components/earnings/EarningsCollected.demo";
+import { PayoutStatementDemo } from "../components/earnings/PayoutStatement.demo";
 import { ProgressCapabilityDemo } from "../components/progress/ProgressCapability.demo";
 import { ProgressFeatureDemo } from "../components/progress/ProgressFeature.demo";
 import { ProgressCardDemo } from "../components/progress/ProgressCard.demo";
@@ -119,6 +136,7 @@ import { BrandDemo } from "../exalynt/Brand.demo";
 import { PaletteDemo } from "./foundations/Palette";
 import { CapacityBlocksGuideline } from "./guidelines/CapacityBlocks";
 import { DatesAndTimesGuideline } from "./guidelines/DatesAndTimes";
+import { EarningsGuideline } from "./guidelines/Earnings";
 import { FormsGuideline } from "./guidelines/Forms";
 import { MoneyGuideline } from "./guidelines/Money";
 import { MuiFirstGuideline } from "./guidelines/MuiFirst";
@@ -519,6 +537,140 @@ export const catalog: Group[] = [
           "The card is 300px wide, or the screen less 24px when that's narrower. With `card={false}` it fills its container.",
         icon: ChatBubbleOutlineOutlinedIcon,
         Demo: CapacityDetailsDemo,
+      },
+    ],
+  },
+  {
+    title: "Earnings",
+    entries: [
+      {
+        title: "Earnings",
+        description:
+          "How to show what someone's paid and why. An earning is a line item, people collect them, and a payout pays out many at once. A line keeps to its facts, and why it's paid and how it's worked out are one click away. For Exalynt's own tools. How the money works is in the readme.",
+        phone:
+          "A line stacks its parts rather than squeezing them. A ledger hides its secondary columns and says what they would in the columns it keeps, and Why this amount? opens the rest full screen.",
+        icon: PaymentsOutlinedIcon,
+        Demo: EarningsGuideline,
+      },
+      {
+        title: "EarningLine",
+        description:
+          "An earning as a line item, just its facts: its kind, its type and the time it's for, its amount, what it was for (EarningFor), how far it's come (EarningStatus), and a Why this amount? link (EarningInfo) beside the amount. Hovering its kind or type says what it means. `status={false}`, `kind={false}`, and `type={false}` leave those off, under a heading or a payout that says so. An Upcoming amount has a ~, as it's approximate. Put several in a Card and they draw the line between them.",
+        importFrom: "components",
+        phone:
+          "It stacks: its kind, then its type and amount, then its period and Why this amount?, then what it was for, then its status across the width, with the payout link at one end and the chip at the other. A tap on Why this amount? fills the screen with the rest.",
+        icon: ReceiptLongOutlinedIcon,
+        Demo: EarningLineDemo,
+      },
+      {
+        title: "EarningFor",
+        description:
+          "The specific thing an earning was for, as one tile whatever the thing is: its icon, its name, its type in a quiet badge, and its client, and nothing more. A block is its figure, number, size, and client, and a product being operated is the product's icon, name, plan, and client, so a reader always knows where to look. The time it's for is the earning's `period`, shown with its type. Use it wherever an earning names its thing, rather than a CapacityTag or a product's name.",
+        importFrom: "components",
+        phone:
+          "It never grows wider than its container, and its name and type wrap onto two lines before they overflow.",
+        icon: AdjustOutlinedIcon,
+        Demo: EarningForDemo,
+      },
+      {
+        title: "EarningStatus",
+        description:
+          "How far an earning has come, in a chip whose tooltip says what it means, in order: Upcoming, what we know is coming, such as a block that's assigned and not fulfilled or the next month of a product, with what it's waiting on and a dashed outline, as it isn't money yet; Earned, with when; and Sent and Paid, with a link to the payout, which an app's router link works for where its theme sets one on MuiLink. It follows from what's on the earning (`earnedOn`, `payout`, and `payout.arrivedOn`), so the word and the facts can't disagree. `align=\"end\"` lines it up at the end of a row, and `inline` puts its date or link on the chip's line, before it.",
+        importFrom: "components",
+        phone:
+          "About 100px wide, and never wraps. A tap on the chip opens its tooltip, and on the link follows it.",
+        icon: TimelapseRoundedIcon,
+        Demo: EarningStatusDemo,
+      },
+      {
+        title: "PayoutStatement",
+        description:
+          "A payout read as a pay statement: how much, where it went, and whether it arrived, then each earning it paid out as an EarningLine, with subtotals and a total. It's where an earning's payout link goes. Its lines sit under their kinds, with a subtotal for each. `groupBy=\"type\"` puts subtotals by type under each kind instead, for a payout with many small lines, which open to their lines, and those lines leave off the type. Hovering, focusing, or tapping its status says what it means. `failure` says why it came back.",
+        importFrom: "components",
+        phone:
+          "It fills its container's width, and its lines follow EarningLine's phone layout. The total stays on the first screen, and again at the foot of a long statement.",
+        icon: ViewAgendaOutlinedIcon,
+        Demo: PayoutStatementDemo,
+      },
+      {
+        title: "EarningsCollected",
+        description:
+          "What someone has earned and not been sent yet: the total, the Friday it goes out with the day an approval has to land by, and what it's made up of by kind and type, with what's upcoming apart.",
+        importFrom: "components",
+        phone:
+          "It fills its container's width. Each row keeps a type's name and amount, and leaves off how many earnings that is.",
+        icon: SavingsOutlinedIcon,
+        Demo: EarningsCollectedDemo,
+      },
+      {
+        title: "EarningInfo",
+        description:
+          "A Why this amount? link on an earning, opening EarningDetails in a modal: why it's paid and how it's worked out. It's on every EarningLine, just left of the amount, and belongs at the end of a table's row wherever earnings are listed.",
+        importFrom: "components",
+        phone:
+          "Its target is a little bigger than its text, and the modal fills the screen, with a close button at the top.",
+        icon: InfoOutlinedIcon,
+        Demo: EarningInfoDemo,
+      },
+      {
+        title: "EarningDetails",
+        description:
+          "One earning in full, as EarningInfo's modal shows it: its kind, type, period, amount, and how far it's come, then a section each for what it was for, why it's paid and what that type pays for, and the sum. Its status keeps the top right at any width. `card={false}` drops the card to sit in one of your own, and `link={false}` the link to the readme.",
+        importFrom: "components",
+        phone:
+          "The card is 300px wide, or the screen less 24px when that's narrower, and the modal fills the screen. Its status keeps its place, with the type and period wrapping beside it.",
+        icon: ChatBubbleOutlineOutlinedIcon,
+        Demo: EarningDetailsDemo,
+      },
+      {
+        title: "EarningCalculation",
+        description:
+          "How an earning's amount is worked out, as a sum to check: its payout basis, the share of it, and what that comes to, in the earning's own figures as they were fixed, never today's rates.",
+        importFrom: "components",
+        phone:
+          "It fills its container's width, up to 420px. Labels wrap, and the figures stay on one line.",
+        icon: CalculateOutlinedIcon,
+        Demo: EarningCalculationDemo,
+      },
+      {
+        title: "EarningKind",
+        description:
+          "What was sold, as a section label: small, uppercase, and muted, in words alone, so it never reads as the same level as EarningType, the bold name of a line under it, with its icon. `details` opens EarningKindDetails over it on hover, focus, or tap.",
+        importFrom: "components",
+        phone:
+          "Its name wraps where a column is narrow. A tap opens its popover, which is 300px wide at most and keeps 12px from the screen's edges.",
+        icon: CategoryOutlinedIcon,
+        Demo: EarningKindDemo,
+      },
+      {
+        title: "EarningKindDetails",
+        description:
+          "What a kind of earning means, as EarningKind's popover shows it: its name, a few words on what was sold, the types that go under it, and a link to the readme. On its own, for help text or a legend; `card={false}` drops the card to sit in one of your own.",
+        importFrom: "components",
+        phone:
+          "The card is 300px wide, or the screen less 24px when that's narrower. With `card={false}` it fills its container.",
+        icon: HelpOutlineOutlinedIcon,
+        Demo: EarningKindDetailsDemo,
+      },
+      {
+        title: "EarningType",
+        description:
+          "Why someone's paid for an earning, named: an icon and its bold name in text colors, under its EarningKind, rather than a chip, so a page of lines stays quiet. Team Lead's is the blue-silver star a lead has everywhere else. `details` opens EarningTypeDetails over it on hover, focus, or tap, `kind` says which kind its popover explains, for Team Lead, which goes under both, and `inLink` is for one inside a link or button.",
+        importFrom: "components",
+        phone:
+          "Its name wraps beside the icon where a column is narrow. A tap opens its popover, which is 300px wide at most and keeps 12px from the screen's edges.",
+        icon: LabelOutlinedIcon,
+        Demo: EarningTypeDemo,
+      },
+      {
+        title: "EarningTypeDetails",
+        description:
+          "What a type of earning means, as EarningType's popover shows it: its name, a few words on what it pays for, the kind it goes under and what that means, and a link to the readme, which has the rates and the rest. `kind` says which kind to explain; left out, it explains every kind the type goes under. On its own, for help text or a legend; `card={false}` drops the card to sit in one of your own.",
+        importFrom: "components",
+        phone:
+          "The card is 300px wide, or the screen less 24px when that's narrower. With `card={false}` it fills its container.",
+        icon: HelpOutlineOutlinedIcon,
+        Demo: EarningTypeDetailsDemo,
       },
     ],
   },

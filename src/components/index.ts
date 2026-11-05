@@ -33,6 +33,19 @@ export * from "./capacity/CapacitySchedule";
 export * from "./capacity/CapacityStatus";
 export * from "./capacity/CapacityTag";
 
+export * from "./earnings/EarningCalculation";
+export * from "./earnings/EarningDetails";
+export * from "./earnings/EarningFor";
+export * from "./earnings/EarningInfo";
+export * from "./earnings/EarningKind";
+export * from "./earnings/EarningKindDetails";
+export * from "./earnings/EarningLine";
+export * from "./earnings/EarningStatus";
+export * from "./earnings/EarningType";
+export * from "./earnings/EarningTypeDetails";
+export * from "./earnings/EarningsCollected";
+export * from "./earnings/PayoutStatement";
+
 export * from "./progress/ProgressCapability";
 export * from "./progress/ProgressCard";
 export * from "./progress/ProgressFeature";
@@ -116,6 +129,32 @@ export {
   type CapacityBlockSize,
   type CapacityStatusId,
 } from "./capacity/capacity";
+
+// Earnings: their kinds, types, and statuses, and why each is paid in words. How
+// the money works is the readme's (earningDocsUrl).
+export {
+  EARNING_KINDS,
+  EARNING_KIND_IDS,
+  EARNING_STATUSES,
+  EARNING_STATUS_IDS,
+  EARNING_TYPES,
+  EARNING_TYPE_IDS,
+  earningDocsUrl,
+  earningReason,
+  earningStatus,
+  earningTypeDocsUrl,
+  earningTypeKinds,
+  earningsTotal,
+  formatEarningAmount,
+  formatEarningShare,
+  type CapacityEarning,
+  type Earning,
+  type EarningKindId,
+  type EarningPayout,
+  type EarningStatusId,
+  type EarningTypeId,
+  type OperationalEarning,
+} from "./earnings/earnings";
 
 // Progress: what came of work on a Focus within a block of capacity, in the
 // readme's forms of value (PROGRESS_DOCS_URL).
