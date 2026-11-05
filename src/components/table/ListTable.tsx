@@ -34,6 +34,10 @@ export type ListDateRange<T> = {
   startLabel?: string;
   /** Names the end filter. "End date" by default. */
   endLabel?: string;
+  /** The start date it opens with, as YYYY-MM-DD. Clear empties it like any other. */
+  defaultStart?: string;
+  /** The end date it opens with, as YYYY-MM-DD. */
+  defaultEnd?: string;
 };
 
 export type ListTableProps<T> = Omit<DataTableProps<T>, "sort" | "onSort"> & {
@@ -57,6 +61,20 @@ export type ListTableProps<T> = Omit<DataTableProps<T>, "sort" | "onSort"> & {
   defaultSort?: TableSort;
   /** Replaces the plain state shown when there are no rows at all, to invite adding the first. */
   emptyState?: ReactNode;
+  /**
+   * Draws something from the rows that match, every page of them, between the toolbar
+   * and the table, such as their totals. It can read and set the filters, so a total
+   * can narrow the table to itself.
+   */
+  renderSummary?: (matching: T[], filters: ListSummaryFilters) => ReactNode;
+};
+
+/** The filters as a summary can use them, by a filter's `id`. */
+export type ListSummaryFilters = {
+  /** The value chosen for a filter, or null when it's not in use. */
+  chosen: (filterId: string) => string | null;
+  /** Chooses a value for a filter, or null to stop using it. */
+  choose: (filterId: string, value: string | null) => void;
 };
 
 function compare(a: string | number, b: string | number) {
@@ -71,8 +89,8 @@ function filterValues<T>(filter: ListFilter<T>, row: T) {
 
 /*
  * A whole table in a card, with each extra picked by a prop: `search`,
- * `filters`, `dateRange`, `pagination`, and sorting from any column marked
- * `sortable`. Rows that open something take `onRowClick`, and rows that slide
+ * `filters`, `dateRange`, `pagination`, `renderSummary`, and sorting from any
+ * column marked `sortable`. Rows that open something take `onRowClick`, and rows that slide
  * open take `renderExpanded` (see DataTable). It searches, filters, sorts
  * and pages the rows it's given in memory, so it suits lists an app already
  * has in full. For rows paged by a server, drive DataTable from the server's
@@ -94,12 +112,13 @@ export function ListTable<T>({
   pageSizes = [10, 25, 50],
   defaultSort,
   emptyState,
+  renderSummary,
   ...tableProps
 }: ListTableProps<T>) {
   const [search, setSearch] = useState("");
   const [chosen, setChosen] = useState<Record<string, string | null>>({});
-  const [start, setStart] = useState<string | null>(null);
-  const [end, setEnd] = useState<string | null>(null);
+  const [start, setStart] = useState<string | null>(dateRange?.defaultStart ?? null);
+  const [end, setEnd] = useState<string | null>(dateRange?.defaultEnd ?? null);
   const [sort, setSort] = useState<TableSort | null>(defaultSort ?? null);
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(pageSizes[0]);
@@ -165,6 +184,12 @@ export function ListTable<T>({
     setStart(null);
     setEnd(null);
   });
+  const summaryFilters: ListSummaryFilters = {
+    chosen: (filterId) => chosen[filterId] ?? null,
+    choose: fromFirstPage((filterId: string, value: string | null) =>
+      setChosen((current) => ({ ...current, [filterId]: value })),
+    ),
+  };
   const clear = fromFirstPage(() => {
     setSearch("");
     clearFilters();
@@ -274,6 +299,12 @@ export function ListTable<T>({
                     : count(rows.length)
               }
             />
+            <Divider />
+          </>
+        ) : null}
+        {renderSummary && matching.length > 0 ? (
+          <>
+            {renderSummary(matching, summaryFilters)}
             <Divider />
           </>
         ) : null}

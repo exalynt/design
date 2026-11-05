@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { CodeBlock } from "../../docs/CodeBlock";
@@ -94,6 +95,47 @@ export function ListTableDemo() {
   // Each date is optional and includes its own day: with only a start, it's
   // everything from then on; with only an end, everything up to it.
   dateRange={{ value: (row) => row.issued }}
+  // To open on a range, such as this month, give it one. Clear empties it.
+  // dateRange={{ value: (row) => row.issued, defaultStart: "2026-11-01", defaultEnd: "2026-11-30" }}
+/>`}
+      />
+
+      <Example title="Totals of what matches">
+        <ListTable
+          columns={invoiceColumns}
+          rows={invoices}
+          rowKey={(row) => row.number}
+          noun={noun}
+          search
+          filters={filters}
+          pagination
+          renderSummary={(matching, { chosen, choose }) => (
+            <Stack direction="row" useFlexGap sx={{ flexWrap: "wrap", gap: 1, px: 2, py: 1.5 }}>
+              {[...new Set(matching.map((row) => row.status))].map((status) => (
+                <Button
+                  key={status}
+                  size="small"
+                  variant={chosen("status") === status ? "contained" : "outlined"}
+                  onClick={() => choose("status", chosen("status") === status ? null : status)}
+                >
+                  {status}:{" "}
+                  {formatMoney(
+                    matching
+                      .filter((row) => row.status === status)
+                      .reduce((total, row) => total + row.amount, 0),
+                  )}
+                </Button>
+              ))}
+            </Stack>
+          )}
+        />
+      </Example>
+      <CodeBlock
+        code={`<ListTable
+  // ...
+  // Every page of the rows that match, between the toolbar and the table. It
+  // can read and set the filters, so clicking a total narrows the table to it.
+  renderSummary={(matching, { chosen, choose }) => <Totals rows={matching} />}
 />`}
       />
 

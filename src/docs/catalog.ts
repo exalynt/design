@@ -984,7 +984,7 @@ export const catalog: Group[] = [
       {
         title: "ListTable",
         description:
-          "A whole table in a card, with each extra picked by a prop: `search`, `filters`, `dateRange`, `pagination`, and sorting from any column marked `sortable`. A filter's `value` can be several for one row, `searchText` adds to what the search looks through, and DataTable's `renderExpanded`, `rowPreview` and column `width` pass straight through. It works on rows the app already has in full, in memory.",
+          "A whole table in a card, with each extra picked by a prop: `search`, `filters`, `dateRange`, `pagination`, and sorting from any column marked `sortable`. A filter's `value` can be several for one row, `searchText` adds to what the search looks through, `renderSummary` draws totals or the like from every row that matches, and DataTable's `renderExpanded`, `rowPreview` and column `width` pass straight through. It works on rows the app already has in full, in memory.",
         importFrom: "components",
         phone:
           "Search, the Filters button and Clear wrap onto a second row if they don't fit, and the filters stack full width when opened. The row count hides, and pagination keeps its arrows but drops the Per page label. Columns follow their `hideBelow`.",
