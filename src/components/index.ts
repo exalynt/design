@@ -7,6 +7,7 @@ export * from "./layout/PageHeader";
 export * from "./layout/SectionCard";
 
 export * from "./data-display/DateTime";
+export * from "./DetailsPopover";
 export * from "./data-display/EmptyState";
 export * from "./data-display/StatCard";
 

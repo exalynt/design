@@ -81,6 +81,7 @@ import { EarningDetailsDemo } from "../components/earnings/EarningDetails.demo";
 import { EarningForDemo } from "../components/earnings/EarningFor.demo";
 import { EarningInfoDemo } from "../components/earnings/EarningInfo.demo";
 import { EarningKindDemo } from "../components/earnings/EarningKind.demo";
+import { DetailsPopoverDemo } from "../components/DetailsPopover.demo";
 import { EarningKindDetailsDemo } from "../components/earnings/EarningKindDetails.demo";
 import { EarningLineDemo } from "../components/earnings/EarningLine.demo";
 import { EarningStatusDemo } from "../components/earnings/EarningStatus.demo";
@@ -297,6 +298,16 @@ export const catalog: Group[] = [
           "It never wraps, so a date and time stays on one line in a table cell. A tap opens the popover, which is 300px wide at most and keeps 12px from the screen's edges.",
         icon: AccessTimeOutlinedIcon,
         Demo: DateTimeDemo,
+      },
+      {
+        title: "DetailsPopover",
+        description:
+          "What a word on the page means, for someone who doesn't know, opened over it on hover, focus, or tap: the popover the stability, maturity, earnings and DateTime details open in, for an app's own words. Its `title` is a DetailsCard, which opens with a DetailsEyebrow, then the word in bold, a few plain sentences, and a DetailsLink to the readme. The word under it takes focus with `tabIndex={0}` and shows `cursor: help`. `hoverOnly` is for one a tap does something else on, such as a table row.",
+        importFrom: "components",
+        phone:
+          "A tap opens it, and it stays open 8 seconds or until a tap elsewhere. The card is 300px wide at most and keeps 12px from the screen's edges.",
+        icon: HelpOutlineOutlinedIcon,
+        Demo: DetailsPopoverDemo,
       },
       {
         title: "Money",

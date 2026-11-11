@@ -12,20 +12,21 @@ const cleared = {
 };
 
 /*
- * The popover a stability mark, a maturity, or a DateTime opens on hover, focus, or tap.
+ * The popover a stability mark, a maturity, or a DateTime opens on hover, focus, or tap,
+ * and an app's own, for what a word on its page means.
  * Its content draws its own card (DetailsCard), so the tooltip's is cleared.
  * `hoverOnly` is for something a tap does something else on, such as a table row: it opens
  * after a moment on hover, lets the pointer through to what's under it, and never on a tap.
  */
-export function DetailsPopover({
-  title,
-  hoverOnly = false,
-  children,
-}: {
+export type DetailsPopoverProps = {
+  /** What it opens: a DetailsCard. */
   title: ReactNode;
   hoverOnly?: boolean;
+  /** What it opens over, which takes focus (`tabIndex={0}` on a span) and shows `cursor: help`. */
   children: ReactElement;
-}) {
+};
+
+export function DetailsPopover({ title, hoverOnly = false, children }: DetailsPopoverProps) {
   return (
     <Tooltip
       describeChild
@@ -50,7 +51,9 @@ export function DetailsPopover({
 }
 
 /* The popover's card, or with `card={false}` just its text, for a card of your own. */
-export function DetailsCard({ card, children }: { card: boolean; children: ReactNode }) {
+export type DetailsCardProps = { card: boolean; children: ReactNode };
+
+export function DetailsCard({ card, children }: DetailsCardProps) {
   return (
     <Box
       sx={[
@@ -81,7 +84,9 @@ export function DetailsCard({ card, children }: { card: boolean; children: React
 }
 
 /* The small uppercase line a popover opens with. */
-export function DetailsEyebrow({ children }: { children: ReactNode }) {
+export type DetailsEyebrowProps = { children: ReactNode };
+
+export function DetailsEyebrow({ children }: DetailsEyebrowProps) {
   return (
     <Box
       sx={{
@@ -100,15 +105,9 @@ export function DetailsEyebrow({ children }: { children: ReactNode }) {
 /* A popover's closing link: an ordinary link, in the theme's link color and underlined. To
    the readme, it opens in a new tab so the reader keeps their place; with `newTab={false}`,
    for a page in the app, it opens in the same tab. */
-export function DetailsLink({
-  href,
-  newTab = true,
-  children,
-}: {
-  href: string;
-  newTab?: boolean;
-  children: ReactNode;
-}) {
+export type DetailsLinkProps = { href: string; newTab?: boolean; children: ReactNode };
+
+export function DetailsLink({ href, newTab = true, children }: DetailsLinkProps) {
   return (
     <Link
       href={href}
