@@ -14,6 +14,12 @@ export type DateTimeProps = {
    */
   dateOnly?: boolean;
   /**
+   * Show the time of day without the day, where the day is already said
+   * around it, as under a day's heading on a timeline: "9:05 AM". The
+   * popover still gives the full date and time.
+   */
+  timeOnly?: boolean;
+  /**
    * Show how long ago it was, where recency is what's scanned for, as in a
    * list of conversations: "Just now", "5 minutes ago", "3 hours ago" today,
    * "Yesterday", then the day. The popover still gives the full time.
@@ -31,6 +37,7 @@ const RFC_3339 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2}
 
 /* `undefined` locale and no `timeZone`: the browser's own settings, read once. */
 const shortDate = new Intl.DateTimeFormat(undefined, { dateStyle: "medium" });
+const shortTime = new Intl.DateTimeFormat(undefined, { timeStyle: "short" });
 const shortDateTime = new Intl.DateTimeFormat(undefined, {
   dateStyle: "medium",
   timeStyle: "short",
@@ -137,11 +144,13 @@ function Zone({
  * their browser has them. Hover, focus, or tap opens a popover setting it
  * side by side in their zone and in UTC, with the value as the server sent
  * it, so two people in different zones can agree on the moment. `relative`
- * says how long ago it was instead, the popover the same.
+ * says how long ago it was instead, and `dateOnly` and `timeOnly` give only
+ * the day or only the time of day, the popover the same.
  */
 export function DateTime({
   value,
   dateOnly = false,
+  timeOnly = false,
   relative = false,
   focusable = true,
 }: DateTimeProps) {
@@ -191,7 +200,9 @@ export function DateTime({
           "&:focus-visible": { outline: 2, outlineColor: "primary.main", outlineOffset: 2 },
         }}
       >
-        {relative ? timeAgo(date) : (dateOnly ? shortDate : shortDateTime).format(date)}
+        {relative
+          ? timeAgo(date)
+          : (dateOnly ? shortDate : timeOnly ? shortTime : shortDateTime).format(date)}
       </Box>
     </DetailsPopover>
   );
