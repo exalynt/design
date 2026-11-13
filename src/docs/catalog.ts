@@ -292,10 +292,10 @@ export const catalog: Group[] = [
       {
         title: "DateTime",
         description:
-          'A timestamp from the server in the reader\'s time zone and locale, from their browser, with a popover giving it in full in their zone and in UTC as sent. `value` is an RFC 3339 UTC string; anything else, a calendar date included, is shown as given. `dateOnly` drops the time of day, `timeOnly` drops the day where a heading already says it, and `relative` says how long ago it was instead ("Just now", "5 minutes ago", "3 hours ago" today, "Yesterday", then the day), as ConversationRow\'s time does, where recency is what\'s scanned for; the popover is the same either way. Pass `focusable={false}` inside a button or link.',
+          'A timestamp from the server in the reader\'s time zone and locale, from their browser, with a popover giving it in full in their zone and in UTC as sent. `value` is an RFC 3339 UTC string; anything else, a calendar date included, is shown as given. `dateOnly` drops the time of day, `stacked` gives it in full on two lines (weekday and day over time and zone) where there\'s room beside each entry, as on a timeline, and `relative` says how long ago it was instead ("Just now", "5 minutes ago", "3 hours ago" today, "Yesterday", then the day), as ConversationRow\'s time does, where recency is what\'s scanned for; the popover is the same either way. Pass `focusable={false}` inside a button or link.',
         importFrom: "components",
         phone:
-          "It never wraps, so a date and time stays on one line in a table cell. A tap opens the popover, which is 300px wide at most and keeps 12px from the screen's edges.",
+          "It never wraps, so a date and time stays on one line in a table cell (stacked is two lines, each kept whole). A tap opens the popover, which is 300px wide at most and keeps 12px from the screen's edges.",
         icon: AccessTimeOutlinedIcon,
         Demo: DateTimeDemo,
       },

@@ -34,9 +34,9 @@ export function DatesAndTimesGuideline() {
         items={[
           "Is shown with DateTime, in tables, lists and running text alike. Never format one by hand with toLocaleString or by slicing the string.",
           "Never hard-codes a locale or a time zone. The reader's browser decides both.",
-          "Doesn't say its time zone in the text. It's the reader's own, and the popover names it.",
+          "Doesn't say its time zone in the text, except stacked. It's the reader's own, and the popover names it.",
           "Drops the time of day with dateOnly only where the day is all the reader needs, such as when a project was created. The popover keeps the full time.",
-          "Drops the day with timeOnly only where a heading right above it says the day, as a timeline sectioned by day does. Group by the day in the reader's zone, so the heading and the times agree.",
+          "Shows it in full with stacked, the weekday and day over the time and its zone, where each entry has room beside it for two lines, as on a timeline. It's the one place the zone is in the text, since the reader compares entries far apart in time.",
           "Sorts by Date.parse(value), the moment itself, rather than by the text.",
         ]}
       />

@@ -67,20 +67,28 @@ export function DateTimeDemo() {
       </Example>
       <CodeBlock code={`<DateTime value={conversation.last_activity_at} relative />`} />
 
-      <Example title="Under a day's heading, with timeOnly, as a timeline has it">
-        <Stack spacing={1.5}>
-          <Typography variant="subtitle2">Thu, Oct 8, 2026</Typography>
-          <Typography variant="body2" component="div" sx={{ display: "grid", gap: 0.5 }}>
-            <span>
-              Estimate approved · <DateTime value="2026-10-08T15:05:00Z" timeOnly />
-            </span>
-            <span>
-              Invoice INV-0104 sent · <DateTime value="2026-10-08T19:30:00Z" timeOnly />
-            </span>
-          </Typography>
+      <Example title="In full on two lines, with stacked, beside each entry on a timeline">
+        <Stack spacing={2}>
+          {[
+            { what: "Estimate approved", at: "2026-10-08T15:05:00Z" },
+            { what: "Invoice INV-0104 sent", at: "2026-10-08T19:30:00Z" },
+          ].map((entry) => (
+            <Stack
+              key={entry.at}
+              direction="row"
+              sx={{ justifyContent: "space-between", alignItems: "flex-start", gap: 2 }}
+            >
+              <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                {entry.what}
+              </Typography>
+              <Typography variant="caption" sx={{ color: "text.secondary", textAlign: "right" }}>
+                <DateTime value={entry.at} stacked />
+              </Typography>
+            </Stack>
+          ))}
         </Stack>
       </Example>
-      <CodeBlock code={`<DateTime value={event.at} timeOnly />`} />
+      <CodeBlock code={`<DateTime value={event.at} stacked />`} />
 
       <Example title="In a table">
         <ListTable
