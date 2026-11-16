@@ -68,10 +68,10 @@ export const STABILITY: Record<StabilityLevelId, StabilityLevel> = {
     fullName: "Alpha",
     stability: "Developing",
     summary: "Works, but is still taking shape. Expect frequent breaking changes and bugs.",
-    changes: "Frequent breaking changes, sometimes without notice.",
+    changes: "Frequent breaking changes, with no promise of notice.",
     bugs: "Expected, even in the main workflow.",
     forUsers:
-      "Try it with real work and share feedback. Keep your current way of working as a fallback.",
+      "Try it with real work and share feedback. Keep your current way of working as a fallback, and don't keep the only copy of anything there.",
     forEngineers: "Build on it only to experiment. Expect its interfaces to change.",
     colors: { light: "#9c4f6c", dark: "#de9cb6" },
     label: {
@@ -105,16 +105,19 @@ export const STABILITY: Record<StabilityLevelId, StabilityLevel> = {
     fullName: "General Availability",
     stability: "Stable",
     summary:
-      "Generally available and stable. It keeps working as it does today; breaking changes only come in a new version.",
-    changes: "No breaking changes to this version. They come in a new version.",
+      "Generally available and stable. It keeps working as it does today. Breaking changes are rare, announced ahead of time, and come with time to move over.",
+    changes:
+      "Rare. When one is needed, we aim to announce it well ahead, with a deprecation window.",
     bugs: "Rare, and fixed first.",
     forUsers: "Depend on it, including for business-critical work.",
-    forEngineers: "Build on it freely. Its interfaces are stable and versioned.",
+    forEngineers:
+      "Build on it. Its interfaces are stable, and changes come with notice and time to move.",
     colors: { light: "#4c7a58", dark: "#94bd9f" },
     label: {
       name: "stability: ga",
       color: "4c7a58",
-      description: "GA: generally available and stable; breaking changes only in a new version",
+      description:
+        "GA: generally available and stable; rare breaking changes, announced with a deprecation window",
     },
   },
 };

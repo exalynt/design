@@ -271,9 +271,15 @@ export function StabilityLevelsGuideline() {
             <ReadmeLink path="how-it-works/stability-levels#stability-prototype">
               Prototype
             </ReadmeLink>{" "}
-            may be fake, and breaking changes in{" "}
+            may be fake, data in{" "}
+            <ReadmeLink path="how-it-works/stability-levels#stability-alpha">Alpha</ReadmeLink> may
+            be reset, and breaking changes in{" "}
             <ReadmeLink path="how-it-works/stability-levels#stability-beta">Beta</ReadmeLink> are
-            announced ahead of time when we can, not always.
+            announced ahead of time when we can, not always. And{" "}
+            <ReadmeLink path="how-it-works/stability-levels#stability-isnt-perfection">
+              GA isn&rsquo;t perfection
+            </ReadmeLink>
+            : it can still have bugs and known gaps.
           </li>
           <li>
             <strong>It opens on hover, keyboard focus, and tap,</strong> and closes on Escape. The
@@ -437,7 +443,7 @@ export function StabilityLevelsGuideline() {
         <p>
           For the labels on issues and pull requests, see the readme&rsquo;s{" "}
           <ReadmeLink path="engineers/marking-stability">Marking stability levels</ReadmeLink>, and
-          for what should be in place at each level, its{" "}
+          for what we generally expect at each level, its{" "}
           <ReadmeLink path="how-it-works/stability-checklist">Stability checklist</ReadmeLink>.
         </p>
       </Guidance>
