@@ -9,13 +9,13 @@ export function MaturityDetailsDemo() {
     <>
       <Example title="A Feature's, on its card, as its ring's popover shows it">
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <MaturityDetails progress={54} subject="feature" count={3} />
+          <MaturityDetails progress={53} subject="feature" count={3} />
         </Box>
       </Example>
       <Example title="A project's, in two bands">
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 6 }} sx={{ display: "flex", justifyContent: "center" }}>
-            <MaturityDetails progress={67} subject="project" count={3} />
+            <MaturityDetails progress={61} subject="project" count={3} />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }} sx={{ display: "flex", justifyContent: "center" }}>
             <MaturityDetails progress={81} subject="project" count={6} />
@@ -25,7 +25,7 @@ export function MaturityDetailsDemo() {
       <Example title="On a page, in a card of your own">
         <Box sx={{ maxWidth: 420 }}>
           <SectionCard title="How mature this project is">
-            <MaturityDetails progress={67} subject="project" count={3} card={false} />
+            <MaturityDetails progress={61} subject="project" count={3} card={false} />
           </SectionCard>
         </Box>
       </Example>

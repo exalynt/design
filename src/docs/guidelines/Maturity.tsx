@@ -80,8 +80,8 @@ export function MaturityGuideline() {
         code={`import { MaturityRing, featureMaturity, projectMaturity } from "@exalynt/design/components";
 
 // A Capability's level, or null while it's a draft.
-const scheduling = featureMaturity(["beta", "beta", "alpha"]); // 54
-const project = projectMaturity([87, scheduling, 28, null]); // 67, from the 3 started
+const scheduling = featureMaturity(["beta", "beta", "alpha"]); // 53
+const project = projectMaturity([84, scheduling, 27, null]); // 61, from the 3 started
 
 {project !== null && <MaturityRing progress={project} subject="project" count={3} labelled />}`}
       />
@@ -155,10 +155,10 @@ const project = projectMaturity([87, scheduling, 28, null]); // 67, from the 3 s
       <Example title="The popovers, open">
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 6 }} sx={{ display: "flex", justifyContent: "center" }}>
-            <MaturityDetails progress={54} subject="feature" count={3} />
+            <MaturityDetails progress={53} subject="feature" count={3} />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }} sx={{ display: "flex", justifyContent: "center" }}>
-            <MaturityDetails progress={67} subject="project" count={3} />
+            <MaturityDetails progress={61} subject="project" count={3} />
           </Grid>
         </Grid>
       </Example>

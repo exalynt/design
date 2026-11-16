@@ -43,15 +43,17 @@ export function maturityFills(progress: number): number[] {
 /**
  * What a Capability at each level adds to its Feature's maturity: its score,
  * and how much weight that score carries in the average. Higher levels weigh
- * more, one GA as much as 2 Betas, 3 Alphas, or 6 Prototypes, so dependable work lifts a Feature more than early work holds it
- * back. Each score sits inside its level's band, so a Feature whose
+ * more, one GA as much as 1.5 Betas, 2 Alphas, or 3 Prototypes: enough that
+ * dependable work lifts a Feature, not so much that a little of it carries a
+ * Feature that's mostly early work. Each score sits inside its level's band,
+ * so a Feature whose
  * Capabilities are all at one level shows in that level's band. Drafts have
  * neither: they're ideas that may never be built, so they don't count.
  */
 export const MATURITY_LEVELS: Record<StabilityLevelId, { score: number; weight: number }> = {
-  prototype: { score: 15, weight: 1 },
-  alpha: { score: 35, weight: 2 },
-  beta: { score: 60, weight: 3 },
+  prototype: { score: 15, weight: 2 },
+  alpha: { score: 35, weight: 3 },
+  beta: { score: 60, weight: 4 },
   ga: { score: 100, weight: 6 },
 };
 
