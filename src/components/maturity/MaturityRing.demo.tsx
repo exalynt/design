@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { Example } from "../../docs/Example";
-import { featureMaturity } from "./maturity";
+import { featureMaturity, projectMaturity } from "./maturity";
 import { MaturityRing } from "./MaturityRing";
 import type { StabilityLevelId } from "../stability/stability";
 import { StabilityMark } from "../stability/StabilityMark";
@@ -45,6 +45,13 @@ const FEATURES: [string, Capability[]][] = [
 
 const maturityOf = (capabilities: Capability[]) =>
   featureMaturity(capabilities.map(([, level]) => level));
+
+const started = (capabilities: Capability[]) =>
+  capabilities.filter(([, level]) => level !== null).length;
+
+const projectProgress = projectMaturity(
+  FEATURES.map(([, capabilities]) => maturityOf(capabilities)),
+);
 
 const row = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2 };
 
@@ -101,9 +108,9 @@ export function MaturityRingDemo() {
     <>
       <Example title="A project, labelled, at the top of its page">
         <MaturityRing
-          progress={48}
+          progress={projectProgress ?? 0}
           subject="project"
-          count={FEATURES.length}
+          count={FEATURES.filter(([, capabilities]) => started(capabilities) > 0).length}
           labelled
           breakdown={projectBreakdown}
         />
@@ -116,7 +123,7 @@ export function MaturityRingDemo() {
               <MaturityRing
                 progress={maturityOf(capabilities) ?? 0}
                 subject="feature"
-                count={capabilities.length}
+                count={started(capabilities)}
                 label={name}
                 size={24}
                 breakdown={featureBreakdown(capabilities)}

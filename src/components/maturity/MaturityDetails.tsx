@@ -25,21 +25,25 @@ export type MaturityDetailsProps = {
   card?: boolean;
 };
 
-/* What each band means for the client, of a Feature's Capabilities or a project's Features. */
-function bandSummary(band: StabilityLevelId, subject: MaturitySubject) {
-  const parts = subject === "feature" ? "its capabilities" : "its features";
-  return {
-    prototype: `Early work. On average, ${parts} are still being explored, so expect much of it to change, and some of its data may be fake.`,
-    alpha: `Taking shape. On average, ${parts} work but are still changing often, and bugs are to be expected.`,
-    beta: `Settled enough for real use. On average, ${parts} are being refined, with occasional breaking changes we aim to announce ahead of time.`,
-    ga: `Stable and dependable. On average, ${parts} keep working as they do today.`,
-  }[band];
-}
+/*
+ * What each band tells whoever is looking, client or engineer: how far along
+ * it is as a whole, and what to expect from it. True whatever the mix, since
+ * a few established parts can carry a band, so it never claims what every
+ * part is; the closing line sends them to each part's stability for that.
+ */
+const BAND_SUMMARIES: Record<StabilityLevelId, string> = {
+  prototype:
+    "Early days. Much of it is still being explored, and could change completely or be dropped.",
+  alpha:
+    "Taking shape. Some of it works, but much is still changing often, so expect bugs and breaking changes.",
+  beta: "Firming up. Enough of it is settled or stable for real use, while other parts are still changing.",
+  ga: "Well established. Most of it is stable and supported, while any newer parts settle in.",
+};
 
 function basis(subject: MaturitySubject, count: number) {
   return subject === "feature"
-    ? `Based on the ${count} ${count === 1 ? "capability" : "capabilities"} listed today`
-    : `The average of its ${count} ${count === 1 ? "feature" : "features"}`;
+    ? `Based on its ${count} started ${count === 1 ? "capability" : "capabilities"}; drafts don't count`
+    : `The average of its ${count} started ${count === 1 ? "feature" : "features"}`;
 }
 
 const section = { mt: 1.5, pt: 1.5, borderTop: 1, borderColor: "divider" } as const;
@@ -76,13 +80,11 @@ export function MaturityDetails({
           )}
         </Box>
       </Box>
-      <Box sx={{ mt: 1.5 }}>{bandSummary(band, subject)}</Box>
+      <Box sx={{ mt: 1.5 }}>{BAND_SUMMARIES[band]}</Box>
       {breakdown ? <Box sx={section}>{breakdown}</Box> : null}
       <Box sx={[section, { fontSize: "0.92em", color: "text.secondary" }]}>
-        Maturity is how complete and stable{" "}
-        {subject === "feature" ? "a feature is" : "a project's features are"}, as presently known,
-        from the stability of what&rsquo;s been built. It can go down as well as up as new work is
-        added.
+        Maturity is how far along this {subject} is: how close the work under way is to being stable
+        and supported. Before relying on a part of it, check that part&rsquo;s stability.
       </Box>
       {link ? <DetailsLink href={MATURITY_DOCS_URL}>How maturity works</DetailsLink> : null}
     </DetailsCard>

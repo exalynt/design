@@ -11,7 +11,7 @@ export type MaturityRingProps = {
   progress: number;
   /** A Feature's maturity, from its Capabilities, or a project's, from its Features. */
   subject: MaturitySubject;
-  /** How many Capabilities (a Feature) or Features (a project) it's worked out from. */
+  /** How many started Capabilities (a Feature) or Features (a project) it's worked out from; drafts don't count. */
   count?: number;
   /** What it's the maturity of, for screen readers, e.g. a Feature's name in a list. */
   label?: string;
@@ -39,8 +39,8 @@ export type MaturityRingProps = {
 
 const countLabel = (subject: MaturitySubject, count: number) =>
   subject === "feature"
-    ? `${count} ${count === 1 ? "capability" : "capabilities"}`
-    : `${count} ${count === 1 ? "feature" : "features"}`;
+    ? `${count} started ${count === 1 ? "capability" : "capabilities"}`
+    : `${count} started ${count === 1 ? "feature" : "features"}`;
 
 /*
  * A Feature's or a project's maturity, always as a ring (see RingGlyph), so

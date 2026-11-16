@@ -111,6 +111,7 @@ export {
   HEALTHY_MATURITY,
   MATURITY_BANDS,
   MATURITY_DOCS_URL,
+  MATURITY_LEVELS,
   featureMaturity,
   maturityBand,
   projectMaturity,

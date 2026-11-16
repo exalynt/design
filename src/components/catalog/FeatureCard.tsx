@@ -103,7 +103,7 @@ export function FeatureCard({
                 <MaturityRing
                   progress={progress}
                   subject="feature"
-                  count={capabilities.length}
+                  count={capabilities.filter((capability) => capability.level !== null).length}
                   label={name}
                   size={24}
                   breakdown={

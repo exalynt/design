@@ -52,7 +52,8 @@ export function MaturityGuideline() {
     <>
       <Guidance title="What maturity is">
         <p>
-          Maturity is a percentage for a Feature or a project, worked out from its
+          Maturity is how far along a Feature or a project is: how close the work under way is to
+          being stable and supported. It&rsquo;s a percentage, worked out from its
           Capabilities&rsquo; stability levels. What it means, how it&rsquo;s counted, and why 100%
           isn&rsquo;t the goal are in the readme&rsquo;s{" "}
           <ReadmeLink path={MATURITY}>Maturity</ReadmeLink> page. This page covers how to show it.
@@ -79,10 +80,10 @@ export function MaturityGuideline() {
         code={`import { MaturityRing, featureMaturity, projectMaturity } from "@exalynt/design/components";
 
 // A Capability's level, or null while it's a draft.
-const scheduling = featureMaturity(["beta", "beta", "alpha"]); // 67
-const project = projectMaturity([88, scheduling, 38, null]); // 48
+const scheduling = featureMaturity(["beta", "beta", "alpha"]); // 54
+const project = projectMaturity([87, scheduling, 28, null]); // 67, from the 3 started
 
-{project !== null && <MaturityRing progress={project} subject="project" count={4} labelled />}`}
+{project !== null && <MaturityRing progress={project} subject="project" count={3} labelled />}`}
       />
 
       <Example title="One in each band">
@@ -92,7 +93,8 @@ const project = projectMaturity([88, scheduling, 38, null]); // 48
         <p>
           A ring takes the color of the{" "}
           <ReadmeLink path={`${MATURITY}#reading-a-maturity`}>band</ReadmeLink> it&rsquo;s in, named
-          for the level at its top. The band&rsquo;s name, from <code>MATURITY_BANDS</code>, is what
+          for the level whose Capabilities land in it: a Feature with every Capability at Alpha is
+          in Alpha&rsquo;s band. The band&rsquo;s name, from <code>MATURITY_BANDS</code>, is what
           screen readers hear and what the popover says, so don&rsquo;t name bands in copy of your
           own.
         </p>
@@ -128,8 +130,9 @@ const project = projectMaturity([88, scheduling, 38, null]); // 48
       <Guidance title="The popover">
         <p>
           Every ring opens a popover that tells the client how mature this is: the ring again with
-          its band, one sentence on what that band means, a short muted definition of maturity, and
-          a link to the readme. Keep it to that. Whether a maturity is healthy, and{" "}
+          its band, a line on what that band says about the whole, a short muted definition of
+          maturity that sends them to each part&rsquo;s stability before relying on it, and a link
+          to the readme. Keep it to that. Whether a maturity is healthy, and{" "}
           <ReadmeLink path={`${MATURITY}#why-100-isnt-the-goal`}>
             why 100% isn&rsquo;t the goal
           </ReadmeLink>
@@ -152,10 +155,10 @@ const project = projectMaturity([88, scheduling, 38, null]); // 48
       <Example title="The popovers, open">
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 6 }} sx={{ display: "flex", justifyContent: "center" }}>
-            <MaturityDetails progress={67} subject="feature" count={3} />
+            <MaturityDetails progress={54} subject="feature" count={3} />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }} sx={{ display: "flex", justifyContent: "center" }}>
-            <MaturityDetails progress={48} subject="project" count={4} />
+            <MaturityDetails progress={67} subject="project" count={3} />
           </Grid>
         </Grid>
       </Example>

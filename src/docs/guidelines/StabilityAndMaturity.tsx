@@ -65,7 +65,7 @@ export function StabilityAndMaturity() {
                   Stability <StabilityMark level="beta" link={false} />
                 </TableCell>
                 <TableCell>
-                  Maturity <MaturityRing progress={67} subject="feature" size={20} link={false} />
+                  Maturity <MaturityRing progress={54} subject="feature" size={20} link={false} />
                 </TableCell>
               </TableRow>
             </TableHead>
