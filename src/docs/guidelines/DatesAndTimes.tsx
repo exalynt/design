@@ -36,6 +36,7 @@ export function DatesAndTimesGuideline() {
           "Never hard-codes a locale or a time zone. The reader's browser decides both.",
           "Doesn't say its time zone in the text, except stacked. It's the reader's own, and the popover names it.",
           "Drops the time of day with dateOnly only where the day is all the reader needs, such as when a project was created. The popover keeps the full time.",
+          "Drops the day with timeOnly only where the day is already plain from what's around it, such as messages under a day's heading. The popover keeps the full date.",
           "Shows it in full with stacked, the weekday and day over the time and its zone, where each entry has room beside it for two lines, as on a timeline. It's the one place the zone is in the text, since the reader compares entries far apart in time.",
           "Sorts by Date.parse(value), the moment itself, rather than by the text.",
         ]}

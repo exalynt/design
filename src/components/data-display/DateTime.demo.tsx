@@ -46,6 +46,21 @@ export function DateTimeDemo() {
 <DateTime value={invoice.dueAt} dateOnly />.`}
       />
 
+      <Example title="The time of day alone, with timeOnly, under a day's heading">
+        <Typography variant="body2" component="div" sx={{ display: "grid", gap: 0.5 }}>
+          <Typography variant="overline" sx={{ color: "text.secondary" }}>
+            Today
+          </Typography>
+          <span>
+            Dana Whitfield, <DateTime value={ago(95)} timeOnly />
+          </span>
+          <span>
+            Priya Shah, <DateTime value={ago(20)} timeOnly />
+          </span>
+        </Typography>
+      </Example>
+      <CodeBlock code={`<DateTime value={message.created_at} timeOnly />`} />
+
       <Example title="How long ago, with relative, as a list of conversations has it: hover one for its full time">
         <Typography variant="body2" component="div" sx={{ display: "grid", gap: 0.5 }}>
           <span>

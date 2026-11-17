@@ -14,6 +14,12 @@ export type DateTimeProps = {
    */
   dateOnly?: boolean;
   /**
+   * Show the time of day without the day, where the day is already plain
+   * from what's around it, as under a day's heading in a conversation:
+   * "3:08 PM". The popover still gives the full date and time.
+   */
+  timeOnly?: boolean;
+  /**
    * Show it in full on two lines, the day with its weekday over the time of
    * day with its zone, where there's room beside each entry, as on a
    * timeline: "Monday, Oct 26, 2026" over "9:05 AM CDT". Its own block, so
@@ -38,6 +44,7 @@ const RFC_3339 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2}
 
 /* `undefined` locale and no `timeZone`: the browser's own settings, read once. */
 const shortDate = new Intl.DateTimeFormat(undefined, { dateStyle: "medium" });
+const shortTime = new Intl.DateTimeFormat(undefined, { timeStyle: "short" });
 const longDay = new Intl.DateTimeFormat(undefined, {
   weekday: "long",
   month: "short",
@@ -155,12 +162,14 @@ function Zone({
  * their browser has them. Hover, focus, or tap opens a popover setting it
  * side by side in their zone and in UTC, with the value as the server sent
  * it, so two people in different zones can agree on the moment. `relative`
- * says how long ago it was instead, `dateOnly` gives only the day, and
- * `stacked` gives it in full on two lines, the popover the same.
+ * says how long ago it was instead, `dateOnly` gives only the day,
+ * `timeOnly` only the time of day, and `stacked` gives it in full on two
+ * lines, the popover the same.
  */
 export function DateTime({
   value,
   dateOnly = false,
+  timeOnly = false,
   stacked = false,
   relative = false,
   focusable = true,
@@ -224,7 +233,7 @@ export function DateTime({
         ) : relative ? (
           timeAgo(date)
         ) : (
-          (dateOnly ? shortDate : shortDateTime).format(date)
+          (dateOnly ? shortDate : timeOnly ? shortTime : shortDateTime).format(date)
         )}
       </Box>
     </DetailsPopover>
